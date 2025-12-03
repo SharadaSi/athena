@@ -1,0 +1,153 @@
+@use "../abstracts/variables" as* ;
+
+// .page-wrapper {
+//     min-height: 100dvh;
+//     display: grid;
+//     grid-template-rows: auto 1fr auto;
+//     grid-template-columns: minmax(0, 1fr);
+// }
+
+.section-container {
+    width: 80%;
+    margin: 8rem auto;
+}
+
+.section-container-page {
+    width: 90%;
+    margin: 6rem auto;
+    position: relative;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 4rem 4rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 54, 131, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+}
+
+
+.section-heading { 
+    font-size: $section-heading-h2-desktop;
+    font-weight: 700;
+    color: $text-color-primary;
+    text-align: center;
+    padding-bottom: 2rem;
+}
+
+.section-subheading{
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: $text-color-secondary;
+    text-align: center;
+    padding-bottom: 8rem;
+}
+
+.paragraph-XL{
+    color: $text-color-secondary;
+    font-size: 3rem;
+    font-weight: 500;
+}
+
+.heading-XXL {
+    color: $text-color-primary;
+    font-size: 8rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.subheading-XXL {
+    color: $text-color-secondary;
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.label-tag {
+    background-color: $text-color-secondary;
+    color: $text-color-primary;
+    padding: $btn-padding-desktop;
+    font-size: $text-about-font-size-desktop
+}
+
+//Price section
+
+.divider {
+    border: 1px solid $text-color-primary;
+    width: 95%;
+    margin: 2rem 0;
+    transform: scaleY(0.5);
+}
+
+.XL-number {
+    font-size: 4rem;
+    font-weight: 500;
+
+    &__from {
+        font-size: 1.6rem;
+        font-weight: 400;
+        vertical-align: baseline;
+        margin-right: 0.5ch;
+    }
+}
+
+.M-number {
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+
+    &__to-per-task {
+        font-size: 1.6rem;
+        font-weight: 400;
+        margin-left: 0.5ch;
+    }
+}
+
+//Article page
+
+.main-article-preview-heading {
+    font-size: 5rem;
+    font-weight: 500;
+    color: $text-color-primary;
+}
+
+.main-article-preview-text {
+    font-size: 2rem;
+    font-weight: 400;
+    color: $text-color-secondary;
+}
+
+.article-preview-heading {
+    font-size: 3rem;
+    font-weight: 500;
+    color: $text-color-primary;
+}
+
+.article-preview-text {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: $text-color-secondary;
+}
+
+
+
+@media screen and (max-width: 40rem) {
+
+    // .section-container-page{
+    //     width: 98%;
+    // }
+    .paragraph-XL{
+    color: $text-color-secondary;
+    font-size: $parag-XL-font-size-mobile;
+    font-weight: 500;
+    }
+
+    .heading-XXL {
+    color: $text-color-primary;
+    font-size: $heading-XXL-font-size-mobile;
+    font-weight: 500;
+    }
+
+    .label-tag {
+    background-color: $text-color-secondary;
+    color: $text-color-primary;
+    padding: $btn-padding-mobile;
+    font-size: $text-about-font-size-mobile;
+    }
+}
+
+

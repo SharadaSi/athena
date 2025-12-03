@@ -1,0 +1,13 @@
+//Import indexes of each folder containing all the partials of that specific folder
+
+@use "abstracts" as *;
+
+@use "base" as *;
+
+@use "components" as *;
+
+@use "layout" as *;
+
+@use "sections" as *;
+
+@use "pages" as *;

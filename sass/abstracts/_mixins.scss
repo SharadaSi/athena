@@ -1,0 +1,49 @@
+@use "variables" as var ; 
+@use "../base/utilities" as util ;
+@use "../components/buttons" as btn ;
+//in the mixins the path of the original partial has to be specified within property itself infront of variable! NAMESPACE!
+
+@mixin gridCard {
+    background-color: var.$background-grey; 
+    padding: var.$services-grid-padding-desktop;
+    border-radius: var.$radius-desktop;
+    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    // transition: transform 0.3s ease;
+}
+
+@mixin heading-XXL {
+    color: var.$text-color-primary;
+    font-size: 8rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+@mixin heading-XXL-mobile {
+    color: var.$text-color-primary;
+    font-size: 5rem;
+    font-weight: 500;
+    line-height: 1;
+}
+
+@mixin parag-XL {
+    color: var.$text-color-secondary;
+    font-size: 2.2rem;
+    font-weight: 500;
+}
+
+@mixin parag-XL-mobile {
+    color: var.$text-color-secondary;
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+@mixin input-reset {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+}

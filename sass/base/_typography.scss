@@ -1,0 +1,150 @@
+@use "../abstracts/variables" as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap');
+
+
+
+html{
+    font-size: 62.5%;
+}
+
+body{
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.6rem;
+    color: $text-color-primary;
+    background-color: $background-black;
+}
+
+h1, h2, h3 {
+    font-family: "Exo 2", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.logo--font-size-u{
+    font-family: "Exo 2", sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $text-color-primary;
+}
+
+a{
+    color: $text-color-primary;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.nav{
+
+    &--menu{
+        display: flex;
+    }
+
+    &--item{
+        list-style-type: none;
+        margin-right: 4rem;
+    }
+
+    &--link{
+        font-size: 1.5rem;
+    }
+}
+
+.header__container{
+    
+    &--heading{
+        
+        &-main-left{
+            font-size: 6rem;
+            font-weight: 700;
+            color: $text-color-primary;
+        }
+
+        &-main-right{
+            font-size: 6rem;
+            font-weight: 700;
+            color: $text-color-primary;
+        }
+
+        &-sub{
+            font-size: 2rem;
+            font-weight: 400;
+            color: $text-color-secondary;
+        }
+    }
+    
+}
+
+//SERVICES
+
+
+.services__grid--heading {
+    font-size: 3rem;
+    font-weight: 500;
+    margin-bottom: $margin-bottom-h3-desktop;
+}
+
+.services__grid--content {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+//CARD
+
+.card-heading{
+    font-size: 3rem;
+    font-weight: 500;
+    margin-bottom: $margin-bottom-h3-desktop;
+}
+
+.card-subheading{
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: $margin-bottom-h3-desktop
+}
+
+// FOOTER
+
+.logo--font-size-footer {
+    font-family: "Exo 2", sans-serif;
+    font-size: $footer-logo-icon-size;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $text-color-primary;
+}
+.footer a {
+    color: $text-color-secondary;
+    transition: color 0.3s ease;
+    &:hover {
+        color: $text-color-primary;
+    }
+}
+
+.footer h4 {
+    text-transform: uppercase;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+
+
+
+//BREAKPOINTS MOBILE
+
+@media screen and (max-width: 40rem) {
+    .nav{
+
+        &--item{
+            text-align: center;
+        }
+    }
+}
+
+
+

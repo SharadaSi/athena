@@ -1,0 +1,63 @@
+@use "../abstracts/variables" as*;
+
+
+.btn{
+    appearance: none;
+    border: none;
+
+    padding: $btn-padding-desktop;
+    border-radius: 5px;
+    font-size: $btn-font-size-desktop;
+    border: 1px solid $btn-color-secondary-blue;
+
+    &--cta{
+        background-color: $btn-color-secondary-blue;
+        color: $btn-cta-text-color;
+        transition: all .3s ease;
+        text-transform: uppercase;
+
+        &:hover {
+            background-color: $btn-color-tertiary-blue;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="%2300368333" stroke="white" stroke-width="2"/><line x1="17" y1="17" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>') 24 24, pointer;
+        }
+    }
+
+    &--article {
+        background-color: transparent;
+        border: 1px solid $btn-color-secondary-blue;
+        transition: all .3s ease;
+        color: $text-color-primary;
+
+        &:hover {
+            background-color: $btn-color-secondary-blue;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="%2300368333" stroke="white" stroke-width="2"/><line x1="17" y1="17" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>') 24 24, pointer;
+        }
+    }
+}
+
+
+.btn__card{
+    appearance: none;
+    border: none;
+
+    width: 100%;
+    padding: $btn-padding-desktop;
+    border-radius: 5px;
+    font-size: $btn-font-size-desktop;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+
+    &--cta{
+        background-color: $btn-color-secondary-blue;
+        color: $btn-cta-text-color;
+        transition: all .3s ease;
+        text-transform: uppercase;
+
+        &:hover{
+            background-color: $btn-color-tertiary-blue;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="%2300368333" stroke="white" stroke-width="2"/><line x1="17" y1="17" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>') 24 24, pointer;
+
+        }
+    }
+}

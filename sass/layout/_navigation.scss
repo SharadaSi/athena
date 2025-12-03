@@ -1,0 +1,200 @@
+@use "../abstracts/variables" as *;
+@use "../base/animations" as*;
+
+
+.nav{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+    padding: 3rem 3rem;
+    background: rgba(0,0,0,0.5);
+
+    &--container{
+        display: flex;
+        position: relative;
+        z-index: 2;
+    }
+
+    &--logo-img {
+        display: block;
+        height: clamp(48px, 6vw, 80px); // make the logo bigger responsively
+        width: auto;
+        object-fit: cover;
+    }
+
+    &--menu {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    &--cta {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    &--hamburger{
+        display: none;
+        cursor: pointer;
+    }
+}
+
+.hamburger--bar{
+    width: 40px;
+    height: 6px;
+    background-color: $text-color-primary;
+    margin: 4px;
+    transition: all .3s ease;
+    border-radius: 2px;
+}
+
+.nav--item a {
+    display: inline-block;
+    transition: all 0.3s;
+}
+.nav--item a:hover {
+    text-shadow: 0 0 1px #fff;
+    transform: scale(1.2);
+}
+
+//MOBILE 
+
+@media screen and (max-width: 64rem){
+  .nav {
+    position: relative;
+    z-index: 3;
+    transition: background-color .35s ease, height .35s ease;
+
+    &.open {
+      /* keep header height stable and items in a row */
+      flex-direction: row;     // was column
+      height: auto;            // was 100% (caused stretch)
+      background-color: rgba(0,0,0,0.7);
+    }
+  }
+
+  /* prevent the logo/hamburger block from growing vertically */
+  .nav--container{
+    flex: 0 0 auto;            // was flex: 1 1 auto
+    align-items: center;
+    position: relative;
+    z-index: 2;                // stays above the overlay menu
+  }
+
+  /* overlay menu stays absolute; does not affect header layout */
+  .nav--menu{
+    position: absolute;
+    top: 0; left: 0; width: 100%;
+    height: 100dvh;            // mobile-safe viewport height
+    z-index: 1;                 // below the header container
+    padding-top: 60%;
+    background: rgba(0,0,0,.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    /* Hidden state (keep in flow so transitions run) */
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .36s cubic-bezier(.2,.9,.2,1), opacity .26s ease;
+  }
+
+  /* Visible state — toggling this class starts both transform+opacity */
+  .nav--menu.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    padding-top: 30%;
+  }
+
+  .nav--item {
+    width: 100%;
+    text-align: center;
+    line-height: 3;
+  }
+
+  .nav--container{
+    justify-content: space-between;
+    line-height: 1;
+    vertical-align: center;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1 1 auto;
+    min-width: 0; // allow it to shrink if needed on small widths
+  }
+
+  .nav--hamburger{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  //ACTIVE STATE OF HAMBURGER TOGGLE
+
+  .nav--hamburger.is-active .bar1{
+    transform: translateY(14px) rotate(45deg);
+    transition: all .3s ease-in-out;
+  }
+
+  .nav--hamburger.is-active .bar2{
+    opacity: 0;
+    transition: all .3s ease-in-out;
+  }
+
+  .nav--hamburger.is-active .bar3{
+    transform: translateY(-14px) rotate(-45deg);
+    transition: all .3s ease-in-out;
+  }
+
+  // Default: always visible (desktop)
+  .nav--cta .btn--cta {
+    display: inline-block;
+  }
+
+  // Mobile: hide by default, show only in dropdown
+  .nav--cta .btn--cta {
+    display: none;
+  }
+  .nav--menu.open + .nav--cta .btn--cta {
+    display: inline-block;
+  }
+
+  /* Mobile: show it inside the dropdown */
+  .nav--item-cta { 
+      display: none; 
+  }                   // hidden by default
+  .nav--menu.open .nav--item-cta {
+      display: block;
+  }  // visible when menu is open
+  .nav--item-cta .btn--cta {
+    display: inline-flex;
+    justify-content: center;
+    width: 50%;
+    padding: .8rem 1.2rem;
+  }
+
+  /* Hide the desktop CTA bar on mobile to avoid duplicates */
+  .nav--cta { display: none; }
+}
+// @media screen and (max-width: 48rem){
+//     .nav--logo-img {
+//         height: clamp(40px, 10vw, 56px); // cap size on small screens
+//         width: auto;
+//         object-fit: contain;             // avoid cropping the logo
+//     }
+// }
+
+
+@media screen and (max-width:34rem) {
+    .nav--menu.open {
+        padding-top: 50%;
+    }
+}
+
+/* Desktop: hide the menu CTA item completely */
+@media screen and (min-width: 64.0625rem) {
+  .nav--item-cta { display: none !important; }
+}

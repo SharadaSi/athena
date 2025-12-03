@@ -1,0 +1,43 @@
+@use "../abstracts/variables" as*;
+@use "../base/utilities" as*;
+@use "../base/animations" as*;
+
+.card{
+    background-color: $background-grey;
+    border-radius: $radius-desktop;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-items: center;
+    color: $text-color-primary
+}
+
+.card-list-heading {
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.card-list-field {
+    line-height: 3.5rem;
+    list-style: none;
+    position: relative;
+    padding-left: 2.5rem;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.8rem;
+        width: 2rem;
+        height: 2rem;
+        // background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><rect width="24" height="24" rx="6" fill="%23003683"/><path d="M7 13l3 3 7-7" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="%23003683" stroke="white" stroke-width="2"/><line x1="17" y1="17" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>');
+        background-position: no-repeat center center;
+        background-size: contain;
+    }
+}
+
+
+
+

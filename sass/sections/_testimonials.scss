@@ -1,0 +1,29 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+@use "../base/typography" as *;
+@use "../base/utilities" as *;
+
+.testimonials {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; // ensures the section stretches to full viewport height
+    background-color: $background-black;
+    padding-block: 8rem;
+    background: url("../media/czech-alert15.jpg") no-repeat center center fixed;
+    background-size: cover;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    // Ensure content is above the overlay
+    > * {
+        position: relative;
+        z-index: 2;
+    }
+}

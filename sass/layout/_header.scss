@@ -1,0 +1,96 @@
+@use "../base/animations" as *;
+@use "../abstracts/variables" as *;
+.header{
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(0, 54, 131, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+
+    &__container{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40%;
+        text-align: center;
+
+        &--heading{
+            display: flex;
+            flex-direction: column;
+
+            &-main-left{
+                display: inline-block;
+                text-align: left;
+                animation: moveInLeft ease-in-out 1s;
+            }
+
+            &-main-right{
+                display: inline-block;
+                text-align: right;
+                margin-bottom: 2rem;
+                animation: moveInRight ease-in-out 1s;
+            }
+
+            &-sub{
+                display: inline-block;
+                animation: slideDown ease 1s 1s;
+                animation-fill-mode: forwards;
+                opacity: 0;
+            }
+           
+        }
+        
+    }
+
+}
+
+
+.cls-1 {
+    fill: $text-color-primary;
+    stroke-width: 0px;
+    z-index: 99;
+}
+
+@media screen and (max-width: 110rem){
+    .header__container{
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 80rem) {
+    .header__container{
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 64rem){
+    .header__container{
+        width: 70%;
+
+        &--heading{
+            &-main-left, &-main-right{
+                font-size: 4rem;
+            }
+
+            &-sub{
+                font-size: 1.5rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 48rem){
+    .header__container{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 40rem){
+    .header__container{
+        width: 90%;
+    }
+}
+
+
+

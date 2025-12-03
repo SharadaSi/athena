@@ -1,0 +1,120 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+@use "../base/typography" as *;
+@use "../base/utilities" as *;
+
+.newsletter-form--container {
+    // background: $background-black;
+    width: 50%;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    padding: 4rem;
+    text-align: center;
+    line-height: 2;
+    border-radius: $radius-desktop;
+    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); //ease in and out.
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+
+    &:hover {
+        box-shadow: 0 8px 25px 0 rgba(255,42,0,0.5), 0 1.5px 8px 0 rgba(255,255,255,0.10);
+        transform: translateY(-4px) scale(1.03);
+        z-index: 2;
+    }
+}
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+input[type="text"], input[type="email"] {
+    @include input-reset;
+    width: 100%;
+    padding: 1.2rem;
+    border: 1px solid $text-color-tertiary;
+    border-radius: $radius-desktop;
+    font-size: 1.6rem;
+    background-color: $background-grey;
+    color: $text-color-primary;
+
+    &::placeholder {
+        color: $text-color-tertiary;
+    }
+
+    &:focus {
+        border-color: transparent;
+        box-shadow: inset 0 -3px 0 rgba(255, 42, 0, 0.4);
+    }
+
+}
+
+.input-with-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-with-icon input {
+    padding-left: 5rem; // leave room for icon
+}
+
+.input-icon {
+    position: absolute;
+    inset-inline-start: 1.2rem;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    pointer-events: none; // keep input focusable
+}
+
+.input-icon img {
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+.newsletter-form > button {
+    width: 100%;
+}
+
+.unsubscribe,.terms-conditions {
+    font-size: 1.2rem;
+    color: $text-color-tertiary;
+    margin-top: 1rem;
+}
+
+.message {
+    margin-top: 2rem;
+    padding: 1.2rem 1.6rem;
+    border-radius: $radius-desktop;
+    font-size: 1.5rem;
+    background-color: rgba(0, 54, 131, 0.15);
+    color: $text-color-primary;
+    transition: opacity 0.3s ease;
+
+    &.hidden { 
+        opacity: 0; 
+        pointer-events: none;
+    }
+
+    &.success {
+        background-color: rgba(0, 204, 102, 0.18);
+    }
+
+    &.error {
+        background-color: rgba(255, 42, 0, 0.2);
+    }
+}
+
+@media screen and (max-width: 64rem) {
+    .newsletter-form--container {
+        width: 100%;
+        padding-inline: 0;
+    }
+}
+
