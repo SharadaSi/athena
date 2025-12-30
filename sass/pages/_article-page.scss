@@ -82,6 +82,10 @@
   font-size: 1.6rem;
 }
 
+.line-through{
+    text-decoration: line-through;
+}
+
 @media screen and (max-width: 48rem) {
     .article-page--content-grid {
         width: 100%;

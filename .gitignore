@@ -1,3 +1,8 @@
 
 media - bez komprese/
 media-bez-komprese/
+node_modules/
+.env
+*.map
+dist/
+build/

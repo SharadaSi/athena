@@ -281,6 +281,14 @@ h1, h2, h3 {
   font-style: normal;
 }
 
+strong {
+  font-weight: 700;
+}
+
+em {
+  font-weight: 700;
+}
+
 .logo--font-size-u {
   font-family: "Exo 2", sans-serif;
   font-size: 4rem;
@@ -364,6 +372,16 @@ a {
 .footer h4 {
   text-transform: uppercase;
   font-weight: 500;
+  text-decoration: underline;
+}
+
+.article-page--content-p a, .other-paragraphs a {
+  text-transform: lowercase;
+  text-decoration: underline;
+}
+
+.article-page--content-resources-list a {
+  text-transform: lowercase;
   text-decoration: underline;
 }
 
@@ -1335,6 +1353,10 @@ a {
   padding-left: 0; /* Optional: removes default indentation */
   color: rgba(255, 255, 255, 0.6);
   font-size: 1.6rem;
+}
+
+.line-through {
+  text-decoration: line-through;
 }
 
 @media screen and (max-width: 48rem) {

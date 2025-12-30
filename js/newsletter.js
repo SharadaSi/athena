@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if(data.success) {
-                showMessage("Thank you! You have been subsribed.", "success");
+                showMessage("Thank you! You have been subscribed.", "success");
                 newsletterForm.reset();
             } else {
                 showMessage(data.message || "Subscription failed. Please try again", "error");
