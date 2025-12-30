@@ -26,6 +26,14 @@ h1, h2, h3 {
     font-style: normal;
 }
 
+strong {
+    font-weight: 700;
+}
+
+em {
+    font-weight: 700;
+}
+
 .logo--font-size-u{
     font-family: "Exo 2", sans-serif;
     font-size: 4rem;
@@ -132,7 +140,17 @@ a{
     text-decoration: underline;
 }
 
+//ARTICLE
 
+.article-page--content-p a, .other-paragraphs a {
+    text-transform: lowercase;
+    text-decoration: underline;
+}
+
+.article-page--content-resources-list a {
+    text-transform: lowercase;
+    text-decoration: underline;
+}
 
 
 //BREAKPOINTS MOBILE
