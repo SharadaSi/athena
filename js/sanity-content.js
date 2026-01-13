@@ -12,10 +12,17 @@
   const PROJECT_ID = '8z0tbe2a';
   const DATASET = 'production';
   const API_VERSION = '2023-10-01';
-  const GROQ = encodeURIComponent(
-    '*[_type=="post"] | order(publishedAt desc){title,previewHeading,"slug":slug.current,author,readTime,publishedAt,"imageUrl":image.asset->url,body,perex}'
-  );
-  const API_URL = `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${GROQ}`;
+  // Locale detection from URL path: '/cs/' → 'cs', else 'en'
+  const isCzech = (typeof window !== 'undefined') && (window.location.pathname || '').includes('/cs/');
+  const LOCALE = isCzech ? 'cs' : 'en';
+  const articlePath = isCzech ? 'cs/article.html' : 'article.html';
+
+  // Build GROQ per locale
+  function buildApiUrl(locale) {
+    const groq = `*[_type=="post" && language == "${locale}"] | order(publishedAt desc){title,previewHeading,"slug":slug.current,author,readTime,publishedAt,"imageUrl":image.asset->url,body,perex}`;
+    const q = encodeURIComponent(groq);
+    return `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${q}`;
+  }
 
   // Format ISO date (YYYY-MM-DD) to "6th December 2025" with ordinal suffixes
   function formatDate(iso) {
@@ -88,7 +95,7 @@
           : '';
         excerptEl.textContent = textFromPerex || textFromBody || excerptEl.textContent || '';
       }
-      if (linkBtn && a.slug) linkBtn.href = `article.html?slug=${a.slug}`;
+      if (linkBtn && a.slug) linkBtn.href = `${articlePath}?slug=${a.slug}`;
     }
 
     const grid = document.querySelector('.publishing-page--grid');
@@ -144,7 +151,7 @@
       card.appendChild(p);
 
       const link = document.createElement('a');
-      link.href = a.slug ? `article.html?slug=${a.slug}` : '#';
+      link.href = a.slug ? `${articlePath}?slug=${a.slug}` : '#';
       const btn = document.createElement('button');
       btn.className = 'btn btn--article';
       btn.textContent = 'Read more';
@@ -321,9 +328,15 @@
   // Fetch posts and hydrate Publications + Index
   async function run() {
     try {
-      const res = await fetch(API_URL);
-      const json = await res.json();
-      const articles = Array.isArray(json.result) ? json.result : [];
+      // Try locale-specific first; fallback to 'en' if none for 'cs'
+      const res1 = await fetch(buildApiUrl(LOCALE));
+      const json1 = await res1.json();
+      let articles = Array.isArray(json1.result) ? json1.result : [];
+      if (!articles.length && LOCALE !== 'en') {
+        const res2 = await fetch(buildApiUrl('en'));
+        const json2 = await res2.json();
+        articles = Array.isArray(json2.result) ? json2.result : [];
+      }
       if (!articles.length) return;
       renderPublications(articles);
       renderIndex(articles);

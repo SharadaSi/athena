@@ -14,8 +14,11 @@
 
 .article-page--subheading-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     width: 100%;
+    margin-bottom: $margin-bottom-h3-desktop;
 }
 
 .article-page--subheading {
@@ -23,6 +26,12 @@
     text-align: center;
     color: $text-color-secondary;
     margin-bottom: 6rem;
+}
+
+.article-page--features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
 }
 
 .article-page--content-grid {

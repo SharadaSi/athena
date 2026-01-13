@@ -179,6 +179,116 @@
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="%2300368333" stroke="white" stroke-width="2"/><line x1="17" y1="17" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>') 24 24, pointer;
 }
 
+/*NAV MENU WIDGETS CHECKBOX WITH SLIDER*/
+.switch {
+  display: inline-block;
+  position: relative;
+  width: 6rem;
+  height: 3rem;
+}
+
+.switch input {
+  display: none;
+}
+
+/*šouppátko, nebo spíše jeho pozadí*/
+.slider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.6);
+  transition: 0.3s;
+}
+
+.slider.round {
+  border-radius: 3rem;
+}
+
+/*šoupátko - kolečko*/
+.slider:before {
+  position: absolute;
+  content: "";
+  background-color: rgba(255, 255, 255, 0.6);
+  height: 3rem;
+  width: 3rem;
+  transition: 0.3s;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+  box-shadow: 0 0 2px #1d1d1d;
+}
+
+input:checked + .slider {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.switch:has(input:checked) + .cs-label {
+  background-color: aqua;
+}
+
+/*pohyb šoupátka*/
+input:checked + .slider:before {
+  transform: translateX(3rem);
+}
+
+/*NAV ITEM CHECKBOX WITH SLIDER*/
+.nav--item-switch {
+  display: inline-block;
+  position: relative;
+  width: 6rem;
+  height: 3rem;
+}
+
+.nav--item-switch input {
+  display: none;
+}
+
+/*šouppátko, nebo spíše jeho pozadí*/
+.nav--item-slider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.6);
+  transition: 0.3s;
+}
+
+.nav--item-slider.nav--item-round {
+  border-radius: 3rem;
+}
+
+/*šoupátko - kolečko*/
+.nav--item-slider:before {
+  position: absolute;
+  content: "";
+  background-color: rgba(255, 255, 255, 0.6);
+  top: 0;
+  left: 0;
+  height: 3rem;
+  width: 3rem;
+  transition: 0.3s;
+}
+
+.nav--item-slider.nav--item-round:before {
+  border-radius: 50%;
+  box-shadow: 0 0 2px #1d1d1d;
+}
+
+input:checked + .nav--item-slider {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/*pohyb šoupátka*/
+input:checked + .nav--item-slider:before {
+  transform: translateX(3rem);
+}
+
 @keyframes dropDown {
   0% {
     opacity: 0;
@@ -568,6 +678,19 @@ a {
   cursor: pointer;
 }
 
+.nav--menu-widgets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.nav--menu-switch-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .hamburger--bar {
   width: 40px;
   height: 6px;
@@ -585,6 +708,10 @@ a {
 .nav--item a:hover {
   text-shadow: 0 0 1px #fff;
   transform: scale(1.2);
+}
+
+.nav--item-switch-bar {
+  display: none;
 }
 
 @media screen and (max-width: 64rem) {
@@ -665,9 +792,6 @@ a {
     transition: all 0.3s ease-in-out;
   }
   .nav--cta .btn--cta {
-    display: inline-block;
-  }
-  .nav--cta .btn--cta {
     display: none;
   }
   .nav--menu.open + .nav--cta .btn--cta {
@@ -688,6 +812,22 @@ a {
   }
   /* Hide the desktop CTA bar on mobile to avoid duplicates */
   .nav--cta {
+    display: none;
+  }
+  .nav--menu.open .nav--item-switch-bar {
+    display: inline-block;
+    height: 3rem;
+    line-height: 3rem;
+    white-space: nowrap;
+  }
+  .nav--item-switch-bar > * {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+  }
+}
+@media screen and (max-width: 1026px) {
+  .nav--menu-switch-bar {
     display: none;
   }
 }
@@ -736,6 +876,14 @@ a {
 .footer-icons-container {
   display: flex;
   gap: 1rem;
+}
+
+.footer-copyright {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 6rem;
 }
 
 .services {
@@ -1058,7 +1206,7 @@ a {
 }
 .text-container--btn {
   align-self: start;
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 
 .swiper-slide {
@@ -1114,6 +1262,29 @@ a {
 .testimonials > * {
   position: relative;
   z-index: 2;
+}
+.testimonials.parallax-sim {
+  overflow: hidden;
+  background: none;
+}
+.testimonials.parallax-sim::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -10%;
+  width: 100%;
+  height: 120%;
+  background: url("../media/czech-alert15.jpg") no-repeat center center;
+  background-size: cover;
+  z-index: 0;
+  transform: translate3d(0, var(--parallax-y, 0), 0);
+  will-change: transform;
+  pointer-events: none;
+}
+@supports (-webkit-overflow-scrolling: touch) {
+  .testimonials {
+    background-attachment: scroll;
+  }
 }
 
 .contact {
@@ -1274,6 +1445,18 @@ a {
     column-gap: 0;
   }
 }
+@supports (-webkit-overflow-scrolling: touch) {
+  .grid-item-1 {
+    grid-template-rows: auto;
+  }
+  .main-article-preview-img {
+    height: auto;
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    align-self: start;
+  }
+}
 .article-page--heading {
   color: #fff;
   font-size: 8rem;
@@ -1286,8 +1469,11 @@ a {
 
 .article-page--subheading-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  margin-bottom: 2rem;
 }
 
 .article-page--subheading {
@@ -1297,6 +1483,12 @@ a {
   text-align: center;
   color: rgba(255, 255, 255, 0.6);
   margin-bottom: 6rem;
+}
+
+.article-page--features {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .article-page--content-grid {
@@ -1353,6 +1545,10 @@ a {
   padding-left: 0; /* Optional: removes default indentation */
   color: rgba(255, 255, 255, 0.6);
   font-size: 1.6rem;
+}
+
+.line-through {
+  text-decoration: line-through;
 }
 
 @media screen and (max-width: 48rem) {

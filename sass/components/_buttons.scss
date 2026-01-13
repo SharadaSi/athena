@@ -61,3 +61,118 @@
         }
     }
 }
+
+/*NAV MENU WIDGETS CHECKBOX WITH SLIDER*/
+
+.switch {
+    display: inline-block;
+    position: relative;
+    width: 6rem;
+    height: 3rem;
+}
+
+.switch input {
+    display: none;
+}
+
+/*šouppátko, nebo spíše jeho pozadí*/
+.slider {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+    background-color: $text-color-secondary;
+    transition: 0.3s;
+}
+.slider.round {
+    border-radius: 3rem;
+}
+
+
+/*šoupátko - kolečko*/
+.slider:before {
+    position: absolute;
+    content: "";
+    background-color: $text-color-secondary;
+    height: 3rem;
+    width: 3rem;
+    transition: .3s;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+    box-shadow: 0 0 2px $background-grey;
+}
+
+input:checked + .slider {
+    background-color: $text-color-tertiary;
+}
+
+.switch:has(input:checked) + .cs-label {
+    background-color: aqua;
+}
+
+/*pohyb šoupátka*/
+input:checked + .slider:before {
+    transform: translateX(3rem);
+}
+
+/*NAV ITEM CHECKBOX WITH SLIDER*/
+
+.nav--item-switch {
+    display: inline-block;
+    position: relative;
+    width: 6rem;
+    height: 3rem;
+}
+
+.nav--item-switch input {
+    display: none;
+}
+
+/*šouppátko, nebo spíše jeho pozadí*/
+.nav--item-slider {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+    background-color: $text-color-secondary;
+    transition: 0.3s;
+}
+.nav--item-slider.nav--item-round {
+    border-radius: 3rem;
+}
+
+
+/*šoupátko - kolečko*/
+.nav--item-slider:before {
+    position: absolute;
+    content: "";
+    background-color: $text-color-secondary;
+    top: 0;
+    left: 0;
+    height: 3rem;
+    width: 3rem;
+    transition: .3s;
+}
+
+.nav--item-slider.nav--item-round:before {
+    border-radius: 50%;
+    box-shadow: 0 0 2px $background-grey;
+
+}
+
+input:checked + .nav--item-slider {
+    background-color: $text-color-tertiary;
+}
+
+/*pohyb šoupátka*/
+input:checked + .nav--item-slider:before {
+    transform: translateX(3rem);
+}
+
+

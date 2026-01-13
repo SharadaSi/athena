@@ -4,11 +4,14 @@
 // - Fetch one Sanity post via GROQ HTTP API
 // - Render title, image, perex/first paragraph, remaining body paragraphs
 // - Render resources as numbered external links
+
 (function () {
   // --- Sanity project configuration for HTTP API ---
   const PROJECT_ID = '8z0tbe2a';
   const DATASET = 'production';
   const API_VERSION = '2023-10-01';
+  const isCzech = (typeof window !== 'undefined') && (window.location.pathname || '').includes('/cs/');
+  const LOCALE = isCzech ? 'cs' : 'en';
 
   // Read the `slug` query parameter from current URL
   function getSlug() {
@@ -101,21 +104,34 @@
   // Fetch article by slug via GROQ HTTP API and render
   async function run() {
     const slug = getSlug();
-    if (!slug) {
+    const path = window.location.pathname || '';
+    const isArticleTemplate = /\/(?:cs\/)?article\.html$/i.test(path);
+    // Only enforce redirect when using the dynamic article template.
+    // Static pages that include this script should not be redirected.
+    if (!slug && isArticleTemplate) {
       window.location.href = 'publications.html';
       return;
     }
-    const GROQ = encodeURIComponent(
-      '*[_type=="post" && slug.current=="' + slug + '"][0]{title,previewHeading,perex,readTime,"slug":slug.current,author,publishedAt,"imageUrl":image.asset->url,body,resources[]{label,url}}'
-    );
-    const API_URL = `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${GROQ}`;
+    const buildUrl = (locale) => {
+      const groq = `*[_type=="post" && language == "${locale}" && slug.current=="${slug}"][0]{title,previewHeading,perex,readTime,"slug":slug.current,author,publishedAt,"imageUrl":image.asset->url,body,resources[]{label,url}}`;
+      const q = encodeURIComponent(groq);
+      return `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${q}`;
+    };
     try {
-      const res = await fetch(API_URL);
-      const json = await res.json();
-      const doc = json.result;
+      // Try locale-specific doc first; fallback to English if not found
+      const res1 = await fetch(buildUrl(LOCALE));
+      const json1 = await res1.json();
+      let doc = json1.result;
+      if (!doc && LOCALE !== 'en') {
+        const res2 = await fetch(buildUrl('en'));
+        const json2 = await res2.json();
+        doc = json2.result;
+      }
       if (!doc) {
-        // No article found; go back to publications
-        window.location.href = 'publications.html';
+        // No article found; only redirect if on dynamic template
+        if (isArticleTemplate) {
+          window.location.href = 'publications.html';
+        }
         return;
       }
       renderArticle(doc);

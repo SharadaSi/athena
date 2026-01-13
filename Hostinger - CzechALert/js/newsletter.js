@@ -35,20 +35,37 @@ document.addEventListener("DOMContentLoaded", () => {
         subscribeBtn.textContent = "Subscribing...";
 
         try {
-            const response = await fetch("formhandler.php", {
+            const endpoint = newsletterForm.action || "formhandler.php";
+            const response = await fetch(endpoint, {
                 method: "POST",
-                headers: { "Content-Type" : "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({ name: nameValue, email: emailValue})
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "application/json"
+                },
+                body: new URLSearchParams({ name: nameValue, email: emailValue })
             });
 
-            const data = await response.json();
+            let data = null;
+            try {
+                data = await response.json();
+            } catch (parseErr) {
+                // Non-JSON response (e.g., 404 HTML) will land here
+            }
 
-            if(data.success) {
-                showMessage("Thank you! You have been subsribed.", "success");
+            if (!response.ok) {
+                const msg = (data && data.message) || `Subscription failed (HTTP ${response.status}).`;
+                showMessage(msg, "error");
+                console.log(msg);
+                return;
+            }
+
+            if (data && data.success) {
+                showMessage("Thank you! You have been subscribed.", "success");
                 newsletterForm.reset();
             } else {
-                showMessage(data.message || "Subscription failed. Please try again", "error");
-                console.log("Subscription failed. Please try again");
+                const msg = (data && data.message) || "Subscription failed. Please try again";
+                showMessage(msg, "error");
+                console.log(msg);
             }
         } catch (error) {
             showMessage("Network error. Please check your connection", "error");

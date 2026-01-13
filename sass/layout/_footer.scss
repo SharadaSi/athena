@@ -41,3 +41,12 @@
     display: flex;
     gap: 1rem;
 }
+
+.footer-copyright {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    color: $text-color-tertiary;
+    margin-top: 6rem;
+}
+

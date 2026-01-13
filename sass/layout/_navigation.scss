@@ -28,6 +28,18 @@
     &--menu {
         flex: 0 1 auto;
         min-width: 0;
+
+        // &-widgets{
+        //   display: flex;
+        //   flex-direction: column;
+        //   align-items: center;
+        // }
+
+        // &-switch-bar {
+        //   display: flex;
+        //   align-items: center;
+        //   gap: 1rem;
+        // }
     }
 
     &--cta {
@@ -40,6 +52,20 @@
         cursor: pointer;
     }
 }
+
+.nav--menu-widgets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.nav--menu-switch-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 
 .hamburger--bar{
     width: 40px;
@@ -58,6 +84,12 @@
     text-shadow: 0 0 1px #fff;
     transform: scale(1.2);
 }
+
+.nav--item-switch-bar {
+  display: none;
+}
+
+
 
 //MOBILE 
 
@@ -149,11 +181,6 @@
     transition: all .3s ease-in-out;
   }
 
-  // Default: always visible (desktop)
-  .nav--cta .btn--cta {
-    display: inline-block;
-  }
-
   // Mobile: hide by default, show only in dropdown
   .nav--cta .btn--cta {
     display: none;
@@ -177,18 +204,31 @@
   }
 
   /* Hide the desktop CTA bar on mobile to avoid duplicates */
-  .nav--cta { display: none; }
+  .nav--cta { 
+    display: none; 
+  }
+
+  .nav--menu.open .nav--item-switch-bar {
+    display: inline-block;
+    height: 3rem;
+    line-height: 3rem;
+    white-space: nowrap;
+  }
+
+  .nav--item-switch-bar > *{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+  }
 }
-// @media screen and (max-width: 48rem){
-//     .nav--logo-img {
-//         height: clamp(40px, 10vw, 56px); // cap size on small screens
-//         width: auto;
-//         object-fit: contain;             // avoid cropping the logo
-//     }
-// }
 
+@media screen and (max-width: 1026px) {
+  .nav--menu-switch-bar {
+    display: none;
+  }
+}
 
-@media screen and (max-width:34rem) {
+@media screen and (max-width: 34rem) {
     .nav--menu.open {
         padding-top: 50%;
     }
@@ -196,5 +236,6 @@
 
 /* Desktop: hide the menu CTA item completely */
 @media screen and (min-width: 64.0625rem) {
-  .nav--item-cta { display: none !important; }
+  .nav--item-cta { 
+    display: none !important; }
 }

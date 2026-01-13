@@ -14,3 +14,9 @@
 <FilesMatch "\.(png|jpg|jpeg|gif|svg|webp|ico|woff2?)$">
   Header set Cache-Control "public, max-age=31536000, immutable"
 </FilesMatch>
+
+# Even longer TTL for videos (safe to cache)
+# Case-insensitive match and includes .ogv
+<FilesMatch "(?i)\.(mp4|webm|ogv)$">
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>

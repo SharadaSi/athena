@@ -157,3 +157,21 @@
         column-gap: 0;
     }
 }
+
+// iOS-specific fix: prevent the main image from stretching pixelated
+// Keep native layout for other platforms
+
+//iOS tends to stretch replaced elements (like img) when the grid row uses 1fr and the child has height: 100%.
+@supports (-webkit-overflow-scrolling: touch) {
+    .grid-item-1 {
+        grid-template-rows: auto; // let content define row height
+    }
+
+    .main-article-preview-img {
+        height: auto; // avoid forcing full row height
+        width: 100%;
+        aspect-ratio: 16 / 9; // maintain consistent shape
+        object-fit: cover; // crop to the box
+        align-self: start; // prevent vertical stretching within grid
+    }
+}

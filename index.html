@@ -4,32 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="CzechAlert - Your trusted partner in OSINT and HUMINT solutions. We provide cutting-edge digital investigation services to help you uncover the truth and protect your interests.">
+    <meta name="description" content="CzechAlert is your reliable partner in analytical and consulting activities. We focus on investigations, media monitoring, strategic intelligence, due diligence, and digital privacy protection for both businesses and individuals.">
     <meta name="author" content="Šárka Šimová">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="cs_CZ">
+    <link rel="alternate" hreflang="en" href="/index.html">
+    <link rel="alternate" hreflang="cs" href="/cs/index.html">
+    <link rel="alternate" hreflang="x-default" href="/index.html">
+    <link rel="canonical" href="/index.html">
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="shortcut icon" href="icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
     <link rel="icon" href="icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
 
-    <title>CzechAlert | Your trusted partner for finding answers through OSINT and HUMINT solutions</title>
+    <title>CzechAlert | Consulting, Intelligence & Investigations</title>
 
-    <!-- Matomo -->
-    <script>
-    var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://czechalertweb.matomo.cloud/";
-        _paq.push(['setTrackerUrl', u+'matomo.php']);
-        _paq.push(['setSiteId', '1']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src='https://cdn.matomo.cloud/czechalertweb.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-    })();
+    
+
+    <script defer src="https://api.pirsch.io/pa.js"
+        id="pianjs"
+        data-code="qhEFIVE6Bc6SdI8sJfmerCpjBlOALtiP">
     </script>
-    <!-- End Matomo Code -->
+
+    <!-- Start cookieyes banner --> 
+     <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/514d027fcc51f9902ed472cabbf3de35/script.js"></script> 
+    <!-- End cookieyes banner -->
 
 </head>
 <body>
@@ -37,10 +39,11 @@
         <video class="header--hero-video" autoplay muted loop preload>
             <source src="media/hero_video_loop.mp4" type="video/mp4">
             <source src="media/hero_video_loop.webm" type="video/webm">
-            <source src="media/hero_video_loop.ogv" type="video/ogg">
+            <source src="media/hero_video_loop.ogv" type="video/ogv">
         </video>
-        <nav class="nav">
 
+        <nav class="nav">
+            
             <div class="nav--container">
 
                 <div class="nav--logo">
@@ -66,10 +69,32 @@
                 <li class="nav--item nav--item-cta">
                     <a href="newsletter.html" class="btn">Get started</a>
                 </li>
+                <li class="nav--item nav--item-switch-bar">
+                    <span class="nav--item-cs-label">cs</span>
+                    <label class="nav--item-switch" for ="nav--item-switch-mode">
+                        <input type="checkbox" id="nav--item-switch-mode">
+                        <span class="nav--item-slider nav--item-round"></span>
+                    </label>
+                    <span class="nav--item-eng-label">eng</span>
+                </li>
             </ul>
 
-            <div class="nav--cta">
+            <div class="nav--menu-widgets">
+
+                <div class="nav--menu-switch-bar">
+                    
+                    <span class="cs-label">cs</span>
+                    <label class="switch" for ="switch-mode">
+                        <input type="checkbox" id="switch-mode" aria-label="Switch language to Czech">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="eng-label">eng</span>
+                </div>
+
+                <div class="nav--cta">
                 <a href="newsletter.html" class="btn btn--cta">Get started</a>
+                </div>
+
             </div>
 
         </nav>
@@ -79,16 +104,14 @@
             <h1 class="header__container--heading">
                 <span class="header__container--heading-main-left">You bring the questions</span>
                 <span class="header__container--heading-main-right">We give the answers</span>
-                <span class="header__container--heading-sub">Cutting-edge investigative and digital privacy solutions tailored to your needs</span>
+                <span class="header__container--heading-sub">Cutting-edge consulting and intelligence solutions tailored to your needs</span>
             </h1>
         </div>
 
     </header>
 
     <main>
-        <!-- Elfsight Appointment Booking | Untitled Appointment Booking -->
-        <script src="https://elfsightcdn.com/platform.js" async></script>
-        <div class="elfsight-app-3a9239ac-25a8-4383-afde-41cb65458eb0 booking-form__elfsight" data-elfsight-app-lazy></div>
+        
 
         <section class="services" id="services">
 
@@ -97,7 +120,7 @@
                 <h2 class="section-heading">
                 What we can help you with
                 </h2>
-                <p class="section-subheading">Discover how our expertise in digital investigation combined with fieldwork can protect and empower your goals.
+                <p class="section-subheading">Discover how our analytical and consultative expertise transforms information into strategic insight for informed decisions
                 </p>
 
                 <div class="services__grid">
@@ -127,13 +150,13 @@
                     </div>
 
                     <div class="services__grid--firstR">
-                        <h3 class="services__grid--heading">Privacy Consulting & Counter-Surveillance</h3> 
-                        <p class="services__grid--content">Do you feel as if you are under constant surveillance from either state institutions, corporations, or someone you may know? Well, you're probably not wrong. We are here to help you with countering said surveillance with privacy-infused devices, phone spyware checks, or even bug sweeping. No tracker in your device, vehicle, home, or office will survive our watchful eye.</p>
+                        <h3 class="services__grid--heading">Perception management</h3> 
+                        <p class="services__grid--content">Whether you are searching for complex media monitoring, specific PR strategies, or brand risk management, you need not look any further. CzechAlert can set up alerts, carry out adverse media analyses, create monthly reports from over 180 million+ sources, determine public sentiment, and much more.</p>
                     </div>
 
                     <div class="services__grid--secondR">
-                        <h3 class="services__grid--heading">Digital Footprint Analysis</h3>
-                        <p class="services__grid--content">As the old saying goes: "the internet never forgets". Unless your operational security is truly top notch, you are bound to have littered the internet with your data at some point, voluntarily or not. We will search the surface web and deep web for your information and provide you with a comprehensive report of what's out there.</p>
+                        <h3 class="services__grid--heading">Privacy Consulting & Counter-Surveillance</h3>
+                        <p class="services__grid--content">Do you feel as if you are under constant surveillance from either state institutions, corporations, or someone you may know? Well, you're probably not wrong. We are here to help you with countering said surveillance with privacy-infused devices, phone spyware checks, or even bug sweeping. No tracker in your device, vehicle, home, or office will survive our watchful eye.</p>
                     </div>
 
                     <div class="services__grid--thirdR">
@@ -143,7 +166,7 @@
 
                     <div class="services__grid--fourthR">
                         <h3 class="services__grid--heading">Research & Development</h3>
-                        <p class="services__grid--content">At the end of the day, CzechAlert is not merely an investigative association, but also a research and development-focused institution. We will be regularly publishing papers, analyses, and essays related to the art of investigation, digital rights, security, geopolitics, and more. We are also in the process of developing our own software - more on that coming soon!</p>
+                        <p class="services__grid--content">At the end of the day, CzechAlert is not merely an investigative and consulting association, but also a research and development-focused institution. We will be regularly publishing papers, analyses, and essays related to the art of investigation, digital rights, security, geopolitics, and more. We are also in the process of developing our own software - more on that coming soon!</p>
                     </div>
 
                 </div>
@@ -161,7 +184,7 @@
 
                     <div class="provider">
                         <div class="paragraph-XL">
-                        Czech Alert expertise
+                        CzechAlert Expertise
                         </div>
                     </div>
 
@@ -174,16 +197,18 @@
                     <div class="text">
                         <div class="about__grid--content">
                             <p class="about__grid--content-paragraph">
-                            CzechAlert z. s. was originally conceptualized as a software development company back in 2023, with a focus on user-generated intelligence. Since then, a lot has changed. We have branched out into investigations, privacy consulting, academic research, and digital rights advocacy, with these activities now representing our main focus.
+                            CzechAlert z. s. was originally conceptualized as a software development company back in 2023, with a focus on user-generated intelligence. Since then, a lot has changed. We have branched out into consulting, investigations, PR, academic research, and digital rights advocacy, with these activities now representing our main focus.
                             </p>
                             <p class="about__grid--content-paragraph">
                             Not only is CzechAlert a passion project, but a vision for the future. Our goal is to create a network of high-level professionals specializing in strategic intelligence, security research, business intelligence, technological innovation, advocacy, open-source intelligence, human intelligence, legislative proposals and much more, who can then advise where and when needed. We consider ethical conduct and client confidentiality to be our top priorities, and we will always stick by our principles.
                             </p>
                             <p class="about__grid--content-paragraph">
-                            Our offices are due to open on the 24th of November, 2025. See our address below.
+                            We will be happy to help you with whatever it is you may need.
                             </p>
                             <p class="about__grid--content-paragraph">
-                            We will be happy to help you with whatever it is you may need.
+                            <p class="about__grid--content-paragraph">
+                            See the address of our offices below.
+                            </p>
                             </p>
                             <p class="about__grid--content-paragraph">
                             Stay Alert!
@@ -421,11 +446,11 @@
                 </div>
                 <div class="footer-grid--item2 footer-grid--item">
                     <h4 class="item2-subgrid1">Services</h4>
-                    <div class="item2-subgrid2"><a href="#services">OSINT</a></div>
-                    <div class="item2-subgrid3"><a href="#services">HUMINT</a></div>
-                    <div class="item2-subgrid4"><a href="#services">Private investigation</a></div>
-                    <div class="item2-subgrid5"><a href="#services">Consulting</a></div>
-                    <div class="item2-subgrid6"><a href="#services">Training</a></div>
+                    <div class="item2-subgrid2"><a href="#services">Consulting</a></div>
+                    <div class="item2-subgrid3"><a href="#services">Intelligence</a></div>
+                    <div class="item2-subgrid4"><a href="#services">Media</a></div>
+                    <div class="item2-subgrid5"><a href="#services">Training</a></div>
+                    <div class="item2-subgrid6"><a href="#services">Research</a></div>
                 </div>
                 <div class="footer-grid--item3 footer-grid--item">
                     <h4 class="items3-subgrid1">Resources</h4>
@@ -439,10 +464,15 @@
                     <h4 class="item4-subgrid1">Contact</h4>
                     <div class="item4-subgrid2"><a href="mailto:info@czechalert.com">info@czechalert.com</a></div>
                     <div class="item4-subgrid3"><a href="tel:+420602693668">+420 602 693 668</a></div>
-                    <div class="item4-subgrid4"><a href="https://maps.app.goo.gl/yrpn6zwNzMhtzrDDA" target="_blank">Rumunská 4, Praha 2</a></div>
-                    <div class="item4-subgrid5"><a href="#contact">Support</a></div>
+                    <div class="item4-subgrid4"><a href="https://maps.app.goo.gl/yrpn6zwNzMhtzrDDA" target="_blank">Rumunska 4, Prague, Czechia</a></div>
+                    <br>
                     <div class="item4-subgrid6"><a href="#contact">Cooperation</a></div>
                 </div>
+            </div>
+
+            <div class="footer-copyright">
+                <span class="copyright"><small>&#169;2026. CzechAlert z.s.</small></span>
+                <span class="signature"><small>Crafted with passion by Šárka Šimová</small></span>
             </div>
         </div>
 
@@ -452,6 +482,8 @@
     <script src="js/swiper.js"></script>
     <script src="js/script.js"></script>
     <script src="js/sanity-content.js"></script>
+    <script src="js/lang-v-toggler.js"></script>
+
     
 </body>
 </html>
