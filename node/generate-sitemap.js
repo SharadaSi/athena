@@ -7,13 +7,19 @@ const EXCLUDE_DIRS = new Set([
   'Hostinger - CzechALert',
   'studio-czechalert-website',
   'node',
+  'node_modules',
   'sass',
   'media',
   'media-bez-komprese',
   'icons',
   'js',
   'css',
-  'tools'
+  'php',
+  'tmp',
+  'tools',
+  '.git',
+  '.github',
+  '.vscode'
 ]);
 
 function parseArg(name, fallback) {
@@ -96,45 +102,70 @@ function priorityFor(relPath) {
   return '0.7';
 }
 
-const files = walk(ROOT).filter(p => {
-  // Include English root and Czech cs/ articles and pages, exclude duplicates in Hostinger copies
+
+// Separate files for root and /cs/ directory
+const allFiles = walk(ROOT).filter(p => {
   const rel = path.relative(ROOT, p).replace(/\\/g, '/');
   if (rel.startsWith('Hostinger - CzechALert/')) return false;
   return true;
 });
 
-const urls = [];
-for (const file of files) {
-  const html = readFileUtf8(file);
-  const canonical = extractCanonical(html);
-  const loc = toAbsolute(canonical) || toAbsolute('/' + path.relative(ROOT, file).replace(/\\/g, '/'));
-  if (!loc) continue;
-  const lastmod = isoDateFromMtime(file);
-  const changefreq = 'weekly';
-  const priority = priorityFor(file);
-  const alternates = extractAlternates(html).map(a => ({ hreflang: a.hreflang, href: toAbsolute(a.href) }));
-  urls.push({ loc, lastmod, changefreq, priority, alternates });
-}
+const rootFiles = allFiles.filter(p => {
+  const rel = path.relative(ROOT, p).replace(/\\/g, '/');
+  return !rel.startsWith('cs/');
+});
+const csFiles = allFiles.filter(p => {
+  const rel = path.relative(ROOT, p).replace(/\\/g, '/');
+  return rel.startsWith('cs/');
+});
 
-const header = `<?xml version="1.0" encoding="UTF-8"?>\n` +
-  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
-const footer = `</urlset>\n`;
-
-let body = '';
-for (const u of urls) {
-  body += '  <url>\n';
-  body += `    <loc>${u.loc}</loc>\n`;
-  body += `    <lastmod>${u.lastmod}</lastmod>\n`;
-  body += `    <changefreq>${u.changefreq}</changefreq>\n`;
-  body += `    <priority>${u.priority}</priority>\n`;
-  for (const alt of u.alternates) {
-    if (!alt.href) continue;
-    body += `    <xhtml:link rel="alternate" hreflang="${alt.hreflang}" href="${alt.href}" />\n`;
+function buildUrls(files) {
+  const urls = [];
+  for (const file of files) {
+    const html = readFileUtf8(file);
+    const canonical = extractCanonical(html);
+    const loc = toAbsolute(canonical) || toAbsolute('/' + path.relative(ROOT, file).replace(/\\/g, '/'));
+    if (!loc) continue;
+    const lastmod = isoDateFromMtime(file);
+    const changefreq = 'weekly';
+    const priority = priorityFor(file);
+    const alternates = extractAlternates(html).map(a => ({ hreflang: a.hreflang, href: toAbsolute(a.href) }));
+    urls.push({ loc, lastmod, changefreq, priority, alternates });
   }
-  body += '  </url>\n';
+  return urls;
 }
 
-const sitemap = header + body + footer;
-const outPath = path.join(ROOT, 'sitemap.xml');
-fs.writeFileSync(outPath, sitemap, 'utf8');
-console.log(`Generated ${outPath} with ${urls.length} URLs`);
+function buildSitemap(urls) {
+  const header = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
+  const footer = `</urlset>\n`;
+  let body = '';
+  for (const u of urls) {
+    body += '  <url>\n';
+    body += `    <loc>${u.loc}</loc>\n`;
+    body += `    <lastmod>${u.lastmod}</lastmod>\n`;
+    body += `    <changefreq>${u.changefreq}</changefreq>\n`;
+    body += `    <priority>${u.priority}</priority>\n`;
+    for (const alt of u.alternates) {
+      if (!alt.href) continue;
+      body += `    <xhtml:link rel="alternate" hreflang="${alt.hreflang}" href="${alt.href}" />\n`;
+    }
+    body += '  </url>\n';
+  }
+  return header + body + footer;
+}
+
+const rootUrls = buildUrls(rootFiles);
+const csUrls = buildUrls(csFiles);
+
+const rootSitemap = buildSitemap(rootUrls);
+const csSitemap = buildSitemap(csUrls);
+
+const rootOutPath = path.join(ROOT, 'sitemap.xml');
+const csOutPath = path.join(ROOT, 'cs', 'sitemap.xml');
+
+fs.writeFileSync(rootOutPath, rootSitemap, 'utf8');
+fs.writeFileSync(csOutPath, csSitemap, 'utf8');
+
+console.log(`Generated ${rootOutPath} with ${rootUrls.length} URLs`);
+console.log(`Generated ${csOutPath} with ${csUrls.length} URLs`);

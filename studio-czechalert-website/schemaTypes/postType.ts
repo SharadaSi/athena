@@ -6,6 +6,7 @@ export const postType = defineType({
   name: 'post',
   title: 'Post',
   type: 'document',
+  i18n: true,
   fields: [
     defineField({
       name: 'title',
@@ -22,7 +23,13 @@ export const postType = defineType({
       name: 'slug',
       type: 'slug',
       options: {source: 'title'},
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required(), 
+    }),
+    defineField({
+      name: 'meta',
+      title: 'Meta description',
+      type: 'string',
+      description: 'Short description of a page, shown in SERP. 150 - 160 characters.'
     }),
     // Managed by @sanity/document-internationalization plugin
     defineField({
@@ -31,11 +38,28 @@ export const postType = defineType({
       readOnly: true,
       hidden: true,
     }),
+    // Manual translation linking - prevents deletion issues with weak: true
+    defineField({
+      name: 'translationOf',
+      title: 'Translation Of',
+      type: 'reference',
+      to: [{type: 'post'}],
+      description: 'Link to the post in another language. Always link BOTH directions (EN ↔ CS).',
+      weak: true,
+    }),
     defineField({
       name: 'image',
       type: 'image',
       options: { hotspot: true },
+      fields: [
+        defineField({
+        name: 'alt',
+        type: 'string',
+        description: 'Alternative image description, that helps SEO. Max 125 characters',
+        }),
+      ]
     }),
+    
     defineField({
       name: 'perex',
       title: 'Perex (Intro Paragraph)',

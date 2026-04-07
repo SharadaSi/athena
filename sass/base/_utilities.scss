@@ -1,4 +1,5 @@
 @use "../abstracts/variables" as* ;
+@use "../abstracts/functions" as fn;
 
 // .page-wrapper {
 //     min-height: 100dvh;
@@ -8,7 +9,7 @@
 // }
 
 .section-container {
-    width: 80%;
+    width: 90%;
     margin: 8rem auto;
 }
 
@@ -23,7 +24,7 @@
 
 
 .section-heading { 
-    font-size: $section-heading-h2-desktop;
+    font-size: fn.fluid(2.8rem, $section-heading-h2-desktop);
     font-weight: 700;
     color: $text-color-primary;
     text-align: center;
@@ -31,7 +32,7 @@
 }
 
 .section-subheading{
-    font-size: 1.8rem;
+    font-size: fn.fluid(1.5rem, 1.8rem);
     font-weight: 500;
     color: $text-color-secondary;
     text-align: center;
@@ -40,28 +41,29 @@
 
 .paragraph-XL{
     color: $text-color-secondary;
-    font-size: 3rem;
+    font-size: fn.fluid(2rem, 3rem);
     font-weight: 500;
 }
 
 .heading-XXL {
     color: $text-color-primary;
-    font-size: 8rem;
+    font-size: fn.fluid(3rem, 6rem);
     font-weight: 500;
     line-height: 1.2;
 }
 
 .subheading-XXL {
     color: $text-color-secondary;
-    font-size: 2rem;
+    font-size: fn.fluid(1.6rem, 2rem);
     font-weight: 400;
+    padding-bottom: 3.2rem;
 }
 
 .label-tag {
     background-color: $text-color-secondary;
     color: $text-color-primary;
     padding: $btn-padding-desktop;
-    font-size: $text-about-font-size-desktop
+    font-size: fn.fluid($text-about-font-size-mobile, $text-about-font-size-desktop);
 }
 
 //Price section
@@ -99,20 +101,8 @@
 
 //Article page
 
-.main-article-preview-heading {
-    font-size: 5rem;
-    font-weight: 500;
-    color: $text-color-primary;
-}
-
-.main-article-preview-text {
-    font-size: 2rem;
-    font-weight: 400;
-    color: $text-color-secondary;
-}
-
 .article-preview-heading {
-    font-size: 3rem;
+    font-size: fn.fluid(2.2rem, 3rem);
     font-weight: 500;
     color: $text-color-primary;
 }
@@ -121,32 +111,41 @@
     font-size: 1.6rem;
     font-weight: 400;
     color: $text-color-secondary;
+    line-height: 1.6;
 }
 
 
+// Tablet: ease padding and margin down
+@media screen and (max-width: 64rem) {
+    .section-container-page {
+        padding: 3rem 2.5rem;
+        margin: 4rem auto;
+    }
+
+    .section-container {
+        margin: 5rem auto;
+    }
+}
+
+// Mobile: tight padding so content gets the viewport width it needs
+@media screen and (max-width: 48rem) {
+    .section-container-page {
+        width: 95%;
+        padding: 2rem 1.25rem;
+        margin: 3rem auto;
+    }
+
+    .section-container {
+        width: 95%;
+        margin: 4rem auto;
+    }
+}
 
 @media screen and (max-width: 40rem) {
-
-    // .section-container-page{
-    //     width: 98%;
-    // }
-    .paragraph-XL{
-    color: $text-color-secondary;
-    font-size: $parag-XL-font-size-mobile;
-    font-weight: 500;
-    }
-
-    .heading-XXL {
-    color: $text-color-primary;
-    font-size: $heading-XXL-font-size-mobile;
-    font-weight: 500;
-    }
-
     .label-tag {
     background-color: $text-color-secondary;
     color: $text-color-primary;
     padding: $btn-padding-mobile;
-    font-size: $text-about-font-size-mobile;
     }
 }
 

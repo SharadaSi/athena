@@ -1,4 +1,35 @@
 
+# Raw / uncompressed media (local only)
 media - bez komprese/
 media-bez-komprese/
-node_modules
+
+# Dependencies
+node_modules/
+php/vendor/
+
+# Environment & secrets
+.env
+php/altcha-config.php
+
+# Build artifacts
+*.css.map
+sass/sections/main.css
+
+# IDE & OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Git metadata files (managed locally, not pushed)
+.github/
+.gitattributes
+
+# Binary archives
+*.zip
+
+# Temporary / dev-only files
+tmp/
+unused.html
+
+# Legacy backup directory
+Hostinger - CzechALert/

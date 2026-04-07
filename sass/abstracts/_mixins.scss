@@ -1,40 +1,43 @@
 @use "variables" as var ; 
+@use "functions" as fn;
 @use "../base/utilities" as util ;
 @use "../components/buttons" as btn ;
 //in the mixins the path of the original partial has to be specified within property itself infront of variable! NAMESPACE!
+
+// Desktop-first responsive breakpoint mixin.
+// Usage: @include respond-below(md) { ... }
+// Emits: @media screen and (max-width: 48rem) { ... }
+@mixin respond-below($bp) {
+    @if $bp == xl {
+        @media screen and (max-width: var.$bp-xl) { @content; }
+    } @else if $bp == lg {
+        @media screen and (max-width: var.$bp-lg) { @content; }
+    } @else if $bp == md {
+        @media screen and (max-width: var.$bp-md) { @content; }
+    } @else if $bp == sm {
+        @media screen and (max-width: var.$bp-sm) { @content; }
+    }
+}
 
 @mixin gridCard {
     background-color: var.$background-grey; 
     padding: var.$services-grid-padding-desktop;
     border-radius: var.$radius-desktop;
-    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    // transition: transform 0.3s ease;
 }
 
+// Fluid heading — scales 5rem → 8rem between 640px and 1280px viewport
 @mixin heading-XXL {
     color: var.$text-color-primary;
-    font-size: 8rem;
+    font-size: fn.fluid(5rem, 8rem);
     font-weight: 500;
     line-height: 1.2;
 }
 
-@mixin heading-XXL-mobile {
-    color: var.$text-color-primary;
-    font-size: 5rem;
-    font-weight: 500;
-    line-height: 1;
-}
-
+// Fluid paragraph — scales 1.8rem → 2.2rem between 640px and 1280px viewport
 @mixin parag-XL {
     color: var.$text-color-secondary;
-    font-size: 2.2rem;
-    font-weight: 500;
-}
-
-@mixin parag-XL-mobile {
-    color: var.$text-color-secondary;
-    font-size: 1.8rem;
+    font-size: fn.fluid(1.8rem, 2.2rem);
     font-weight: 500;
 }
 
@@ -46,4 +49,11 @@
     padding: 0;
     font-size: inherit;
     color: inherit;
+}
+
+@mixin form-label {
+    text-transform: uppercase;
+    font-size: var.$font-size-desktop;
+    color: var.$text-color-primary;
+    padding: 1.6rem 0;
 }

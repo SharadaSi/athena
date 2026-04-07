@@ -1,6 +1,14 @@
 @use "../abstracts/variables" as *;
 @use "../base/animations" as*;
 
+// Lock page scroll when mobile nav overlay is open
+body.nav-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  inset: 0;
+}
+
 
 .nav{
     position: relative;
@@ -89,7 +97,36 @@
   display: none;
 }
 
+// Tight desktop nav — prevent collapse between 1025px and 1200px
+@media screen and (min-width: 1025px) and (max-width: 1200px) {
+  .nav {
+    padding: 2rem 1.5rem;
+  }
 
+  .nav--item {
+    margin-right: 1.5rem;
+  }
+
+  .nav--link {
+    font-size: 1.3rem;
+  }
+
+  .nav--menu-widgets {
+    gap: 1.5rem;
+  }
+
+  .btn--cta {
+    padding: 0.7rem 1.5rem;
+    font-size: 1.4rem;
+  }
+}
+
+// Scale down logo from 1205px and below
+@media screen and (max-width: 1205px) {
+  .nav--logo-img {
+    height: clamp(36px, 4.5vw, 60px);
+  }
+}
 
 //MOBILE 
 
@@ -97,6 +134,7 @@
   .nav {
     position: relative;
     z-index: 3;
+    padding: 1.5rem 2rem;      // tighter header on mobile — less gap above menu
     transition: background-color .35s ease, height .35s ease;
 
     &.open {
@@ -105,6 +143,11 @@
       height: auto;            // was 100% (caused stretch)
       background-color: rgba(0,0,0,0.7);
     }
+  }
+
+  // Match logo height to hamburger button height (3 bars × 14px = 42px)
+  .nav--logo-img {
+    height: 42px;
   }
 
   /* prevent the logo/hamburger block from growing vertically */
@@ -121,12 +164,18 @@
     top: 0; left: 0; width: 100%;
     height: 100dvh;            // mobile-safe viewport height
     z-index: 1;                 // below the header container
-    padding-top: 60%;
-    background: rgba(0,0,0,.7);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: rgba(0,0,0,.75);
     display: flex;
     flex-direction: column;
+    justify-content: center;   // vertically center the nav items
     align-items: center;
     gap: 2rem;
+    /* Frosted-glass blur on page content behind the overlay */
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
     /* Hidden state (keep in flow so transitions run) */
     transform: translateY(-100%);
     opacity: 0;
@@ -139,13 +188,23 @@
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
-    padding-top: 30%;
   }
 
   .nav--item {
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
     text-align: center;
-    line-height: 3;
+    line-height: 1;
+  }
+
+  .nav--item a {
+    display: inline-block;
+    text-align: center;
+    padding-block: .7rem;
+    line-height: 1.1;
   }
 
   .nav--container{
@@ -194,13 +253,19 @@
       display: none; 
   }                   // hidden by default
   .nav--menu.open .nav--item-cta {
-      display: block;
+      display: flex;
+      justify-content: center;
   }  // visible when menu is open
-  .nav--item-cta .btn--cta {
+  .nav--item-cta .btn {
     display: inline-flex;
+    align-items: center;
     justify-content: center;
-    width: 50%;
-    padding: .8rem 1.2rem;
+    width: auto;
+    box-sizing: border-box;
+    height: auto;
+    padding: .7rem 1.2rem;
+    font-size: 1.5rem;
+    line-height: 1.1;
   }
 
   /* Hide the desktop CTA bar on mobile to avoid duplicates */
@@ -210,9 +275,24 @@
 
   .nav--menu.open .nav--item-switch-bar {
     display: inline-block;
-    height: 3rem;
-    line-height: 3rem;
+    height: 2rem;
+    line-height: 2rem;
     white-space: nowrap;
+  }
+
+  // Scale the toggle switch down to match the smaller row height
+  .nav--item-switch {
+    width: 4rem;
+    height: 2rem;
+  }
+
+  .nav--item-slider:before {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  input:checked + .nav--item-slider:before {
+    transform: translateX(2rem);
   }
 
   .nav--item-switch-bar > *{
@@ -228,11 +308,7 @@
   }
 }
 
-@media screen and (max-width: 34rem) {
-    .nav--menu.open {
-        padding-top: 50%;
-    }
-}
+/* 34rem breakpoint removed — justify-content: center handles vertical centering at all sizes */
 
 /* Desktop: hide the menu CTA item completely */
 @media screen and (min-width: 64.0625rem) {

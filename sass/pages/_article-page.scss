@@ -1,5 +1,6 @@
 @use "../abstracts/mixins" as *;
 @use "../abstracts/variables" as *;
+@use "../abstracts/functions" as fn;
 @use "../base/typography" as *;
 @use "../base/utilities" as *;
 
@@ -35,9 +36,9 @@
 }
 
 .article-page--content-grid {
-    width: 70%;
+    width: 80%;
     margin-inline: auto;
-    display: grid;
+    // display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
 }
@@ -57,7 +58,7 @@
 }
 
 .article-page--content {
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     display: grid;
     grid-template-rows: auto;
@@ -72,16 +73,47 @@
     font-size: 1.8rem;
 }
 
-.article-page--content-subheading {
+.article-page--heading-h1,
+.article-page--heading-h2,
+.article-page--heading-h3,
+.article-page--heading-h4 {
     grid-column: 1 / 5;
+    color: $text-color-secondary;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.article-page--heading-h1 {
+    font-size: fn.fluid(2.8rem, 4rem);
+    font-weight: 700;
+}
+
+.article-page--heading-h2 {
+    font-size: fn.fluid(2.4rem, 3.2rem);
+    font-weight: 700;
+}
+
+.article-page--heading-h3 {
+    font-size: fn.fluid(2rem, 2.6rem);
+    font-weight: 700;
+}
+
+.article-page--heading-h4 {
+    font-size: fn.fluid(1.8rem, 2.2rem);
+    font-weight: 700;
+}
+
+.article-page--content-subheading {
     color: $text-color-primary;
     text-transform: uppercase;
-    font-size: 2rem;
+    font-size: fn.fluid(1.6rem, 2rem);
 }
 
 .article-page--content-resources {
     grid-column: 1 / 5;
-    margin-top: 2rem;
+    margin-top: 3.2rem;
+    margin-bottom: 1.6rem;
 }
 
 .article-page--content-resources-list {
@@ -90,6 +122,19 @@
   color: $text-color-secondary;
   font-size: 1.6rem;
 }
+
+.article-page--resource-link {
+  color: $text-color-secondary;
+  text-decoration: underline;
+  text-transform: lowercase;
+}
+
+.article-page--resource-label {
+    color: $text-color-secondary;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
 
 .line-through{
     text-decoration: line-through;
@@ -103,15 +148,6 @@
     .article-page--content {
         width: 100%;
     }
-
-    .article-page--heading {
-    @include heading-XXL-mobile;
-    }
-    .article-page--subheading {
-    @include parag-XL-mobile;
-    }
-
-
 
     .article-page--content-p {
     color: $text-color-secondary;

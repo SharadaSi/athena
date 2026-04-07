@@ -2,6 +2,20 @@
 @use "../abstracts/variables" as *;
 @use "../base/typography" as *;
 @use "../base/utilities" as *;
+@use "../base/animations" as *;
+
+.contact-page--heading {
+    @include heading-XXL;
+    text-align: left;
+    margin-bottom: $margin-h2-desktop;
+    color: $text-color-primary;
+}
+
+.contact-page--subheading-container {
+    display: flex;
+    justify-content: center;
+    margin-inline: auto;
+}
 
 .contact {
     height: auto;
@@ -10,3 +24,475 @@
     z-index: 1;
     padding-block: 8rem;
 }
+
+.signal-light-icon {
+    display: inline-block;
+    position: relative;
+    background-color: green;
+    width: .8rem;
+    height: .8rem;
+    border-radius: 50%;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background-color: green;
+        animation: pulse 2s ease-out infinite;
+    }
+}
+
+// CAROUSEL OF SERVICES
+
+.carousel-services--container {
+    width: 100%;
+    height: fit-content;
+    max-height: fit-content;
+    position: relative;
+    // padding-block: 3rem;
+}
+
+.carousel-services--heading {
+    // margin-bottom: 1.6rem;
+    text-transform: uppercase;
+    font-size: $font-size-desktop;
+    color: $text-color-primary;
+    padding: 1.6rem 0;
+    
+}
+
+.carousel-services--items-container {
+    overflow: hidden;
+
+    // Fade both edges with CSS mask — no extra elements needed
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+}
+
+//JUST FOR JS DOM
+
+.carousel-services--track {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    width: max-content; // stretch to fit all items (incl. duplicates)
+}
+
+.carousel-services-item {
+    flex: 0 0 auto; // prevent items from shrinking or growing
+}
+
+.carousel-services-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.6rem 0;
+    color: $text-color-secondary;
+    text-decoration: none;
+    white-space: nowrap;
+    pointer-events: none;
+    font-family: "Exo 2", sans-serif;
+
+}
+
+.carousel-services {
+    font-size: $font-size-desktop;
+}
+
+// FORM AND MAPS CONTAINER
+
+.contact-form--container {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr auto 1fr 1fr;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 3.2rem;
+
+    // MAPS
+
+    .maps-container {
+        grid-row: 4 / 6; 
+        grid-column: 1 / 5;
+    }
+
+    .maps-container iframe {
+        filter: invert(90%) hue-rotate(180deg); //DARK MODE MAP
+    }
+
+    .carousel-services--container {
+        grid-row: 3 / 4;
+        grid-column: 1 / 9;
+    }
+}
+
+// CONTACT FORM
+
+.contact-form {
+    grid-column: 5 / 9;
+    grid-row: 1 / 3; 
+    width: 100%;
+    display: grid;
+    gap: 2rem;
+    grid-template-rows: 6fr;
+    grid-template-columns: 1fr 1fr;
+    font-family: "Exo 2", sans-serif;
+
+    input,
+    textarea,
+    button,
+    label,
+    select {
+        font-family: inherit;
+    }
+}
+
+.contact-form--group1 {
+    grid-column: 1 /2;
+}
+
+label[for="name"], label[for="email"] {
+    text-transform: uppercase;
+    color: $text-color-primary;
+    padding: $normal-text-form-padding-desktop;
+}
+
+.contact-form--group2 {
+    grid-column: 2 /3;
+}
+
+// PROJECT INTERESTS
+
+.contact-form--btns-project {
+    width: 100%;
+    grid-column: 1 /3;
+
+    .contact-form--interest {
+        text-transform: uppercase;
+        font-size: $font-size-desktop;
+        color: $text-color-primary;
+        padding: $normal-text-form-padding-desktop;
+    }
+
+    .contact-form--interest-options {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap ;
+        justify-content: flex-start;
+        gap: 1rem;
+    }
+}
+
+.contact-form--option-container {
+    display: flex;
+    cursor: pointer;
+}
+
+.button-checkbox {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.button-checkbox:focus-visible + .button-checkbox-text {
+    outline: 2px solid $btn-color-secondary-blue;
+    outline-offset: 2px;
+}
+
+.button-checkbox-text {
+    padding: $btn-padding-desktop;
+    background-color: $background-grey;
+    border: 1px solid $text-color-secondary;
+    border-radius: 10px;
+    font-size: $font-size-desktop;
+    width: fit-content;
+    color: $text-color-secondary;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.button-checkbox:checked + .button-checkbox-text {
+    border-color: $btn-color-secondary-blue;
+    color: $text-color-primary;
+}
+
+// URGENCY PART
+
+.contact-form--urgency {
+    @include form-label;
+}
+
+.contact-form--btns-urgency {
+    grid-column: 1 /3;
+
+    .contact-form--urgency-options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+    }
+
+}
+
+.contact-form--urgoption-container {
+    cursor: pointer;
+}
+
+.contact-form--urgoption-container:has(.radio-input:checked) {
+    border-color: $btn-color-secondary-blue;
+    color: $text-color-primary;
+}
+
+.radio-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.radio-input:focus-visible + .contact-form--btns-iconbox {
+    outline: 2px solid $btn-color-secondary-blue;
+    outline-offset: 2px;
+}
+
+.contact-form--btns-iconbox {
+    padding: $btn-padding-desktop;
+    background-color: $background-grey;
+    border: 1px solid $text-color-secondary;
+    border-radius: 10px;
+    font-size: $font-size-desktop;
+    width: fit-content;
+    color: $text-color-secondary;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.radio-input:checked + .contact-form--btns-iconbox {
+    border-color: $btn-color-secondary-blue;
+    color: $text-color-primary;
+}
+
+ 
+
+// BUDGET PART
+
+.contact-form--budget-container {
+    grid-column: 1 / 3;
+}
+
+// BUDGET DUAL-RANGE SLIDER
+
+.contact-form--budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.6rem;
+}
+
+.contact-form--budget-heading {
+    @include form-label;
+}
+
+.budget-range-slider {
+    position: relative;
+    width: 100%;
+    height: 2rem;
+}
+
+.budget-range-track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: $text-color-secondary;
+    transform: translateY(-50%);
+    border-radius: 2px;
+}
+
+.budget-range-highlight {
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    background-color: $btn-color-secondary-blue;
+    transform: translateY(-50%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+input[type=range].dual-range {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: transparent;
+    pointer-events: none;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        pointer-events: auto;
+        height: 2rem;
+        width: 2rem;
+        border-radius: 50%;
+        background: $text-color-primary;
+        cursor: ew-resize;
+        box-shadow: 0 0 0 3px $background-black;
+        position: relative;
+        z-index: 99;
+    }
+
+    &::-moz-range-thumb {
+        pointer-events: auto;
+        height: 2rem;
+        width: 2rem;
+        border-radius: 50%;
+        background: $text-color-primary;
+        border: none;
+        cursor: ew-resize;
+        box-shadow: 0 0 0 3px $background-black;
+        z-index: 99;
+    }
+}
+
+.budget-range-legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.8rem;
+}
+
+//PROJECT DETAILS
+
+.contact-form--details-heading {
+    @include form-label;
+}
+
+.contact-form--details-container {
+    grid-column: 1 /3;
+
+    .contact-form--text-area {
+        width: 100%;
+        @include input-reset;
+        padding: 1.2rem;
+        border: 1px solid $text-color-tertiary;
+        border-radius: $radius-desktop;
+        font-size: 1.6rem;
+        background-color: $background-grey;
+        color: $text-color-primary;
+
+        &::placeholder {
+            color: $text-color-tertiary;
+        }
+
+        &:focus {
+            border-color: transparent;
+            box-shadow: inset 0 -3px 0 rgba(255, 42, 0, 0.4);
+        }
+    }
+}
+
+.contact-form--btn {
+    grid-column: 1 /3;
+}
+
+// VALIDATION ERROR STYLES
+
+.error-message {
+    display: block;
+    color: rgba(255, 42, 0, 0.9);
+    font-size: 1.3rem;
+    margin-top: 0.6rem;
+    min-height: 1.3rem; // reserve space so layout doesn't jump
+
+    &:empty {
+        min-height: 0;
+    }
+}
+
+// Red underline on invalid text inputs
+input[type="text"].--invalid,
+input[type="email"].--invalid {
+    border-color: transparent;
+    box-shadow: inset 0 -3px 0 rgba(255, 42, 0, 0.6);
+}
+
+// Subtle highlight on invalid checkbox / radio groups. Vertical line.
+.contact-form--btns-project.--invalid .contact-form--interest-options,
+.contact-form--btns-urgency.--invalid .contact-form--urgency-options {
+    border-left: 2px solid rgba(255, 42, 0, 0.6);
+    padding-left: 1rem;
+    transition: border-color 0.2s, padding-left 0.2s;
+}
+
+// Submission status banner (success / error)
+.submission-banner {
+    grid-column: 1 / 3;
+    padding: 1.4rem 2rem;
+    border-radius: 10px;
+    font-size: $font-size-desktop;
+    font-family: "Exo 2", sans-serif;
+    text-align: center;
+    animation: bannerFadeIn 0.3s ease-out;
+
+    &.--success {
+        background-color: rgba(34, 197, 94, 0.15);
+        border: 1px solid rgba(34, 197, 94, 0.5);
+        color: #22c55e;
+    }
+
+    &.--error {
+        background-color: rgba(255, 42, 0, 0.1);
+        border: 1px solid rgba(255, 42, 0, 0.5);
+        color: rgba(255, 42, 0, 0.9);
+    }
+}
+
+@keyframes bannerFadeIn {
+    from { opacity: 0; transform: translateY(-0.8rem); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+//TABLET
+
+@media screen and (max-width: 87.5rem){
+    .contact-form--container {
+        gap: 1.6rem;
+
+        .contact-form {
+        grid-column: 1 / 9;
+        gap: 1rem;
+        }
+        .maps-container {
+            grid-column: 1 / 9;
+        }
+    }
+    
+}
+
+@media screen and (max-width: 48rem) {
+    .contact-form--container .maps-container {
+        aspect-ratio: 1 / 1;
+    }
+}
+    
+

@@ -1,10 +1,20 @@
+// BREAKPOINTS (desktop-first: max-width)
+// Used with the respond-below() mixin and fluid() function
+$bp-xl: 80rem;   // 1280px
+$bp-lg: 64rem;   // 1024px
+$bp-md: 48rem;   // 768px
+$bp-sm: 40rem;   // 640px
+
 // COLOURS
 
 $text-color-primary: #fff;
 $text-color-secondary: rgba(255, 255, 255, 0.6);
 $text-color-tertiary: rgba(255, 255, 255, 0.4);
 
-$btn-color-secondary-blue: rgba(255, 42, 0, 0.9);
+$footer-text-primary: rgba(255, 248, 240, 0.62);
+$footer-text-secondary: rgba(255, 248, 240, 0.62);
+
+$btn-color-secondary-blue: rgba(255, 42, 0, 0.9); //#FF2A00E6
 //#cc3314
 $btn-color-secondary-blueVS: #003683;
 $btn-color-tertiary-blue: rgba(255, 85, 51, 0.9);
@@ -23,6 +33,15 @@ $btn-cta-text-color: #fff;
 // TYPOGRAPHY
 
 //LOGO font: Archivo black
+
+$font-size-desktop: 1.6rem;
+$font-size-mobile: 1.4rem;
+
+$normal-text-form-padding-desktop: 1.6rem 0;
+$normal-text-form-padding-tablet: 1.6rem 0;
+$normal-text-form-padding-mobile: 1.4rem 0;
+
+
 
 $btn-padding-desktop: 1rem 3rem;
 $btn-padding-tablet: .75rem 2rem;

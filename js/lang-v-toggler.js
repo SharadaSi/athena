@@ -16,20 +16,23 @@
     toggles.forEach((checkbox) => {
         checkbox.checked = !isCzech;
         checkbox.addEventListener('change', () => {
-            const current = window.location.pathname || '/';
-            let target;
+            // Preserve slug (?slug=...) and hash while flipping locale.
+            const url = new URL(window.location.href);
+            const currentPath = url.pathname || '/';
+            let targetPath;
 
-            if (current.includes('/cs/')) {
-                // From CS to EN: remove first '/cs' segment anywhere in path
-                target = current.replace(/\/cs(?=\/)/, '');
-                if (target === '') target = '/';
+            if (currentPath.includes('/cs/')) {
+                // CS -> EN: strip leading /cs
+                targetPath = currentPath.replace(/^\/cs(?=\/)/, '');
+                if (targetPath === '') targetPath = '/';
             } else {
-                // From EN to CS: add '/cs' at the root
-                const normalized = current.startsWith('/') ? current : `/${current}`;
-                target = normalized === '/' ? '/cs/' : `/cs${normalized}`;
+                // EN -> CS: prefix /cs
+                const normalized = currentPath.startsWith('/') ? currentPath : `/${currentPath}`;
+                targetPath = normalized === '/' ? '/cs/' : `/cs${normalized}`;
             }
 
-            window.location.assign(target);
+            url.pathname = targetPath;
+            window.location.assign(url.toString());
         });
     });
 })();

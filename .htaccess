@@ -20,3 +20,22 @@
 <FilesMatch "(?i)\.(mp4|webm|ogv)$">
   Header set Cache-Control "public, max-age=31536000, immutable"
 </FilesMatch>
+
+# HSTS (forces User agent to use HTTPS )
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+# X Frame options (protects against framing attacks like clickjacking)
+Header always set X-Frame-Options "SAMEORIGIN"
+
+# X Content type options (protection against MIME sniff the content type)
+Header always set X-Content-Type-Options "nosniff"
+
+# Referrer policy (Disables browser from sending sensitive informations inside URL to 3rd parties)
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+# Permissions policy (Disables 3rd parties from accesing extensive sensitive features)
+Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), display-capture=(), document-domain=(), idle-detection=(), midi=(), nfc=(), picture-in-picture=(self), screen-wake-lock=(), serial=(), speaker-selection=(), sync-xhr=(), web-share=(self), xr-spatial-tracking=()"
+
+

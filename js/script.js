@@ -8,6 +8,7 @@ const openMenu = () => {
   navMenu.classList.add("open");
   nav.classList.add("open");
   hamburger.classList.add("is-active");
+  document.body.classList.add("nav-open");
 }
 
 // Helper function to close the menu
@@ -15,6 +16,7 @@ const closeMenu = () => {
   navMenu.classList.remove("open");
   nav.classList.remove("open");
   hamburger.classList.remove("is-active");
+  document.body.classList.remove("nav-open");
 }
 
 // Toggle menu on hamburger click
@@ -31,11 +33,6 @@ const newsletterBtn = document.querySelector(".nav--cta .btn--cta");
 newsletterBtn?.addEventListener("click", () => {
   window.location.href = "newsletter.html";
 })
-
-// //Clear Service Worker SINGLE USE
-// if ('serviceWorker' in navigator) {
-//   navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
-// }
 
 
 // Parallax simulation for iOS Safari (background-attachment: fixed is buggy)
@@ -68,4 +65,22 @@ newsletterBtn?.addEventListener("click", () => {
   window.addEventListener('resize', onScroll);
   update();
 })();
+
+
+// IOS playback function
+
+document.addEventListener("DOMContentLoaded", () => {
+  const heroVideo = document.querySelector(".header--hero-video")
+  if (heroVideo) {
+    heroVideo.muted = true
+    heroVideo.play().catch(() => {})
+  }
+
+  const heroPubVideo = document.querySelector(".publishing-page--hero-video")
+  if (heroPubVideo) {
+    heroPubVideo.muted = true
+    heroPubVideo.play().catch(() => {})
+  }
+})
+
 

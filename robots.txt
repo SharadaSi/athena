@@ -1,4 +1,121 @@
+# CzechAlert robots.txt - Optimized for SEO & GEO (LLM Crawling)
+# Last updated: January 2026
+
+# Default policy - Allow all crawlers
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
+# Explicit permissions for major LLM crawlers and AI systems
+# OpenAI's ChatGPT Bot
+User-agent: GPTBot
+Allow: /
+Crawl-delay: 0
+
+# Anthropic's Claude
+User-agent: Claude-Web
+Allow: /
+Crawl-delay: 0
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Crawl-delay: 0
+
+# Google Bingbot (Microsoft Bing)
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Google's bot (primary search engine crawler)
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Apple's crawler
+User-agent: Applebot
+Allow: /
+Crawl-delay: 1
+
+# Common Crawl's bot
+User-agent: CCBot
+Allow: /
+Crawl-delay: 1
+
+# Diffbot (AI and content extraction)
+User-agent: Diffbot
+Allow: /
+Crawl-delay: 0
+
+# DuckDuckGo bot
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Baidu bot (Chinese search)
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+# Yandex bot (Russian/Eastern European search)
+User-agent: Yandexbot
+Allow: /
+Crawl-delay: 1
+
+# Yahoo's Slurp bot
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# OmniGrok and related crawlers
+User-agent: OmniGrok
+Allow: /
+Crawl-delay: 0
+
+User-agent: Omnibot
+Allow: /
+Crawl-delay: 0
+
+# Semantic analysis bots
+User-agent: Semanticbot
+Allow: /
+Crawl-delay: 1
+
+# Traject crawler
+User-agent: Traject
+Allow: /
+Crawl-delay: 1
+
+# Allow common curl and wget user agents (often used by AI systems)
+User-agent: curl
+Allow: /
+
+User-agent: wget
+Allow: /
+
+# Standard crawlers and archives
+User-agent: ia_archiver
+Allow: /
+
+User-agent: AhrefsBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: MJ12bot
+Allow: /
+Crawl-delay: 1
+
+User-agent: SEMrushBot
+Allow: /
+Crawl-delay: 1
+
+# Block bad actors and resource hogs
+User-agent: MauiBot
+Disallow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+# Sitemap location
 Sitemap: https://www.czechalert.com/sitemap.xml
+Sitemap: https://www.czechalert.com/cs/sitemap.xml

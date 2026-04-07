@@ -18,10 +18,11 @@ export default defineConfig({
     visionTool(),
     documentInternationalization({
       supportedLanguages: [
-        { id: "en", title: "English" },
-        { id: "cs", title: "Čeština" },
+        {id: 'en', title: 'English'},
+        {id: 'cs', title: 'Čeština'},
       ],
-      schemaTypes: ["post"],
+      schemaTypes: ['post'],
+      languageField: 'language',
     }),
     assist ({
       translate: {

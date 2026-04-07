@@ -1,13 +1,14 @@
 @use "../abstracts/variables" as*;
+@use "../abstracts/functions" as fn;
 
 
 .btn{
     appearance: none;
     border: none;
 
-    padding: $btn-padding-desktop;
+    padding: fn.fluid(.5rem, 1rem) fn.fluid(1.5rem, 3rem);
     border-radius: 5px;
-    font-size: $btn-font-size-desktop;
+    font-size: fn.fluid(1rem, 1.8rem);
     border: 1px solid $btn-color-secondary-blue;
 
     &--cta{
@@ -23,6 +24,10 @@
     }
 
     &--article {
+        display: inline-block;
+        width: fit-content;
+        align-self: start;
+        text-decoration: none;
         background-color: transparent;
         border: 1px solid $btn-color-secondary-blue;
         transition: all .3s ease;
@@ -33,6 +38,25 @@
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="%2300368333" stroke="white" stroke-width="2"/><line x1="17" y1="17" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>') 24 24, pointer;
         }
     }
+}
+
+.button-btn {
+    appearance: none;
+    background-color: transparent;
+    background-color: $btn-color-secondary-blue;
+    border: 1px solid $btn-color-secondary-blue;
+    cursor: pointer;
+    color: $btn-cta-text-color;
+    transition: all .3s ease;
+    text-transform: uppercase;
+    padding: $btn-padding-desktop;
+    border-radius: 5px;
+    font-size: $btn-font-size-desktop;
+
+        &:hover {
+            background-color: $btn-color-tertiary-blue;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="%2300368333" stroke="white" stroke-width="2"/><line x1="17" y1="17" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>') 24 24, pointer;
+        }
 }
 
 
@@ -111,7 +135,7 @@ input:checked + .slider {
 }
 
 .switch:has(input:checked) + .cs-label {
-    background-color: aqua;
+    background-color: red;
 }
 
 /*pohyb šoupátka*/
@@ -132,7 +156,7 @@ input:checked + .slider:before {
     display: none;
 }
 
-/*šouppátko, nebo spíše jeho pozadí*/
+/*šoupátko, nebo spíše jeho pozadí*/
 .nav--item-slider {
     position: absolute;
     left: 0;

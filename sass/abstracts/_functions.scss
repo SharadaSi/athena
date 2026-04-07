@@ -1,0 +1,30 @@
+@use 'sass:math';
+
+// Strips the unit from a number — 16px → 16, 2rem → 2
+@function strip-unit($value) {
+  @return math.div($value, ($value * 0 + 1));
+}
+
+// Generates a clamp() expression for fluid scaling between two viewport widths.
+// All values must be in rem. Desktop-first: $max-size is the desktop value,
+// $min-size is mobile. The font size scales linearly between the two viewports.
+//
+// Usage:  font-size: fluid(2rem, 4rem);           → scales 2rem–4rem across 640–1280px
+//         font-size: fluid(1.6rem, 2.4rem, 30rem, 64rem);  → custom viewport range
+@function fluid($min-size, $max-size, $min-vw: 40rem, $max-vw: 80rem) {
+  $min: strip-unit($min-size);
+  $max: strip-unit($max-size);
+  $vw-min: strip-unit($min-vw);
+  $vw-max: strip-unit($max-vw);
+
+  // Slope: rem of growth per 1rem of viewport width (unitless)
+  $slope: math.div(($max - $min), ($vw-max - $vw-min));
+
+  // Y-intercept: the rem value when viewport is 0 (used as static offset)
+  $intercept: $min - ($slope * $vw-min);
+
+  // Convert slope to vw units (×100 because 1vw = 1% of viewport)
+  $slope-vw: $slope * 100;
+
+  @return clamp(#{$min-size}, #{$intercept}rem + #{$slope-vw}vw, #{$max-size});
+}

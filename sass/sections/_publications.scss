@@ -65,6 +65,9 @@
         align-self: start;
         margin-top: 2rem;
     }
+    > a {
+        margin-block-start: 2rem;
+    }
 }
 
 .swiper-slide {
@@ -103,5 +106,13 @@
         grid-template-areas:
         "text-col"
         "img-col";
+    }
+    .text-container > a {
+        width: 100%;
+    }
+    .text-container .btn--cta {
+        width: 100%;
+        padding: 1.2rem 3rem;
+        font-size: 1.6rem;
     }
 }

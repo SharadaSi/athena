@@ -79,6 +79,8 @@
 
 @media screen and (max-width: 38rem) {
     .about {
+        padding-inline: 2rem;
+
         &__grid {
             grid-template-columns: 1fr; 
             grid-template-areas: 

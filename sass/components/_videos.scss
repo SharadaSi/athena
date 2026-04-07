@@ -10,7 +10,8 @@
         width: 100vw;
         height: 100vh;
         object-fit: cover;
-        z-index: 0;
+        z-index: -1;
+        pointer-events: none;
     }
 }
 
@@ -25,14 +26,20 @@
     min-height: 100vh;
     object-fit: cover;
     z-index: -1;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    pointer-events: none;
 }
 
 @media screen and (max-width: 64rem){
 
     .header--hero-video {
         object-fit: fill;
+    }
+
+
+    .publishing-page--hero-video, 
+    .publishing-page--hero-video video {
+        object-fit: fill;
+        // width: 100% !important;
+        // height: 100% !important;
     }
 }
