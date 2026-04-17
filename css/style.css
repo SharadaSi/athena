@@ -953,16 +953,38 @@ body.nav-open {
 .footer-grid {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   align-items: center;
   justify-items: center;
+}
+@media screen and (max-width: 80rem) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 2rem;
+  }
+}
+@media screen and (max-width: 40rem) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }
 
 .footer-grid--item {
   width: 80%;
   gap: 1rem;
   padding: 1rem;
+}
+@media screen and (max-width: 80rem) {
+  .footer-grid--item {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 40rem) {
+  .footer-grid--item {
+    width: 100%;
+  }
 }
 
 .footer-grid--item1 {
@@ -1014,6 +1036,50 @@ body.nav-open {
 
 .footer-icons-link:hover svg path {
   fill: rgba(255, 248, 240, 0.62);
+}
+
+.item4-subgrid2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.footer-email-copy {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 248, 240, 0.62);
+  padding: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 2.4rem;
+  min-height: 2.4rem;
+  transition: color 0.3s ease;
+  position: relative;
+}
+.footer-email-copy svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.footer-email-copy:hover {
+  color: rgba(255, 248, 240, 0.62);
+}
+.footer-email-copy.tooltip-visible::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .services {

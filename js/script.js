@@ -32,7 +32,7 @@ navLinks.forEach(link => link.addEventListener("click", closeMenu));
 const newsletterBtn = document.querySelector(".nav--cta .btn--cta");
 newsletterBtn?.addEventListener("click", () => {
   window.location.href = "newsletter.html";
-})
+});
 
 
 // Parallax simulation for iOS Safari (background-attachment: fixed is buggy)
@@ -80,6 +80,49 @@ document.addEventListener("DOMContentLoaded", () => {
   if (heroPubVideo) {
     heroPubVideo.muted = true
     heroPubVideo.play().catch(() => {})
+  }
+})
+
+
+// Mailto fallback: copy email to clipboard if no mail client handles the click
+document.addEventListener("DOMContentLoaded", () => {
+  const mailtoLink = document.querySelector(".footer-email-link")
+  if (!mailtoLink) return
+
+  const copyBtn = document.querySelector(".footer-email-copy")
+  const email = mailtoLink.textContent.trim()
+
+  const showTooltip = (el, msg) => {
+    el.setAttribute("data-tooltip", msg)
+    el.classList.add("tooltip-visible")
+    setTimeout(() => el.classList.remove("tooltip-visible"), 2000)
+  }
+
+  const copyEmail = (triggerEl) => {
+    navigator.clipboard.writeText(email).then(() => {
+      showTooltip(triggerEl, "Copied!")
+    }).catch(() => {
+      showTooltip(triggerEl, "Copy failed")
+    })
+  }
+
+  // Fallback on mailto link click
+  mailtoLink.addEventListener("click", (e) => {
+    const w = window.open(mailtoLink.href, "_self")
+    // If nothing happened after a short delay, assume no mail client
+    setTimeout(() => {
+      if (document.hasFocus()) {
+        copyEmail(mailtoLink)
+      }
+    }, 500)
+  })
+
+  // Dedicated copy button
+  if (copyBtn) {
+    copyBtn.addEventListener("click", (e) => {
+      e.preventDefault()
+      copyEmail(copyBtn)
+    })
   }
 })
 
