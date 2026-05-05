@@ -1,6 +1,6 @@
 
 
-import {defineField, defineType, defineArrayMember} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export const postType = defineType({
   name: 'post',
@@ -69,7 +69,62 @@ export const postType = defineType({
     defineField({
       name: 'body',
       type: 'array',
-      of: [{type: 'block'}],
+      // Using defineArrayMember registers each entry as a first-class Portable Text
+      // block. The PT editor automatically renders a drag handle for non-text blocks
+      // (like chartEmbed), so editors can drag-and-drop charts between paragraphs.
+      of: [
+        defineArrayMember({type: 'block'}),
+        defineArrayMember({
+          type: 'object',
+          name: 'chartEmbed',
+          title: 'Chart / Diagram',
+          fields: [
+            defineField({
+              name: 'file',
+              title: 'HTML file',
+              type: 'file',
+              description:
+                'Self-contained .html file (inline all CSS/JS or use absolute CDN URLs). Loaded inside a sandboxed iframe.',
+              options: {accept: 'text/html,.html'},
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'height',
+              title: 'Height (px)',
+              type: 'number',
+              initialValue: 500,
+              validation: (rule) => rule.min(100).max(4000),
+            }),
+            defineField({
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+              description: 'Optional caption shown below the chart.',
+            }),
+            defineField({
+              name: 'description',
+              title: 'Accessible description',
+              type: 'string',
+              description: 'Used as iframe title / aria-label for screen readers.',
+            }),
+            defineField({
+              name: 'allowFullscreen',
+              title: 'Allow fullscreen',
+              type: 'boolean',
+              initialValue: false,
+            }),
+          ],
+          preview: {
+            select: {title: 'caption', filename: 'file.asset.originalFilename'},
+            prepare({title, filename}) {
+              return {
+                title: title || 'Embedded chart',
+                subtitle: filename || 'HTML iframe',
+              }
+            },
+          },
+        }),
+      ],
     }),
     defineField({
       name: 'publishedAt',
@@ -94,7 +149,7 @@ export const postType = defineType({
       type: 'array',
       description: 'Numbered list of resources with hyperlinks',
       of: [
-        defineArrayMember({
+        {
           type: 'object',
           name: 'resource',
           fields: [
@@ -111,7 +166,7 @@ export const postType = defineType({
               validation: (rule) => rule.uri({scheme: ['http', 'https']}).required()
             })
           ]
-        })
+        }
       ]
     })
   ],

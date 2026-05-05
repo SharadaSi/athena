@@ -10,7 +10,7 @@
   const API_VERSION = '2023-10-01';
   const isCzech = (typeof window !== 'undefined') && (window.location.pathname || '').includes('/cs/');
   const LOCALE = isCzech ? 'cs' : 'en';
-  const articlePath = isCzech ? '/cs/article.html' : '/article.html';
+  const articlePath = isCzech ? '/cs/article' : '/article';
 
   // Localized UI strings keyed by locale
   const UI_STRINGS = {

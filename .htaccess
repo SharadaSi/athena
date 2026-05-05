@@ -1,3 +1,29 @@
+# ─── Clean URLs ────────────────────────────────────────────────────────────────
+# LiteSpeed Web Server (LSWS) is fully compatible with Apache mod_rewrite.
+# Two-step strategy:
+#   1. 301 redirect: any request that still includes .html in the URL is permanently
+#      redirected to the clean (extensionless) version so search engines consolidate
+#      link equity and bookmarks/indexed URLs are corrected automatically.
+#   2. Internal rewrite: an extensionless request is transparently served from the
+#      matching .html file on disk — the browser never sees the extension.
+
+RewriteEngine On
+RewriteBase /
+
+# Step 1 — 301 redirect: strip .html from browser-facing URLs
+# Inspects THE_REQUEST (the raw HTTP request line, e.g. "GET /contact.html HTTP/1.1")
+# rather than REQUEST_URI so that query strings and hashes don't affect the match.
+RewriteCond %{THE_REQUEST} \s/+(.*?)\.html[\s?#] [NC]
+RewriteRule ^ /%1 [R=301,L,NE]
+
+# Step 2 — Internal rewrite: serve /page or /cs/page as /page.html or /cs/page.html
+# Only fires when the request has no dot in the path (ruling out real assets like
+# .css, .js, .png, .php) and the path is neither an existing file nor a directory.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^.]+)$ $1.html [L]
+# ───────────────────────────────────────────────────────────────────────────────
+
 # Disable caching for HTML (force revalidation)
 <FilesMatch "\.(html|htm)$">
   Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"

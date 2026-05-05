@@ -31,7 +31,7 @@ navLinks.forEach(link => link.addEventListener("click", closeMenu));
 //Button redirection to another page
 const newsletterBtn = document.querySelector(".nav--cta .btn--cta");
 newsletterBtn?.addEventListener("click", () => {
-  window.location.href = "newsletter.html";
+  window.location.href = "newsletter";
 });
 
 

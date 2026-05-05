@@ -5,7 +5,6 @@ import {schemaTypes} from './schemaTypes'
 import {documentInternationalization} from "@sanity/document-internationalization"
 import {assist} from "@sanity/assist"
 
-
 export default defineConfig({
   name: 'default',
   title: 'CzechAlert Website',

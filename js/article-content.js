@@ -43,14 +43,55 @@
     return `${day}${suffix(day)} ${month} ${year}`;
   }
 
+  // Build a <figure> containing a sandboxed iframe for an embedded HTML chart
+  function chartEmbedToElement(block) {
+    if (!block || !block.chartUrl) return null;
+    const figure = document.createElement('figure');
+    figure.className = 'article-page--chart';
+
+    const iframe = document.createElement('iframe');
+    iframe.src = block.chartUrl;
+    iframe.loading = 'lazy';
+    iframe.setAttribute('sandbox', 'allow-scripts');
+    const height = Number(block.height) > 0 ? Number(block.height) : 500;
+    iframe.style.width = '100%';
+    iframe.style.height = height + 'px';
+    iframe.style.border = '0';
+    const label = (block.description || block.caption || 'Embedded interactive chart').trim();
+    iframe.title = label;
+    iframe.setAttribute('aria-label', label);
+    if (block.allowFullscreen) {
+      iframe.setAttribute('allow', 'fullscreen');
+      iframe.setAttribute('allowfullscreen', '');
+    }
+    figure.appendChild(iframe);
+
+    if (block.caption && block.caption.trim()) {
+      const caption = document.createElement('figcaption');
+      caption.className = 'article-page--chart-caption';
+      caption.textContent = block.caption.trim();
+      figure.appendChild(caption);
+    }
+    return figure;
+  }
+
   // Convert Sanity Portable Text blocks to formatted HTML while preserving all styling
-  // Handles: headings (h1-h4), paragraphs, bold, italic, underline, strikethrough, links
+  // Handles: headings (h1-h4), paragraphs, bold, italic, underline, strikethrough, links,
+  // and custom chartEmbed objects rendered as sandboxed iframes.
   function blocksToFormattedHTML(blocks) {
     if (!Array.isArray(blocks)) return [];
     const htmlElements = [];
 
     for (const block of blocks) {
-      if (!block || block._type !== 'block') continue;
+      if (!block) continue;
+
+      if (block._type === 'chartEmbed') {
+        const chartEl = chartEmbedToElement(block);
+        if (chartEl) htmlElements.push(chartEl);
+        continue;
+      }
+
+      if (block._type !== 'block') continue;
 
       // Determine block style (heading or paragraph)
       const style = block.style || 'normal';
@@ -218,16 +259,22 @@
     if (dateEl) dateEl.textContent = formatDate(doc.publishedAt);
     if (readEl) readEl.textContent = doc.readTime || '5 min read';
 
-    // First paragraph (prefer explicit perex, fallback to first body block)
+    // First paragraph (prefer explicit perex, fallback to first paragraph block)
     const htmlElements = blocksToFormattedHTML(doc.body);
-    const first = doc.perex || (htmlElements.length > 0 ? htmlElements[0].textContent : '');
+    // Find the first <p> element to use as fallback perex (skip charts/figures/headings)
+    let perexFallbackIndex = -1;
+    if (!doc.perex) {
+      for (let i = 0; i < htmlElements.length; i++) {
+        if (htmlElements[i].tagName === 'P') { perexFallbackIndex = i; break; }
+      }
+    }
+    const first = doc.perex || (perexFallbackIndex >= 0 ? htmlElements[perexFallbackIndex].textContent : '');
     if (firstParaEl) firstParaEl.textContent = first;
 
-    // Remaining body blocks with preserved formatting
+    // Append remaining body elements, skipping the one consumed as perex fallback
     if (bodyContainer) {
-      // Skip the first element if we used it for perex
-      const startIndex = doc.perex ? 0 : 1;
-      for (let i = startIndex; i < htmlElements.length; i++) {
+      for (let i = 0; i < htmlElements.length; i++) {
+        if (i === perexFallbackIndex) continue;
         bodyContainer.appendChild(htmlElements[i].cloneNode(true));
       }
     }
@@ -282,7 +329,10 @@
       publishedAt,
       "imageUrl": image.asset->url,
       "imageAlt": image.alt,
-      body,
+      body[]{
+        ...,
+        _type == "chartEmbed" => { ..., "chartUrl": file.asset->url }
+      },
       "translationRef": translationOf._ref,
       resources[]{label,url},
       meta
@@ -307,7 +357,10 @@
       "imageUrl": image.asset->url,
       "imageAlt": image.alt,
       "translationRef": translationOf._ref,
-      body,
+      body[]{
+        ...,
+        _type == "chartEmbed" => { ..., "chartUrl": file.asset->url }
+      },
       resources[]{label,url},
       meta
     }`;
@@ -365,13 +418,29 @@
     }
   }
 
+  // Toggle the skeleton loader state on the article section.
+  // The `.is-loading` class is set in the HTML so placeholders appear before
+  // JS executes; we strip it once the real content has been rendered (or on
+  // a hard failure, so the user isn't left staring at a shimmer forever).
+  function setLoading(isLoading) {
+    const section = document.querySelector('.article-page');
+    if (!section) return;
+    if (isLoading) {
+      section.classList.add('is-loading');
+      section.setAttribute('aria-busy', 'true');
+    } else {
+      section.classList.remove('is-loading');
+      section.removeAttribute('aria-busy');
+    }
+  }
+
   // Fetch article by slug via GROQ HTTP API, map to translation if needed, then render
   async function run() {
     const slug = getSlug();
     const path = window.location.pathname || '';
-    const isArticleTemplate = /\/(?:cs\/)?article\.html$/i.test(path);
+    const isArticleTemplate = /\/(?:cs\/)?article(?:\.html)?$/i.test(path);
     if (!slug && isArticleTemplate) {
-      window.location.href = 'publications.html';
+      window.location.href = 'publications';
       return;
     }
 
@@ -398,15 +467,20 @@
 
       if (!doc) {
         if (isArticleTemplate) {
-          window.location.href = 'publications.html';
+          window.location.href = 'publications';
         }
         return;
       }
 
       renderArticle(doc);
       if (doc.title) document.title = `${doc.title} | CzechAlert`;
+      // Article is fully populated — drop the skeleton placeholders.
+      setLoading(false);
     } catch (e) {
       console.error('Failed to load article', e);
+      // Even on failure, remove the skeleton so the (empty) page is at least
+      // legible rather than perpetually shimmering.
+      setLoading(false);
     }
   }
 

@@ -17,10 +17,10 @@
   "dependencies": {
     "@sanity/assist": "^5.0.3",
     "@sanity/document-internationalization": "4.1.1",
-    "@sanity/vision": "^5.9.0",
+    "@sanity/vision": "5.21.0",
     "react": "^19.1",
     "react-dom": "^19.1",
-    "sanity": "^5.9.0",
+    "sanity": "5.21.0",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {
@@ -29,6 +29,9 @@
     "eslint": "^9.28",
     "prettier": "^3.5",
     "typescript": "^5.8"
+  },
+  "overrides": {
+    "esbuild": "0.27.4"
   },
   "prettier": {
     "semi": false,

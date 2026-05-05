@@ -185,3 +185,140 @@
         grid-column: 1 / 2;
     }
 }
+
+.article-page--chart {
+    margin: 4rem 0;
+    width: 100%;
+
+    iframe {
+        display: block;
+        width: 100%;
+        border: 0;
+        border-radius: $radius-desktop;
+        background: transparent;
+    }
+}
+
+
+/* ===========================================================================
+   Skeleton loader
+   ---------------------------------------------------------------------------
+   Renders shimmering placeholders inside the article shell while async Sanity
+   content is being fetched. The `.is-loading` class is added in the HTML
+   template (so placeholders appear before JS runs) and removed by
+   `article-content.js` once `renderArticle()` finishes.
+   Honours `prefers-reduced-motion` by falling back to a static muted bar.
+   =========================================================================== */
+
+@keyframes skeleton-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+// Reusable skeleton surface — applied to every placeholder element below.
+%skeleton-surface {
+    color: transparent !important;
+    background-color: rgba(255, 255, 255, 0.04);
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.04) 0%,
+        rgba(255, 255, 255, 0.12) 50%,
+        rgba(255, 255, 255, 0.04) 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    border-radius: 0.6rem;
+    user-select: none;
+    pointer-events: none;
+
+    @media (prefers-reduced-motion: no-preference) {
+        animation: skeleton-shimmer 1.6s linear infinite;
+    }
+}
+
+.article-page.is-loading {
+    // Hide any decorative children of placeholder elements (e.g. resource list)
+    .article-page--content-resources { display: none; }
+
+    // Heading placeholder — two-line tall block sized to match the H1 rhythm
+    .article-page--heading {
+        @extend %skeleton-surface;
+        min-height: fn.fluid(6rem, 9rem);
+        max-width: 80%;
+        margin-bottom: $margin-h2-desktop;
+    }
+
+    // Subheading placeholder — narrower centred bar
+    .article-page--subheading {
+        @extend %skeleton-surface;
+        min-height: fn.fluid(3rem, 4rem);
+        width: 60%;
+        margin-inline: auto;
+    }
+
+    // Author / date / read-time chips
+    .article-page--features {
+        .author,
+        .date,
+        .read-time {
+            @extend %skeleton-surface;
+            display: inline-block;
+            min-height: 1.8rem;
+            min-width: 8rem;
+        }
+    }
+
+    // Hero image placeholder — keep aspect ratio so layout doesn't jump on load
+    .article-page--content-img {
+        @extend %skeleton-surface;
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        border-radius: $radius-desktop;
+        // Hide broken-image icon while src is empty
+        font-size: 0;
+    }
+
+    // First paragraph (perex) — three faux text lines stacked via box-shadow
+    .first-paragraph {
+        @extend %skeleton-surface;
+        min-height: 12rem;
+    }
+
+    // Body paragraphs container — synthesise a few faux paragraph blocks via
+    // ::before/::after so we don't need to inject placeholder DOM nodes.
+    #article-body {
+        position: relative;
+        min-height: 24rem;
+        grid-column: 1 / 5;
+
+        &::before,
+        &::after {
+            @extend %skeleton-surface;
+            content: "";
+            display: block;
+            height: 8rem;
+            margin-bottom: 2rem;
+        }
+
+        &::after {
+            height: 12rem;
+        }
+    }
+}
+
+// On smaller viewports the body container collapses to a single column —
+// keep the skeleton consistent with that layout.
+@media screen and (max-width: 80rem) {
+    .article-page.is-loading #article-body {
+        grid-column: 1 / 2;
+    }
+}
+
+.article-page--chart-caption {
+    margin-top: 1rem;
+    text-align: center;
+    color: $text-color-secondary;
+    font-style: italic;
+    font-size: 1.4rem;
+}
