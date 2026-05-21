@@ -104,6 +104,43 @@
     font-weight: 700;
 }
 
+// Portable Text lists rendered from Sanity (bullet + numbered, with nesting)
+.article-page--bullet-list,
+.article-page--ordered-list {
+    grid-column: 1 / 5;
+    color: $text-color-secondary;
+    line-height: 2;
+    letter-spacing: 0.02rem;
+    font-size: 1.8rem;
+    padding-left: 2.4rem;
+    margin: 0.8rem 0;
+
+    // Nested lists tighten up vertically and pick a different marker style
+    // so users can visually distinguish levels.
+    .article-page--bullet-list,
+    .article-page--ordered-list {
+        margin: 0.4rem 0;
+    }
+}
+
+.article-page--bullet-list {
+    list-style: disc;
+
+    .article-page--bullet-list { list-style: circle; }
+    .article-page--bullet-list .article-page--bullet-list { list-style: square; }
+}
+
+.article-page--ordered-list {
+    list-style: decimal;
+
+    .article-page--ordered-list { list-style: lower-alpha; }
+    .article-page--ordered-list .article-page--ordered-list { list-style: lower-roman; }
+}
+
+.article-page--list-item {
+    margin-bottom: 0.4rem;
+}
+
 .article-page--content-subheading {
     color: $text-color-primary;
     text-transform: uppercase;
@@ -187,6 +224,10 @@
 }
 
 .article-page--chart {
+    // Span the full width of the article grid so the chart matches the
+    // paragraph column. Without this the figure defaults to `grid-column: auto`
+    // and occupies a single 1fr track (one quarter of the grid on wide screens).
+    grid-column: 1 / -1;
     margin: 4rem 0;
     width: 100%;
 
@@ -201,114 +242,155 @@
 
 
 /* ===========================================================================
-   Skeleton loader
+   Skeleton loader  (inspired by https://codepen.io/ash1198/pen/PwzqMrN)
    ---------------------------------------------------------------------------
-   Renders shimmering placeholders inside the article shell while async Sanity
-   content is being fetched. The `.is-loading` class is added in the HTML
-   template (so placeholders appear before JS runs) and removed by
-   `article-content.js` once `renderArticle()` finishes.
-   Honours `prefers-reduced-motion` by falling back to a static muted bar.
+   Two layered techniques per placeholder:
+     1. A flat muted base — `rgba(255,255,255,0.07)` — drawn either as a solid
+        background, or as a stack of pill-shaped horizontal "lines" composed
+        from multiple `linear-gradient` background-images on a single element.
+     2. A diagonal (~12°) light sweep painted via `::after`, animated by
+        translating it horizontally. This is the codepen's signature shimmer.
+
+   The `.is-loading` class is added in the HTML so placeholders appear before
+   JS runs and is removed by `article-content.js` once `renderArticle()`
+   completes. `prefers-reduced-motion: reduce` halts the sweep but keeps the
+   muted bars visible so the page still communicates a loading state.
    =========================================================================== */
 
-@keyframes skeleton-shimmer {
-    0%   { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+@keyframes shimmerMove {
+    to { transform: translateX(55%) rotate(12deg); }
 }
 
-// Reusable skeleton surface — applied to every placeholder element below.
-%skeleton-surface {
+// Flat muted fill used for every placeholder surface.
+$skeleton-base-color: rgba(255, 255, 255, 0.07);
+
+// Shared diagonal sweep overlay — applied via `::after` on each placeholder.
+// Uses a slanted gradient instead of `background-position` to produce a
+// crisp light streak rather than a soft pulse.
+%skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
     color: transparent !important;
-    background-color: rgba(255, 255, 255, 0.04);
-    background-image: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.04) 0%,
-        rgba(255, 255, 255, 0.12) 50%,
-        rgba(255, 255, 255, 0.04) 100%
-    );
-    background-size: 200% 100%;
-    background-repeat: no-repeat;
-    border-radius: 0.6rem;
     user-select: none;
     pointer-events: none;
 
-    @media (prefers-reduced-motion: no-preference) {
-        animation: skeleton-shimmer 1.6s linear infinite;
+    &::after {
+        content: "";
+        position: absolute;
+        inset: -40% -60%;
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0)    0%,
+            rgba(255, 255, 255, 0.14) 35%,
+            rgba(255, 255, 255, 0.06) 55%,
+            rgba(255, 255, 255, 0)    100%
+        );
+        transform: translateX(-55%) rotate(12deg);
+        pointer-events: none;
+
+        @media (prefers-reduced-motion: no-preference) {
+            animation: shimmerMove 1.15s linear infinite;
+        }
     }
 }
 
+// Helper: render one solid-colour pill-shaped "line" via a background-image
+// gradient, positioned at a given Y offset with a given width. Stacking
+// multiple of these on the same element produces faux paragraph rows
+// without injecting any extra DOM.
+//
+// $width  — line width as a percentage string (e.g. "92%")
+// $top    — vertical offset (rem)
+// $height — line thickness (rem); stays small for a "text line" feel
+@function sk-line($width, $top, $height: 1.2rem) {
+    @return linear-gradient(#{$skeleton-base-color}, #{$skeleton-base-color})
+        no-repeat 0 #{$top} / #{$width} #{$height};
+}
+
 .article-page.is-loading {
-    // Hide any decorative children of placeholder elements (e.g. resource list)
+    // Hide decorative resource list while loading
     .article-page--content-resources { display: none; }
 
-    // Heading placeholder — two-line tall block sized to match the H1 rhythm
+    // ----- Heading: two stacked pill rows on a transparent host -----
     .article-page--heading {
-        @extend %skeleton-surface;
-        min-height: fn.fluid(6rem, 9rem);
-        max-width: 80%;
+        @extend %skeleton-shimmer;
+        min-height: fn.fluid(7rem, 10rem);
         margin-bottom: $margin-h2-desktop;
+        background:
+            sk-line(80%, 0,      fn.fluid(2.4rem, 3.2rem)),
+            sk-line(55%, fn.fluid(3.2rem, 4.4rem), fn.fluid(2.4rem, 3.2rem));
+        border-radius: 0.4rem;
     }
 
-    // Subheading placeholder — narrower centred bar
+    // ----- Subheading: single centred pill -----
     .article-page--subheading {
-        @extend %skeleton-surface;
-        min-height: fn.fluid(3rem, 4rem);
+        @extend %skeleton-shimmer;
+        min-height: fn.fluid(2.4rem, 3rem);
         width: 60%;
         margin-inline: auto;
+        background-color: $skeleton-base-color;
+        border-radius: 999px;
     }
 
-    // Author / date / read-time chips
+    // ----- Author / date / read-time: small pill chips -----
     .article-page--features {
         .author,
         .date,
         .read-time {
-            @extend %skeleton-surface;
+            @extend %skeleton-shimmer;
             display: inline-block;
-            min-height: 1.8rem;
-            min-width: 8rem;
+            min-height: 1.6rem;
+            min-width: 9rem;
+            background-color: $skeleton-base-color;
+            border-radius: 999px;
         }
     }
 
-    // Hero image placeholder — keep aspect ratio so layout doesn't jump on load
+    // ----- Hero image: solid block with shimmer; reserved aspect ratio -----
     .article-page--content-img {
-        @extend %skeleton-surface;
+        @extend %skeleton-shimmer;
         display: block;
         width: 100%;
         aspect-ratio: 16 / 10;
+        background-color: $skeleton-base-color;
         border-radius: $radius-desktop;
-        // Hide broken-image icon while src is empty
-        font-size: 0;
+        font-size: 0; // suppress broken-image icon
     }
 
-    // First paragraph (perex) — three faux text lines stacked via box-shadow
+    // ----- Perex (first paragraph): five thin pill lines -----
     .first-paragraph {
-        @extend %skeleton-surface;
-        min-height: 12rem;
+        @extend %skeleton-shimmer;
+        min-height: 14rem;
+        background:
+            sk-line(96%,  0),
+            sk-line(92%,  2.4rem),
+            sk-line(88%,  4.8rem),
+            sk-line(94%,  7.2rem),
+            sk-line(70%,  9.6rem);
+        border-radius: 0.4rem;
     }
 
-    // Body paragraphs container — synthesise a few faux paragraph blocks via
-    // ::before/::after so we don't need to inject placeholder DOM nodes.
+    // ----- Body: ten pill lines simulating a paragraph block -----
     #article-body {
-        position: relative;
-        min-height: 24rem;
+        @extend %skeleton-shimmer;
         grid-column: 1 / 5;
-
-        &::before,
-        &::after {
-            @extend %skeleton-surface;
-            content: "";
-            display: block;
-            height: 8rem;
-            margin-bottom: 2rem;
-        }
-
-        &::after {
-            height: 12rem;
-        }
+        min-height: 30rem;
+        background:
+            sk-line(98%,  0),
+            sk-line(94%,  2.4rem),
+            sk-line(90%,  4.8rem),
+            sk-line(96%,  7.2rem),
+            sk-line(85%,  9.6rem),
+            sk-line(92%, 13.6rem), // gap to suggest paragraph break
+            sk-line(97%, 16rem),
+            sk-line(88%, 18.4rem),
+            sk-line(94%, 20.8rem),
+            sk-line(60%, 23.2rem);
+        border-radius: 0.4rem;
     }
 }
 
-// On smaller viewports the body container collapses to a single column —
-// keep the skeleton consistent with that layout.
+// On the single-column breakpoint, body skeleton spans the full row.
 @media screen and (max-width: 80rem) {
     .article-page.is-loading #article-body {
         grid-column: 1 / 2;

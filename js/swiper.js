@@ -1,4 +1,4 @@
-const swiper = new Swiper('.blog-slider', {
+const swiper = window.blogSwiper = new Swiper('.blog-slider', {
     slidesPerView: 1,
     spaceBetween: 30,
     loop: true,

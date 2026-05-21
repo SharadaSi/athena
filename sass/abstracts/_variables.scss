@@ -22,10 +22,11 @@ $btn-color-tertiary-blueVS: #1986bb;
 $btn-color-quaternary-blue: #7F9AC1;
 $btn-color-secondary-red: #80362c;
 
-$background-black: #11171a;
+$background-black: #121214; //#11171a
+$background-grey: #1E1E22;
+
 $background-blue-grey: #2a3840;
 $background-dark-grey: #171717;
-$background-grey: #1d1d1d;
 $background-light-grey: #56585a;
 
 $btn-cta-text-color: #fff;
@@ -89,3 +90,13 @@ $margin-h2-desktop: 4rem;
 $section-heading-h2-desktop: 4rem;
 $section-heading-h2-tablet: 3rem;
 $section-heading-h2-mobile: 2rem;
+
+/*
+Here is a cohesive, modern dark UI palette based on your #121214 charcoal background. It uses a monochromatic scale with slight warm/cool balancing to ensure excellent readability and slick contrast.The Monochromatic Dark Scale
+Background: #121214 (Hex) | rgba(18, 18, 20, 1)Your base: Sleek, dark, and soft on the eyes.Cards / Containers: #1E1E22 (Hex) | rgba(30, 30, 34, 1)One tone lighter: Creates a clean elevation step. It looks distinct from the background without being overly grey.
+Labels / Borders: #2D2D33 (Hex) | rgba(45, 45, 51, 1)Even lighter: Perfect for small tag backgrounds, button borders, or subtle dividing lines.
+Text & Logo ColorsLogos & Primaries: #FFFFFF (Pure White) or #F5F5F7 (Off-White)Why: Keeps branding crisp and highly visible. Use your #FF2A00E6 accent on specific logo elements to make them pop.Footer Text: #8E8E93 (Hex) | rgba(142, 142, 147, 1)Why: A muted, secondary grey. It keeps copyright and footer links readable but subordinate to main content.
+
+Implementation UI Tip
+When placing your blue details (#003683) on the cards, use a very thin border or glow effect. Since the cards (#1E1E22) are slightly lighter, the dark blue strokes will stand out much better there than on the pitch-black background.If you want to fine-tune this look, let me know:What font weight you plan to use for the footer text (thin fonts need a lighter grey).If the logo is text-based or an icon.Whether the cards will have drop shadows or flat borders.
+*/

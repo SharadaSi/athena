@@ -1,0 +1,279 @@
+// =============================================================================
+// PR & Media Monitoring service page
+// -----------------------------------------------------------------------------
+// Mirrors the curtain-reveal architecture of `_pr-security-page.scss`.
+// The shared machinery (`.curtain-stage`, `.curtain-track`, `.curtain-section`,
+// `.service-panel`, the laptop-height `@media (max-height: 900px)` block, and
+// the reduced-motion fallbacks) lives in `_pr-security-page.scss` and applies
+// globally by class name, so this partial only carries the page-specific
+// blocks: the body wrapper, the hero, and the FAQ + inline CTA panel.
+//
+// Class prefix `pmm-` (PR & Media Monitoring) keeps the new blocks from
+// clashing with the analogous `pi-*` and `bi-*` blocks on the sibling
+// service pages.
+// =============================================================================
+
+@use "../abstracts/variables" as *;
+@use "../abstracts/functions" as fn;
+@use "../abstracts/mixins" as *;
+@use "../base/typography" as *;
+@use "../base/utilities" as *;
+
+// -----------------------------------------------------------------------------
+// Page wrapper — keeps the curtain stack contained and floats the nav header
+// over the hero so the curtain stage starts flush with the viewport top.
+// -----------------------------------------------------------------------------
+.pr-media-page {
+    color: $text-color-primary;
+    background-color: $background-black;
+
+    .article-page__header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background: transparent;
+    }
+
+    main {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Hero — first curtain panel. Looping video + frosted-glass overlay, same
+// treatment as the PI & Security and Business Intelligence heroes.
+// -----------------------------------------------------------------------------
+.pmm-hero {
+    background-color: $background-black;
+
+    &__video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        z-index: 0;
+
+        @include respond-below(md) {
+            object-fit: fill;
+        }
+    }
+
+    &__blur {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.55);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        pointer-events: none;
+    }
+
+    .content {
+        align-items: center;
+        text-align: center;
+        z-index: 2;
+    }
+
+    &__eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        font-size: fn.fluid(1.2rem, 1.6rem);
+        color: $btn-color-tertiary-blue;
+        margin-bottom: 2rem;
+    }
+
+    &__heading {
+        color: $text-color-primary;
+        font-size: fn.fluid(4rem, 6rem);
+        font-weight: 700;
+        line-height: 1.15;
+        max-width: 16ch;
+        margin-inline: auto;
+        margin-bottom: 2rem;
+    }
+
+    &__subheading {
+        font-size: fn.fluid(1.6rem, 2rem);
+        font-weight: 400;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.75);
+        max-width: 60ch;
+        margin-inline: auto;
+    }
+
+    &__scroll-cue {
+        margin-top: 4rem;
+        font-size: 1.4rem;
+        color: $text-color-tertiary;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+
+        @media (prefers-reduced-motion: no-preference) {
+            animation: pmm-bounce 1.8s ease-in-out infinite;
+        }
+    }
+}
+
+@keyframes pmm-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(8px); }
+}
+
+// -----------------------------------------------------------------------------
+// FAQ + inline CTA — final curtain panel. Same scale and rhythm as
+// `.pi-faq` / `.bi-faq` so the service pages feel like siblings.
+// -----------------------------------------------------------------------------
+.pmm-faq {
+    background-color: $background-black;
+
+    &__content {
+        align-items: center;
+        overflow-y: auto;
+        padding-block: 4rem;
+    }
+
+    &__inner {
+        width: 90%;
+        max-width: 90rem;
+        margin-inline: auto;
+    }
+
+    &__heading {
+        color: $text-color-primary;
+        font-size: fn.fluid(2.8rem, 4.2rem);
+        font-weight: 700;
+        line-height: 1.15;
+        text-align: center;
+        margin-bottom: 1.25rem;
+    }
+
+    &__subheading {
+        font-size: fn.fluid(1.4rem, 1.7rem);
+        line-height: 1.5;
+        font-weight: 400;
+        color: $text-color-secondary;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    // Inline CTA block at the end of the FAQ list.
+    &__cta {
+        margin-top: 4rem;
+        padding-top: 3rem;
+        text-align: center;
+
+        .pmm-cta__heading {
+            color: $text-color-primary;
+            font-size: fn.fluid(2.2rem, 3rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .pmm-cta__lead {
+            font-size: fn.fluid(1.4rem, 1.7rem);
+            line-height: 1.5;
+            font-weight: 400;
+            color: $text-color-secondary;
+            margin-bottom: fn.fluid(3rem, 4.5rem);
+        }
+
+        .btn {
+            font-size: fn.fluid(1.4rem, 1.8rem);
+            padding: fn.fluid(1rem, 1.4rem) fn.fluid(2.5rem, 4rem);
+        }
+    }
+
+    &__item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 1.5rem 0;
+
+        // Opt this subtree into keyword interpolation so `block-size` can
+        // transition between 0 and auto on `::details-content`.
+        interpolate-size: allow-keywords;
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            font-size: fn.fluid(1.5rem, 1.8rem);
+            font-weight: 600;
+            color: $text-color-primary;
+
+            &::-webkit-details-marker { display: none; }
+
+            &::after {
+                content: "+";
+                font-size: 2.4rem;
+                line-height: 1;
+                color: $btn-color-secondary-blue;
+                flex-shrink: 0;
+                transform-origin: center;
+
+                @media (prefers-reduced-motion: no-preference) {
+                    transition: transform 0.3s ease;
+                }
+            }
+        }
+
+        &[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        &::details-content {
+            block-size: 0;
+            overflow: hidden;
+            opacity: 0;
+
+            @media (prefers-reduced-motion: no-preference) {
+                transition:
+                    block-size 0.35s ease,
+                    opacity 0.25s ease,
+                    content-visibility 0.35s;
+                transition-behavior: allow-discrete;
+            }
+        }
+
+        &[open]::details-content {
+            block-size: auto;
+            opacity: 1;
+        }
+
+        &__answer {
+            margin-top: 1.5rem;
+            font-size: fn.fluid(1.4rem, 1.6rem);
+            line-height: 1.6;
+            color: $text-color-secondary;
+            max-width: 75ch;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Responsive — laptop viewports (matches the analogous block in
+// `_pr-security-page.scss`). Trims FAQ heading scale and paddings so the
+// panel fits inside the 100vh curtain frame without internal scrolling.
+// -----------------------------------------------------------------------------
+@media (max-height: 900px) {
+    .pmm-faq {
+        &__content    { padding-block: 2rem; }
+        &__heading    { font-size: fn.fluid(2.4rem, 3.4rem); margin-bottom: 0.75rem; }
+        &__subheading { margin-bottom: 2rem; }
+        &__item       { padding: 1rem 0; }
+        &__cta        { margin-top: 2.5rem; padding-top: 2rem; }
+        &__cta .pmm-cta__heading { font-size: fn.fluid(1.9rem, 2.4rem); margin-bottom: 0.75rem; }
+        &__cta .pmm-cta__lead    { margin-bottom: 1.5rem; }
+    }
+}
+
+@include respond-below(md) {
+    .pmm-faq__content { padding-block: 4rem; }
+}

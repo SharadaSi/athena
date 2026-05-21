@@ -289,59 +289,35 @@
 
     if (!slides.length) return;
 
-    const staticSnapshots = slides.map((s) => {
-      const headingEl = s.querySelector('.text-container--heading .heading-XXL');
-      const buttonLink = s.querySelector('.text-container a');
-      const imgEl = s.querySelector('.img-overlay-wrapper img.blog-img');
-      return {
-        heading: headingEl ? headingEl.textContent : '',
-        href: buttonLink ? buttonLink.href : '',
-        imgSrc: imgEl ? imgEl.src : '',
-      };
-    });
-
-    const firstStatic = staticSnapshots[0];
-    const secondStatic = staticSnapshots[1];
-    const newest = articles[0];
-
-    const slide1 = slides[0];
-    if (slide1 && newest) {
-      const headingEl = slide1.querySelector('.text-container--heading .heading-XXL');
-      const buttonLink = slide1.querySelector('.text-container a');
-      const imgEl = slide1.querySelector('.img-overlay-wrapper img.blog-img');
-      if (headingEl) headingEl.textContent = newest.title || headingEl.textContent || '';
-      if (buttonLink) buttonLink.href = newest.slug ? `${articlePath}?slug=${newest.slug}` : buttonLink.href;
-      if (imgEl && newest.imageUrl) imgEl.src = newest.imageUrl;
+    const count = Math.min(slides.length, articles.length);
+    for (let i = 0; i < count; i++) {
+      const slide = slides[i];
+      const article = articles[i];
+      const headingEl = slide.querySelector('.text-container--heading .heading-XXL');
+      const buttonLink = slide.querySelector('.text-container a');
+      const imgEl = slide.querySelector('.img-overlay-wrapper img.blog-img');
+      if (headingEl && article.title) headingEl.textContent = article.title;
+      if (buttonLink && article.slug) buttonLink.href = `${articlePath}?slug=${article.slug}`;
+      if (imgEl && article.imageUrl) {
+        imgEl.src = article.imageUrl;
+        if (article.title) imgEl.alt = article.title;
+      }
     }
 
-    const slide2 = slides[1];
-    if (slide2 && firstStatic) {
-      const headingEl = slide2.querySelector('.text-container--heading .heading-XXL');
-      const buttonLink = slide2.querySelector('.text-container a');
-      const imgEl = slide2.querySelector('.img-overlay-wrapper img.blog-img');
-      if (headingEl && firstStatic.heading) headingEl.textContent = firstStatic.heading;
-      if (buttonLink && firstStatic.href) buttonLink.href = firstStatic.href;
-      if (imgEl && firstStatic.imgSrc) imgEl.src = firstStatic.imgSrc;
-    }
-
-    const slide3 = slides[2];
-    if (slide3 && secondStatic) {
-      const headingEl = slide3.querySelector('.text-container--heading .heading-XXL');
-      const buttonLink = slide3.querySelector('.text-container a');
-      const imgEl = slide3.querySelector('.img-overlay-wrapper img.blog-img');
-      if (headingEl && secondStatic.heading) headingEl.textContent = secondStatic.heading;
-      if (buttonLink && secondStatic.href) buttonLink.href = secondStatic.href;
-      if (imgEl && secondStatic.imgSrc) imgEl.src = secondStatic.imgSrc;
+    if (window.blogSwiper && typeof window.blogSwiper.update === 'function') {
+      window.blogSwiper.update();
     }
   }
 
   async function run() {
     try {
-      const res1 = await fetch(buildApiUrl(LOCALE));
+      // `credentials: 'omit'` avoids Firefox Strict ETP / blocker heuristics that flag
+      // credentialed cross-origin requests as tracking traffic (Sanity is a public dataset).
+      const res1 = await fetch(buildApiUrl(LOCALE), { credentials: 'omit' });
       const json1 = await res1.json();
       let articles = Array.isArray(json1.result) ? json1.result : [];
       if (!articles.length && LOCALE !== 'en') {
-        const res2 = await fetch(buildApiUrl('en'));
+        const res2 = await fetch(buildApiUrl('en'), { credentials: 'omit' });
         const json2 = await res2.json();
         articles = Array.isArray(json2.result) ? json2.result : [];
       }

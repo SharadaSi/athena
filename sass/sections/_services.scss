@@ -81,6 +81,41 @@
             color: $text-color-primary;
             @include gridCard;
         }
+
+        // Heading-as-link inside a service card — keeps the heading style
+        // intact and adds a hover underline cue
+        &--heading-link {
+            color: inherit;
+            text-decoration: none;
+            text-transform: none;
+            transition: color 0.2s ease;
+
+            &:hover,
+            &:focus-visible {
+                color: $btn-color-tertiary-blue;
+                text-decoration: underline;
+                text-underline-offset: 0.3em;
+            }
+        }
+
+        // Inline CTA link beneath a service card description
+        &--cta-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: $btn-color-secondary-blue;
+            text-decoration: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+
+            &:hover,
+            &:focus-visible {
+                color: $btn-color-tertiary-blue;
+                transform: translateX(3px);
+            }
+        }
     }
 }
 
@@ -171,5 +206,85 @@
                 height: 100%;
             }
         }    
+    }
+}
+
+// =============================================================================
+// 6-item variant — `.services__grid.services__grid--six`
+// Same flanking-image pattern as the default 4-item grid, but extended with a
+// third row of cards. Used by the "Protective" panel on the PI & Security
+// page where six sub-capabilities need to coexist inside one curtain frame.
+// Layout cascades through the same breakpoints as the base grid.
+// =============================================================================
+.services__grid--six {
+    // DESKTOP — three rows flanking a tall central image
+    grid-template-areas:
+        "firstL  grid-img firstR"
+        "secondL grid-img secondR"
+        "thirdL  grid-img thirdR";
+
+    // TABLET — two columns, image spans full width between rows
+    @media screen and (max-width: 50rem) and (min-width: 41rem) {
+        grid-template-rows: repeat(4, auto);
+        grid-template-areas:
+            "firstL  firstR"
+            "secondL secondR"
+            "grid-img grid-img"
+            "thirdL  thirdR";
+    }
+
+    // MOBILE — single column, image slotted between halves
+    @media screen and (max-width: 40rem) {
+        grid-template-rows: repeat(7, auto);
+        grid-template-areas:
+            "firstL"
+            "secondL"
+            "thirdL"
+            "grid-img"
+            "firstR"
+            "secondR"
+            "thirdR";
+    }
+}
+
+// =============================================================================
+// 8-item variant — `.services__grid.services__grid--eight`
+// Same flanking-image pattern as the 4- and 6-item grids, extended to four
+// rows of cards on each side of the central image. Used when a service panel
+// needs to surface eight sub-capabilities inside a single curtain frame.
+// Layout cascades through the same breakpoints as the base grid.
+// =============================================================================
+.services__grid--eight {
+    // DESKTOP — four rows flanking a tall central image
+    grid-template-areas:
+        "firstL  grid-img firstR"
+        "secondL grid-img secondR"
+        "thirdL  grid-img thirdR"
+        "fourthL grid-img fourthR";
+
+    // TABLET — two columns, image spans full width between the two pairs
+    @media screen and (max-width: 50rem) and (min-width: 41rem) {
+        grid-template-rows: repeat(5, auto);
+        grid-template-areas:
+            "firstL  firstR"
+            "secondL secondR"
+            "grid-img grid-img"
+            "thirdL  thirdR"
+            "fourthL fourthR";
+    }
+
+    // MOBILE — single column, image slotted between left and right halves
+    @media screen and (max-width: 40rem) {
+        grid-template-rows: repeat(9, auto);
+        grid-template-areas:
+            "firstL"
+            "secondL"
+            "thirdL"
+            "fourthL"
+            "grid-img"
+            "firstR"
+            "secondR"
+            "thirdR"
+            "fourthR";
     }
 }

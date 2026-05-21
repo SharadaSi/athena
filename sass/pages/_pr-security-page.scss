@@ -1,0 +1,732 @@
+// =============================================================================
+// Private Investigations & Security service page
+// Curtain reveal effect inspired by https://codepen.io/GreenSock/pen/qEEJBGP
+// Pattern: hero is pinned with `pinSpacing: false`; each subsequent
+// `.curtain-section.pin` contains a `.content` layer and an `.overlay` layer.
+// GSAP scrubs the overlay's `yPercent` to slide it up, revealing the content.
+// =============================================================================
+
+@use "../abstracts/variables" as *;
+@use "../abstracts/functions" as fn;
+@use "../abstracts/mixins" as *;
+@use "../base/typography" as *;
+@use "../base/utilities" as *;
+
+// -----------------------------------------------------------------------------
+// Page wrapper — keeps the curtain stack contained without leaking transforms
+// -----------------------------------------------------------------------------
+.pr-security-page {
+    color: $text-color-primary;
+    background-color: $background-black;
+
+    // Float the navigation header over the hero so the curtain stage starts
+    // at the very top of the viewport. This makes the hero feel like a true
+    // 100vh panel (header included) and lets the curtain reveal kick in as
+    // soon as the user starts scrolling — no header gutter to scroll past.
+    .article-page__header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background: transparent;
+    }
+
+    // Pull `<main>` up underneath the floating header so the curtain stage
+    // begins flush with the viewport top.
+    main {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Nebula 3D host — container-scoped, lives inside one curtain overlay
+// -----------------------------------------------------------------------------
+// Mounted as a child of the first red `.service-panel__overlay`. Because
+// the overlay itself is absolutely positioned and animated by GSAP
+// (yPercent lift), the canvas travels with the curtain automatically and
+// is clipped to the overlay's bounds.
+//
+// Layer order inside the overlay (back → front):
+//   1. `.service-panel__overlay--red` radial-gradient background paint
+//   2. `.service-panel__nebula` canvas (z-index 1) — the 3D model
+//   3. Heading + paragraph div (z-index 2) — sits on top, readable
+//
+// The host explicitly fills the overlay's padding box (top/left/right/bottom
+// AND width/height) so even if a flex parent or `inset` shorthand quirk
+// trims it, the canvas still spans the whole viewport.
+.service-panel__nebula {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+
+    canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+// Lift the overlay's heading + paragraph above the canvas. The overlay's
+// own background paint sits below both (it's a CSS background, not a
+// child element, so no z-index needed for it).
+.service-panel__overlay > div {
+    position: relative;
+    z-index: 2;
+}
+
+// -----------------------------------------------------------------------------
+// Curtain stage — stacks all panels in a sticky 100vh frame
+// -----------------------------------------------------------------------------
+// The outer `.curtain-stage` is sized by JS to (panels * 2 + 1) * 100vh so
+// scroll length matches the GSAP timeline. The inner `.curtain-track` uses
+// `position: sticky` to stay glued to the viewport top while the user
+// scrolls through the stage. Panels are absolutely positioned inside the
+// track and stacked via `z-index` (later panels in the DOM sit on top).
+.curtain-stage {
+    position: relative;
+    width: 100%;
+    // Default fallback height before JS kicks in — keeps layout sensible
+    // even if GSAP is blocked. JS overrides this to the timeline length.
+    min-height: 100vh;
+}
+
+.curtain-track {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    // `isolation: isolate` keeps panel z-indexes contained — they don't
+    // bleed into the rest of the page (footer, nav, etc.).
+    isolation: isolate;
+}
+
+// -----------------------------------------------------------------------------
+// Curtain machinery — every panel is full-frame and stacked
+// -----------------------------------------------------------------------------
+.curtain-section {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    // GPU layer hint — the slide and overlay-lift both animate `transform`
+    will-change: transform;
+
+    .content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        // `safe center` falls back to flex-start when the content is taller
+        // than the 100vh curtain frame — without this the centered content
+        // overflows upward and the bottom becomes unreachable even with
+        // `overflow-y: auto` on the inner container.
+        justify-content: safe center;
+    }
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: safe center;
+        will-change: transform;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Shared inner container — holds every panel's text inside a sane width
+// -----------------------------------------------------------------------------
+.curtain-inner {
+    width: 90%;
+    max-width: 110rem;
+    margin-inline: auto;
+    padding-block: 4rem;
+}
+
+// -----------------------------------------------------------------------------
+// Hero — first curtain panel, large headline + subheading
+// Background is a looping video covered by a frosted-glass blur layer (the
+// same treatment as the mobile navigation drawer in `_navigation.scss`).
+// -----------------------------------------------------------------------------
+.pr-security-hero {
+    background-color: $background-black;
+
+    // Looping video sits behind everything else inside the panel
+    &__video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        z-index: 0;
+
+        // On narrow viewports the cover crop hides too much of the loop;
+        // stretch-fill matches the treatment used by `.publishing-page--hero-video`.
+        @include respond-below(md) {
+            object-fit: fill;
+        }
+    }
+
+    // Frosted-glass overlay — blurs the video and tints it dark, matching
+    // the `.nav--menu` mobile drawer treatment.
+    &__blur {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.55);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        pointer-events: none;
+    }
+
+    .content {
+        align-items: center;
+        text-align: center;
+        // Sit above the video and the blur layer
+        z-index: 2;
+    }
+
+    &__eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        font-size: fn.fluid(1.2rem, 1.6rem);
+        color: $btn-color-tertiary-blue;
+        margin-bottom: 2rem;
+    }
+
+    &__heading {
+        // Match the index hero heading scale (6rem desktop → ~4rem on
+        // narrow screens) instead of the full `heading-XXL` ramp which
+        // ran up to 8rem and dwarfed everything else on the page.
+        color: $text-color-primary;
+        font-size: fn.fluid(4rem, 6rem);
+        font-weight: 700;
+        line-height: 1.15;
+        max-width: 16ch;
+        margin-inline: auto;
+        margin-bottom: 2rem;
+    }
+
+    &__subheading {
+        // Match the index hero subheading (2rem) — the previous
+        // `parag-XL` ramp peaked at 2.2rem with secondary colour, so this
+        // is a small tweak that brings the two heroes into visual parity.
+        font-size: fn.fluid(1.6rem, 2rem);
+        font-weight: 400;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.75);
+        max-width: 60ch;
+        margin-inline: auto;
+    }
+
+    &__scroll-cue {
+        margin-top: 4rem;
+        font-size: 1.4rem;
+        color: $text-color-tertiary;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+
+        // Subtle bounce — guarded by reduced-motion preference
+        @media (prefers-reduced-motion: no-preference) {
+            animation: pr-security-bounce 1.8s ease-in-out infinite;
+        }
+    }
+}
+
+@keyframes pr-security-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(8px); }
+}
+
+// -----------------------------------------------------------------------------
+// Service panel — the curtain (overlay) + the detail (content)
+// Each `.curtain-section.pin.service-panel` gets a colour modifier on the
+// overlay so successive curtains feel distinct as the user scrolls.
+// -----------------------------------------------------------------------------
+.service-panel {
+
+    &__content {
+        background-color: $background-black;
+        // Allow long sub-grids (TSCM panel uses the index services grid) to
+        // scroll inside their 100vh curtain frame instead of being clipped.
+        overflow-y: auto;
+        // Vertical breathing room so the first/last items don't kiss the
+        // edges of the curtain frame when the content does have to scroll.
+        padding-block: 3rem;
+    }
+
+    &__detail {
+        max-width: 120rem;
+        margin-inline: auto;
+        padding: 0 4rem;
+    }
+
+    // Tighter, in-panel rendition of the index `.services__grid` layout.
+    // Forces the grid to fit a 100vh curtain frame: smaller gap, lighter
+    // card padding, and a max width that matches the detail container.
+    .services__grid {
+        margin-top: 2rem;
+        max-width: 110rem;
+        margin-inline: auto;
+        gap: 1.25rem;
+    }
+
+    &__tag {
+        display: inline-block;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        font-size: 1.3rem;
+        color: $btn-color-tertiary-blue;
+        margin-bottom: 1rem;
+    }
+
+    // Curtain panels live inside a 100vh frame, so the full `heading-XXL`
+    // ramp (5rem → 8rem) is far too tall — it eats most of the available
+    // height before the sub-grid even renders. Use a tighter ramp tuned
+    // for laptop viewports while staying visually anchored to the brand
+    // heading scale.
+    &__title {
+        color: $text-color-primary;
+        font-size: fn.fluid(2.8rem, 4.2rem);
+        font-weight: 700;
+        line-height: 1.15;
+        margin-bottom: 1.5rem;
+    }
+
+    &__lead {
+        font-size: fn.fluid(1.4rem, 1.7rem);
+        line-height: 1.5;
+        color: $text-color-secondary;
+        margin-bottom: 1.5rem;
+        max-width: 70ch;
+    }
+
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem 3rem;
+
+        li {
+            position: relative;
+            padding-left: 2.5rem;
+            font-size: fn.fluid(1.4rem, 1.6rem);
+            color: $text-color-secondary;
+            line-height: 1.5;
+
+            // Custom bullet — small accent dot that matches the brand red
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0.7em;
+                width: 0.8rem;
+                height: 0.8rem;
+                border-radius: 50%;
+                background-color: $btn-color-secondary-blue;
+            }
+        }
+    }
+
+        // ---- Overlay variants — the "curtain" colour for each service ---------
+        // Each overlay reuses the radial-gradient palette that previously
+        // lived on the hero: warm red on one diagonal, cool blue on the other,
+        // over the deep black background.
+        &__overlay {
+            align-items: center;
+            padding: 4rem;
+            // Clip the zoomed `::before` background to the overlay's bounds.
+            // Without this the scaled image bleeds 75% beyond the overlay
+            // (at scale 2.5 the ::before extends 0.75 × overlay-size above
+            // AND below), and once the overlay lifts via `yPercent: -100`
+            // the bottom bleed stays parked in the viewport as a residual
+            // strip that grows with the zoom.
+            overflow: hidden;
+            // NOTE: do NOT declare `--bg-zoom` here. The curtain JS scrubs
+            // the variable on `.curtain-stage` and it inherits down to every
+            // overlay. Declaring a local default on the overlay would shadow
+            // the inherited value and lock the zoom at 1. The `::before`
+            // pseudo-element consumes it via `var(--bg-zoom, 1)` — the
+            // fallback there already covers the no-GSAP case.
+
+            // Mirror the publications page title-card layout:
+            //   - heading sits on the left at `heading-XXL` scale
+            //   - paragraph is a centered `parag-XL` subheading in the
+            //     secondary text tone.
+            // The inner wrapper `<div>` constrains the readable column so
+            // the left-aligned heading doesn't run edge-to-edge on wide
+            // viewports while the paragraph still reads as centered below.
+            > div {
+                width: 100%;
+                max-width: 110rem;
+                margin-inline: auto;
+            }
+
+            h2 {
+                @include heading-XXL;
+                text-align: left;
+                color: $text-color-primary;
+                margin-bottom: $margin-h2-desktop;
+            }
+
+            // Subheading paragraph — centered to match
+            // `.publishing-page--subheading` (parag-XL, secondary tone,
+            // text-align center). The block itself is centered inside the
+            // overlay's readable column via `margin-inline: auto`.
+            p {
+                @include parag-XL;
+                text-align: center;
+                color: $text-color-secondary;
+                margin-inline: auto;
+            }
+
+            // Shared background-image carrier. We can't transform a CSS
+            // `background-image` directly, so each variant paints its
+            // photo on a pseudo-element that we scale via the
+            // `--bg-zoom` custom property the JS scrubs with scroll.
+            //
+            // The pseudo is `position: absolute; inset: 0` so it stays
+            // out of the overlay's flex flow (the heading + paragraph
+            // wrapper at `> div` keeps its own layout). It sits at
+            // z-index 0 — behind the nebula canvas (z-index 1) and the
+            // text wrapper (z-index 2).
+            &--red,
+            &--blue,
+            &--graphite {
+                background-color: $background-black;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    z-index: 0;
+                    background-position: center;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    transform: scale(var(--bg-zoom, 1));
+                    transform-origin: center center;
+                    will-change: transform;
+                    pointer-events: none;
+                }
+            }
+
+            &--red::before {
+                background-image: url("../media/zeros-and-ones-bg.png");
+            }
+
+            &--blue::before {
+                background-image: url("../media/abstract-triangular-nebula.png");
+            }
+
+            &--graphite::before {
+                background-image: url("../media/abstract-network-background.png");
+            }
+        }
+}
+
+// -----------------------------------------------------------------------------
+// FAQ — lives inside a curtain panel; its content fills the pinned frame
+// -----------------------------------------------------------------------------
+.pi-faq {
+    background-color: $background-black;
+
+    &__content {
+        // Centre the FAQ block inside the 100vh curtain frame and let the
+        // questions scroll internally on short viewports.
+        align-items: center;
+        overflow-y: auto;
+        padding-block: 4rem;
+    }
+
+    &__inner {
+        width: 90%;
+        max-width: 90rem;
+        margin-inline: auto;
+    }
+
+    // Match the service-panel title scale so the FAQ heading sits in
+    // visual harmony with the rest of the page rather than peaking at the
+    // full `heading-XXL` 8rem ramp.
+    &__heading {
+        color: $text-color-primary;
+        font-size: fn.fluid(2.8rem, 4.2rem);
+        font-weight: 700;
+        line-height: 1.15;
+        text-align: center;
+        margin-bottom: 1.25rem;
+    }
+
+    // Match the service-panel lead — same size, weight and secondary tone.
+    &__subheading {
+        font-size: fn.fluid(1.4rem, 1.7rem);
+        line-height: 1.5;
+        font-weight: 400;
+        color: $text-color-secondary;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    // Inline CTA block at the end of the FAQ list — replaces the standalone
+    // CTA panel. Sits beneath the questions; the FAQ items already provide
+    // their own bottom border so no extra divider is needed here.
+    &__cta {
+        margin-top: 4rem;
+        padding-top: 3rem;
+        text-align: center;
+
+        // Slightly smaller than the FAQ heading so it reads as a sub-section
+        // rather than a competing title, while still matching the page rhythm.
+        .pi-cta__heading {
+            color: $text-color-primary;
+            font-size: fn.fluid(2.2rem, 3rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .pi-cta__lead {
+            font-size: fn.fluid(1.4rem, 1.7rem);
+            line-height: 1.5;
+            font-weight: 400;
+            color: $text-color-secondary;
+            margin-bottom: fn.fluid(3rem, 4.5rem);
+        }
+
+        .btn {
+            font-size: fn.fluid(1.4rem, 1.8rem);
+            padding: fn.fluid(1rem, 1.4rem) fn.fluid(2.5rem, 4rem);
+        }
+    }
+
+    &__item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 1.5rem 0;
+
+        // Opt this subtree into keyword interpolation so block-size can
+        // transition between 0 and auto on `::details-content`. Scoped
+        // here rather than at :root so it doesn't leak into the rest of
+        // the page.
+        interpolate-size: allow-keywords;
+
+        // Hide the default disclosure triangle for both webkit and standard
+        summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            // Align with the service-panel lead scale so questions don't
+            // out-shout the rest of the page.
+            font-size: fn.fluid(1.5rem, 1.8rem);
+            font-weight: 600;
+            color: $text-color-primary;
+
+            &::-webkit-details-marker { display: none; }
+
+            // Plus indicator — rotates 45° on open to become an ×-ish minus,
+            // which gives us a smooth tween instead of a hard glyph swap.
+            &::after {
+                content: "+";
+                font-size: 2.4rem;
+                line-height: 1;
+                color: $btn-color-secondary-blue;
+                flex-shrink: 0;
+                transform-origin: center;
+
+                @media (prefers-reduced-motion: no-preference) {
+                    transition: transform 0.3s ease;
+                }
+            }
+        }
+
+        &[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        // The `::details-content` pseudo-element wraps everything inside
+        // <details> except <summary>. Animating its block-size (with
+        // `interpolate-size: allow-keywords` above) gives us a true
+        // height-auto reveal. `content-visibility` + `allow-discrete`
+        // makes the closed state non-rendering without killing the
+        // transition.
+        &::details-content {
+            block-size: 0;
+            overflow: hidden;
+            opacity: 0;
+
+            @media (prefers-reduced-motion: no-preference) {
+                transition:
+                    block-size 0.35s ease,
+                    opacity 0.25s ease,
+                    content-visibility 0.35s;
+                transition-behavior: allow-discrete;
+            }
+        }
+
+        &[open]::details-content {
+            block-size: auto;
+            opacity: 1;
+        }
+
+        &__answer {
+            margin-top: 1.5rem;
+            font-size: fn.fluid(1.4rem, 1.6rem);
+            line-height: 1.6;
+            color: $text-color-secondary;
+            max-width: 75ch;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Final CTA section — also a curtain panel
+// -----------------------------------------------------------------------------
+.pi-cta {
+    background:
+        radial-gradient(ellipse at center, rgba(255, 42, 0, 0.18), transparent 60%),
+        $background-black;
+
+    &__content {
+        align-items: center;
+        text-align: center;
+        padding: 4rem;
+    }
+
+    &__inner {
+        width: 90%;
+        max-width: 80rem;
+        margin-inline: auto;
+    }
+
+    &__heading {
+        @include heading-XXL;
+        margin-bottom: 2rem;
+    }
+
+    &__lead {
+        @include parag-XL;
+        margin-bottom: 4rem;
+        color: $text-color-secondary;
+    }
+
+    .btn {
+        font-size: fn.fluid(1.4rem, 1.8rem);
+        padding: fn.fluid(1rem, 1.4rem) fn.fluid(2.5rem, 4rem);
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Responsive adjustments
+// -----------------------------------------------------------------------------
+// Laptop viewports — short heights (typ. 720–820px) on 1366–1440 wide screens.
+// The curtain frame is exactly 100vh, so anything taller than the viewport
+// gets clipped at the bottom. Trim heading scale, paddings and grid gaps so
+// the densest panels (Protective Services with 6 cards, Training with 4
+// cards + tall headings) fit without internal scrolling.
+@media (max-height: 900px) {
+
+    .service-panel {
+        &__content   { padding-block: 1.5rem; }
+        &__detail    { padding: 0 3rem; }
+        &__tag       { margin-bottom: 0.75rem; font-size: 1.2rem; }
+        &__title     { font-size: fn.fluid(2.4rem, 3.4rem); margin-bottom: 1rem; }
+        &__lead      { font-size: fn.fluid(1.3rem, 1.5rem); margin-bottom: 1rem; }
+
+        .services__grid {
+            margin-top: 1.25rem;
+            gap: 1rem;
+
+            // Compact the cards themselves — the grid mixin's default padding
+            // is tuned for the homepage section, not a 100vh curtain frame.
+            &--firstL, &--secondL, &--thirdL,
+            &--firstR, &--secondR, &--thirdR {
+                padding: 1.25rem 1.5rem;
+            }
+        }
+
+        &__overlay h2 { font-size: fn.fluid(2.6rem, 4rem); margin-bottom: 1rem; }
+    }
+
+    // FAQ on laptops — keep the question list inside the 100vh frame
+    // without obvious internal scrolling on the most common viewport.
+    .pi-faq {
+        &__content    { padding-block: 2rem; }
+        &__heading    { font-size: fn.fluid(2.4rem, 3.4rem); margin-bottom: 0.75rem; }
+        &__subheading { margin-bottom: 2rem; }
+        &__item       { padding: 1rem 0; }
+        &__cta        { margin-top: 2.5rem; padding-top: 2rem; }
+        &__cta .pi-cta__heading { font-size: fn.fluid(1.9rem, 2.4rem); margin-bottom: 0.75rem; }
+        &__cta .pi-cta__lead    { margin-bottom: 1.5rem; }
+    }
+}
+
+@include respond-below(md) {
+
+    .service-panel {
+        &__detail { padding: 0 2rem; }
+        &__list  { grid-template-columns: 1fr; }
+    }
+
+    .pi-faq__content { padding-block: 4rem; }
+}
+
+// -----------------------------------------------------------------------------
+// Reduced-motion / no-JS fallback
+// When the user prefers reduced motion, or GSAP fails to load and the JS
+// adds the `.curtain-fallback` class to <html>, we collapse the absolute
+// stack into a normal flowing list of full-height sections. No transforms
+// remain in the way, so the page is fully usable without the animation.
+// -----------------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+    .curtain-stage  { min-height: 0; height: auto !important; }
+    .curtain-track  { position: static; height: auto; overflow: visible; }
+    .curtain-section {
+        position: relative;
+        inset: auto;
+        height: auto;
+        min-height: 60vh;
+        transform: none !important;
+
+        .overlay {
+            position: relative;
+            inset: auto;
+            transform: none !important;
+        }
+    }
+}
+
+.curtain-fallback {
+    .curtain-stage  { min-height: 0; height: auto !important; }
+    .curtain-track  { position: static; height: auto; overflow: visible; }
+    .curtain-section {
+        position: relative;
+        inset: auto;
+        height: auto;
+        min-height: 60vh;
+        transform: none !important;
+
+        .overlay {
+            position: relative;
+            inset: auto;
+            transform: none !important;
+        }
+    }
+}

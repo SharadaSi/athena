@@ -1,6 +1,7 @@
 
 
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {ChartHeightInput} from '../components/ChartHeightInput'
 
 export const postType = defineType({
   name: 'post',
@@ -93,7 +94,10 @@ export const postType = defineType({
               title: 'Height (px)',
               type: 'number',
               initialValue: 500,
+              description:
+                'Auto-measured from the uploaded HTML file when it changes. Override manually if needed.',
               validation: (rule) => rule.min(100).max(4000),
+              components: {input: ChartHeightInput},
             }),
             defineField({
               name: 'caption',

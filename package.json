@@ -6,13 +6,17 @@
   "scripts": {
     "compile:sass": "sass sass/main.scss css/style.css -w",
     "dev": "http-server . -p 8080 -c-1 -e html --gzip",
+    "dev:firefox": "concurrently -n server,browser \"http-server . -p 8080 -c-1 -e html --gzip\" \"wait-on http://127.0.0.1:8080 && start firefox http://127.0.0.1:8080/\"",
     "serve": "http-server . -p 8080 -c-1 -e html --gzip"
   },
   "author": "Sarka Simova",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "http-server": "^14.1.1",
-    "sass": "^1.81.0"
+    "sass": "^1.81.0",
+    "typescript": "^6.0.3",
+    "wait-on": "^9.0.5"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.18",

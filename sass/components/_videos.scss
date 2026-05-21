@@ -25,7 +25,24 @@
     min-width: 100vw;
     min-height: 100vh;
     object-fit: cover;
+    // Pushed behind the blur layer so the frosted-glass effect can sample
+    // the video pixels via backdrop-filter.
+    z-index: -2;
+    pointer-events: none;
+}
+
+// Frosted-glass layer that sits between the looping hero video and the
+// page content. Mirrors the treatment used on the mobile navigation drawer
+// (`.nav--menu`) and on the pr-security hero.
+.publishing-page--hero-blur {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
+    background: rgba(0, 0, 0, 0.55);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
     pointer-events: none;
 }
 

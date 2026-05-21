@@ -211,6 +211,9 @@ export default defineCliConfig({
      * Learn more at https://www.sanity.io/docs/cli#auto-updates
      */
     autoUpdates: false,
+    // Pin the deployed Studio application so the CLI does not prompt for an
+    // appId on every `sanity deploy`.
+    appId: 'vss9leuevsqekfljl6ip5u8v',
   },
   vite: (config) => {
     const extraIncludes = collectSanityRuntimeBareImports()

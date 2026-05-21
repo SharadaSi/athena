@@ -44,13 +44,17 @@
   }
 
   // Build a <figure> containing a sandboxed iframe for an embedded HTML chart
+  // We fetch the chart HTML and inject it via `srcdoc` rather than using `src`.
+  // Sanity's file CDN serves uploaded HTML with `Content-Security-Policy: default-src 'self'; script-src 'none'`,
+  // which blocks the inline <style> and <script> tags inside our chart files.
+  // Documents created via `srcdoc` are not subject to that response-header CSP, while the
+  // `sandbox` attribute still isolates the chart from the parent page.
   function chartEmbedToElement(block) {
     if (!block || !block.chartUrl) return null;
     const figure = document.createElement('figure');
     figure.className = 'article-page--chart';
 
     const iframe = document.createElement('iframe');
-    iframe.src = block.chartUrl;
     iframe.loading = 'lazy';
     iframe.setAttribute('sandbox', 'allow-scripts');
     const height = Number(block.height) > 0 ? Number(block.height) : 500;
@@ -66,6 +70,16 @@
     }
     figure.appendChild(iframe);
 
+    // Fetch the chart HTML and inject via srcdoc (bypasses Sanity CDN's CSP header).
+    // Falls back to direct `src` if the fetch fails (e.g., CORS regression).
+    // `credentials: 'omit'` prevents Firefox Strict ETP / cross-site tracking heuristics
+    // from blocking the request (Sanity's CDN sets Access-Control-Allow-Credentials: true,
+    // which can otherwise classify the response as a tracking cookie carrier).
+    fetch(block.chartUrl, { credentials: 'omit' })
+      .then((res) => (res.ok ? res.text() : Promise.reject(new Error('HTTP ' + res.status))))
+      .then((html) => { iframe.srcdoc = html; })
+      .catch(() => { iframe.src = block.chartUrl; });
+
     if (block.caption && block.caption.trim()) {
       const caption = document.createElement('figcaption');
       caption.className = 'article-page--chart-caption';
@@ -75,50 +89,12 @@
     return figure;
   }
 
-  // Convert Sanity Portable Text blocks to formatted HTML while preserving all styling
-  // Handles: headings (h1-h4), paragraphs, bold, italic, underline, strikethrough, links,
-  // and custom chartEmbed objects rendered as sandboxed iframes.
-  function blocksToFormattedHTML(blocks) {
-    if (!Array.isArray(blocks)) return [];
-    const htmlElements = [];
-
-    for (const block of blocks) {
-      if (!block) continue;
-
-      if (block._type === 'chartEmbed') {
-        const chartEl = chartEmbedToElement(block);
-        if (chartEl) htmlElements.push(chartEl);
-        continue;
-      }
-
-      if (block._type !== 'block') continue;
-
-      // Determine block style (heading or paragraph)
-      const style = block.style || 'normal';
-      let tagName = 'p';
-      let className = 'article-page--content-p other-paragraphs';
-
-      if (style === 'h1') {
-        tagName = 'h1';
-        className = 'article-page--heading-h1';
-      } else if (style === 'h2') {
-        tagName = 'h2';
-        className = 'article-page--heading-h2';
-      } else if (style === 'h3') {
-        tagName = 'h3';
-        className = 'article-page--heading-h3';
-      } else if (style === 'h4') {
-        tagName = 'h4';
-        className = 'article-page--heading-h4';
-      }
-
-      // Render children with formatting
-      if (!Array.isArray(block.children)) continue;
-
-      const element = document.createElement(tagName);
-      element.className = className;
-
-      for (const child of block.children) {
+  // Render the inline children (text spans + marks) of a Portable Text block
+  // into the provided parent element. Extracted so it can be reused by both
+  // regular blocks and list-item blocks.
+  function renderInlineChildren(block, parentElement) {
+    if (!Array.isArray(block.children)) return;
+    for (const child of block.children) {
         if (!child.text) continue;
 
         // Determine if text has marks (bold, italic, underline, strikethrough, link)
@@ -190,9 +166,107 @@
           wrapper = em;
         }
 
-        element.appendChild(wrapper);
+        parentElement.appendChild(wrapper);
+      }
+  }
+
+  // Convert Sanity Portable Text blocks to formatted HTML while preserving all styling
+  // Handles: headings (h1-h4), paragraphs, bold, italic, underline, strikethrough, links,
+  // bullet/numbered lists (with nesting via `level`), and custom chartEmbed objects
+  // rendered as sandboxed iframes.
+  function blocksToFormattedHTML(blocks) {
+    if (!Array.isArray(blocks)) return [];
+    const htmlElements = [];
+
+    // List grouping state: consecutive Portable Text blocks with a `listItem`
+    // property must be merged into a single <ul>/<ol>. We track a stack of
+    // currently open list elements indexed by nesting level (1-based).
+    let listStack = []; // [{ level, type: 'bullet'|'number', element }]
+
+    const closeListsToLevel = (targetLevel) => {
+      while (listStack.length > targetLevel) listStack.pop();
+    };
+    const resetLists = () => { listStack = []; };
+    // Find the list element for the current item's level; open new ones as needed.
+    const getListContainer = (level, listType) => {
+      // If the level already matches but the type differs, close it so we open the right tag.
+      if (listStack[level - 1] && listStack[level - 1].type !== listType) {
+        listStack = listStack.slice(0, level - 1);
+      }
+      // Ensure all ancestor levels exist; missing levels get implicit wrappers.
+      for (let i = 0; i < level; i++) {
+        if (!listStack[i]) {
+          const tag = listType === 'number' ? 'ol' : 'ul';
+          const listEl = document.createElement(tag);
+          listEl.className = listType === 'number'
+            ? 'article-page--ordered-list'
+            : 'article-page--bullet-list';
+          if (i === 0) {
+            // Top-level list — append to the article output.
+            htmlElements.push(listEl);
+          } else {
+            // Nested list — append inside the last <li> of the parent level.
+            const parentList = listStack[i - 1].element;
+            const lastItem = parentList.lastElementChild;
+            (lastItem || parentList).appendChild(listEl);
+          }
+          listStack[i] = { level: i + 1, type: listType, element: listEl };
+        }
+      }
+      // Trim any deeper open lists (we're going shallower).
+      closeListsToLevel(level);
+      return listStack[level - 1].element;
+    };
+
+    for (const block of blocks) {
+      if (!block) continue;
+
+      if (block._type === 'chartEmbed') {
+        resetLists();
+        const chartEl = chartEmbedToElement(block);
+        if (chartEl) htmlElements.push(chartEl);
+        continue;
       }
 
+      if (block._type !== 'block') continue;
+
+      // List item: render as <li> inside the current list container.
+      if (block.listItem) {
+        const level = Math.max(1, Number(block.level) || 1);
+        const listType = block.listItem === 'number' ? 'number' : 'bullet';
+        const container = getListContainer(level, listType);
+        const li = document.createElement('li');
+        li.className = 'article-page--list-item';
+        renderInlineChildren(block, li);
+        container.appendChild(li);
+        continue;
+      }
+
+      // Non-list block — close any open lists before emitting it.
+      resetLists();
+
+      // Determine block style (heading or paragraph)
+      const style = block.style || 'normal';
+      let tagName = 'p';
+      let className = 'article-page--content-p other-paragraphs';
+
+      if (style === 'h1') {
+        tagName = 'h1';
+        className = 'article-page--heading-h1';
+      } else if (style === 'h2') {
+        tagName = 'h2';
+        className = 'article-page--heading-h2';
+      } else if (style === 'h3') {
+        tagName = 'h3';
+        className = 'article-page--heading-h3';
+      } else if (style === 'h4') {
+        tagName = 'h4';
+        className = 'article-page--heading-h4';
+      }
+
+      const element = document.createElement(tagName);
+      element.className = className;
+      renderInlineChildren(block, element);
       htmlElements.push(element);
     }
 
@@ -271,11 +345,14 @@
     const first = doc.perex || (perexFallbackIndex >= 0 ? htmlElements[perexFallbackIndex].textContent : '');
     if (firstParaEl) firstParaEl.textContent = first;
 
-    // Append remaining body elements, skipping the one consumed as perex fallback
+    // Append remaining body elements, skipping the one consumed as perex fallback.
+    // We append the original elements (not clones) because chartEmbed iframes hold
+    // an async fetch closure that updates `iframe.srcdoc` once the chart HTML loads —
+    // cloning would detach the live element from that closure and leave the iframe blank.
     if (bodyContainer) {
       for (let i = 0; i < htmlElements.length; i++) {
         if (i === perexFallbackIndex) continue;
-        bodyContainer.appendChild(htmlElements[i].cloneNode(true));
+        bodyContainer.appendChild(htmlElements[i]);
       }
     }
 
@@ -368,14 +445,16 @@
     return `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${q}`;
   }
 
+  // `credentials: 'omit'` keeps these as plain anonymous CORS requests so Firefox Private
+  // Browsing (Strict ETP) and content blockers don't classify them as tracking traffic.
   async function fetchDoc(locale, slug) {
-    const res = await fetch(buildArticleQuery(locale, slug));
+    const res = await fetch(buildArticleQuery(locale, slug), { credentials: 'omit' });
     const json = await res.json();
     return json.result;
   }
 
   async function fetchAnyDoc(slug) {
-    const res = await fetch(buildAnyArticleQuery(slug));
+    const res = await fetch(buildAnyArticleQuery(slug), { credentials: 'omit' });
     const json = await res.json();
     return json.result;
   }
@@ -407,7 +486,7 @@
     const url = `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${q}`;
     
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { credentials: 'omit' });
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       const json = await res.json();
       console.log('Translation lookup result:', json.result);
