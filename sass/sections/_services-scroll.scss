@@ -1,0 +1,293 @@
+// =============================================================================
+// Services — scroll-triggered irregular-grid variant
+// -----------------------------------------------------------------------------
+// Adds a pinned scroll-driven layout for the homepage services section:
+//   - .services--scroll                 ← tall outer section that drives scroll
+//     - .services__pin                  ← sticky 100vh viewport
+//       - .services__grid--scroll       ← the irregular 8-col grid
+//         - .services__cell             ← every card or media tile
+//           - .services__cell--anchor   ← the central anchor (image) the
+//                                         outer cells emerge from beneath
+//
+// All colours, typography and card chrome inherit from the existing system
+// (gridCard mixin, $background-black, $text-color-primary, etc.).
+// =============================================================================
+
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as var;
+
+// ---------- Outer section: provides the scroll runway ------------------------
+// 200vh gives ScrollTrigger 100vh of scrub distance once the inner pin is
+// sticking. The whole thing visually starts and ends with the pinned grid
+// vertically centred in the viewport.
+//
+// NOTE on `display: block` override: the base `.services` rule sets
+// `display: flex; flex-direction: column; justify-content: center` which,
+// applied to a 200vh-tall container with a single 100vh child, vertically
+// centres the pin inside the section — pushing it ~50vh down and producing
+// a huge empty gap below the hero before the grid appears. We need plain
+// block layout here so `position: sticky` on the child behaves correctly
+// (sticks from the top of the section).
+.services--scroll {
+    display: block;
+    position: relative;
+    height: 200vh;
+    background-color: var.$background-black;
+    padding: 0;
+}
+
+// ---------- Pinned viewport ---------------------------------------------------
+// Tight padding + gap so the heading, subheading and grid all fit inside
+// 100vh without the heading being clipped at the top once the pin sticks.
+.services__pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 2rem;
+    overflow: hidden;  // hides pre-translated cells while they sit on the anchor
+}
+
+// Headings inside the pin should not stretch the layout
+.services--scroll .section-heading,
+.services--scroll .section-subheading {
+    text-align: center;
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+// ---------- The irregular grid ------------------------------------------------
+// 8 sub-columns let the anchor sit on cols 4–6 (offset 2-col width), which
+// breaks alignment between rows 1 and 2 → "irregular" feel.
+//
+// Width strategy (root font-size is 62.5% → 1rem = 10px):
+//   - Always cap at 95vw so there's a small margin on either side.
+//   - Below ~2160px viewport the `130rem` (1300px) baseline wins, which
+//     fills laptop and standard-desktop screens nearly edge-to-edge.
+//   - Above ~2160px viewport the `60vw` term takes over, so the grid
+//     gracefully scales up on QHD/4K monitors instead of looking lost
+//     in a sea of black background. Caps out at min(95vw, ...) anyway.
+//
+// Height strategy:
+//   - `min(78vh, 68rem)` keeps the grid generously tall on big monitors
+//     (680px on anything taller than ~870px) but never overflows the
+//     pinned 100vh viewport even with the heading/subheading on top.
+//   - Both rows share that height equally via `1fr 1fr`.
+.services__grid--scroll {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: clamp(1.5rem, 1.2vw, 2.4rem);
+    width: min(95vw, max(130rem, 60vw));
+    height: min(78vh, 68rem);
+    perspective: 1200px;
+
+    // Reset any legacy template-areas inherited from `.services__grid`
+    grid-template-areas: none;
+}
+
+// ---------- Cell base ---------------------------------------------------------
+// Re-uses the existing gridCard chrome (background, padding, radius, shadow)
+// so the look is identical to the rest of the site.
+.services__cell {
+    @include gridCard;
+    color: var.$text-color-primary;
+    position: relative;
+    z-index: 1;
+
+    // Flex column so the CTA link can be pinned to the bottom of the card
+    // regardless of how long the paragraph above it is. Without this, on
+    // cards with longer body copy the "Explore service →" link gets pushed
+    // below the fixed row height of the irregular grid and clipped by
+    // `.services__pin { overflow: hidden }`.
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;       // keep any rare overflow inside the card chrome
+
+    // Tell the browser these elements will be animated → composited layer
+    will-change: transform, opacity;
+
+    // Smooth out the GSAP transform — no transition on transform itself
+    // (GSAP drives it directly), but other properties can ease.
+    transition: box-shadow 0.3s ease;
+}
+
+// Push the CTA link to the bottom of the flex column so it stays anchored
+// to the bottom edge of the card and is always visible.
+.services__cell .services__grid--cta-link {
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+// ---------- Cell-as-link variant ---------------------------------------------
+// The three outer cards that point to a service detail page are rendered as
+// `<a class="services__cell services__cell--link" href="…">` so the entire
+// card is a single, generous click target (better mobile UX + no nested
+// interactive elements).
+//
+// We reset default link styling and synthesise the previous "Explore service →"
+// affordance via a `::after` pseudo-element pinned to the bottom of the
+// flex column. This keeps the markup clean and guarantees the affordance is
+// always visible regardless of paragraph length.
+.services__cell--link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+
+    // A global anchor rule elsewhere in the stylesheet applies
+    // `text-transform: uppercase` to <a> tags, which would shout the entire
+    // card copy. Force normal casing on the card contents so headings and
+    // paragraphs render as authored.
+    text-transform: none;
+
+    .services__grid--heading,
+    .services__grid--content {
+        text-transform: none;
+    }
+
+    // The affordance row at the bottom of every linked card.
+    &::after {
+        content: "Explore service →";
+        margin-top: auto;       // pushes itself + sits below the paragraph
+        padding-top: 1.5rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(255, 42, 0, 0.9);
+        transition: color 0.2s ease, transform 0.2s ease;
+        align-self: flex-start;
+    }
+
+    &:hover,
+    &:focus-visible {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+
+        &::after {
+            color: rgba(255, 85, 51, 0.9);
+            transform: translateX(3px);
+        }
+    }
+
+    // Keyboard accessibility — give the focus ring some breathing room
+    &:focus-visible {
+        outline: 2px solid rgba(255, 85, 51, 0.9);
+        outline-offset: 4px;
+    }
+}
+
+// Czech translation override for the affordance text.
+:lang(cs) .services__cell--link::after,
+.cs .services__cell--link::after {
+    content: "Více o službě →";
+}
+
+// Card heading + body styles are already defined globally on .services__grid
+// children. To keep them working inside the new grid, re-declare the same
+// tokens on the new cell class.
+.services__cell .services__grid--heading,
+.services__cell .services__grid--content,
+.services__cell .services__grid--cta-link {
+    // Inherit existing colour / spacing rules from .services__grid--heading
+    // etc. — nothing to add here, but the selector exists in case future
+    // tweaks need scoping.
+}
+
+// ---------- Anchor (centre cell with the image) -------------------------------
+.services__cell--anchor {
+    z-index: 3;            // sits on top so outer cells hide beneath it
+    padding: 0;             // image fills the cell edge-to-edge
+    overflow: hidden;
+    border-radius: var.$radius-desktop;
+    display: flex;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
+}
+
+// ---------- Grid placement (desktop) -----------------------------------------
+// row 1: two equal cards (cols 1–4, 5–8)
+// row 2: card | anchor | card (cols 1–3, 4–5, 6–8) → asymmetric centre
+.services__cell--firstL  { grid-column: 1 / 5; grid-row: 1; }
+.services__cell--firstR  { grid-column: 5 / 9; grid-row: 1; }
+.services__cell--secondL { grid-column: 1 / 4; grid-row: 2; }
+.services__cell--anchor  { grid-column: 4 / 6; grid-row: 2; }
+.services__cell--secondR { grid-column: 6 / 9; grid-row: 2; }
+
+// ---------- Tablet ------------------------------------------------------------
+// Collapse to a 2-column layout with the image as a full-width band in the
+// middle. The animation still works because GSAP recomputes anchor offsets
+// on resize.
+@media screen and (max-width: 50rem) and (min-width: 41rem) {
+    .services__pin {
+        // Free the pin on tablet — the irregular grid no longer makes sense
+        // at narrower widths, so let the section flow naturally.
+        position: static;
+        height: auto;
+    }
+    .services--scroll {
+        height: auto;
+    }
+    .services__grid--scroll {
+        grid-template-columns: 1fr 1fr;
+        // Let rows size to their content so cards shrink to the height their
+        // text needs — the desktop `1fr 1fr` + fixed `height` would otherwise
+        // leak through and clip / pad the cards on this breakpoint.
+        grid-template-rows: repeat(3, auto);
+        width: 100%;
+        height: auto;
+    }
+    .services__cell--firstL  { grid-column: 1; grid-row: 1; }
+    .services__cell--firstR  { grid-column: 2; grid-row: 1; }
+    .services__cell--anchor  { grid-column: 1 / 3; grid-row: 2; aspect-ratio: 16 / 6; }
+    .services__cell--secondL { grid-column: 1; grid-row: 3; }
+    .services__cell--secondR { grid-column: 2; grid-row: 3; }
+}
+
+// ---------- Mobile ------------------------------------------------------------
+@media screen and (max-width: 40rem) {
+    .services__pin {
+        position: static;
+        height: auto;
+        padding: 2rem 1rem;
+    }
+    .services--scroll {
+        height: auto;
+    }
+    .services__grid--scroll {
+        grid-template-columns: 1fr;
+        // Content-driven rows so each stacked card is only as tall as its text
+        // needs (no fixed `height`/`1fr` frame clipping or padding the cards).
+        grid-template-rows: repeat(5, auto);
+        width: 100%;
+        height: auto;
+        gap: 1.5rem;
+    }
+    .services__cell {
+        grid-column: 1 !important;
+    }
+    .services__cell--firstL  { grid-row: 1; }
+    .services__cell--secondL { grid-row: 2; }
+    .services__cell--anchor  { grid-row: 3; aspect-ratio: 16 / 9; border-radius: var.$radius-mobile; }
+    .services__cell--firstR  { grid-row: 4; }
+    .services__cell--secondR { grid-row: 5; }
+}
+
+// ---------- Reduced motion ----------------------------------------------------
+// Honour OS-level preference — script also bails out, but this clears any
+// inline transform GSAP may have set before the media query was evaluated.
+@media (prefers-reduced-motion: reduce) {
+    .services__cell {
+        transform: none !important;
+        will-change: auto;
+    }
+}

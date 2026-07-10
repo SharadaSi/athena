@@ -10,10 +10,14 @@
 
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="cs_CZ">
-    <link rel="alternate" hreflang="en" href="https://www.czechalert.com/">
-    <link rel="alternate" hreflang="cs" href="https://www.czechalert.com/cs/">    
-    <link rel="alternate" hreflang="x-default" href="https://www.czechalert.com/">
-    <link rel="canonical" href="https://www.czechalert.com/">
+    <link rel="alternate" hreflang="en" href="https://czechalert.com/">
+    <link rel="alternate" hreflang="cs" href="https://czechalert.com/cs/">    
+    <link rel="alternate" hreflang="x-default" href="https://czechalert.com/">
+    <link rel="canonical" href="https://czechalert.com/">
+
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin>
+    <link rel="preconnect" href="https://8z0tbe2a.api.sanity.io" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.sanity.io">
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -36,7 +40,7 @@
 </head>
 <body>
     <header class="header">
-        <video class="header--hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto" controlslist="nodownload nofullscreen noremoteplayback" aria-hidden="true">
+        <video class="header--hero-video" poster="media/optimized/hero_video_loop_poster-1280.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" controlslist="nodownload nofullscreen noremoteplayback" aria-hidden="true">
             <source src="media/hero_video_loop.mp4" type="video/mp4">
             <source src="media/hero_video_loop.webm" type="video/webm">
             <source src="media/hero_video_loop.ogv" type="video/ogv">
@@ -114,77 +118,51 @@
     <main>
         
 
-        <section class="services" id="services">
+        <!-- Services - scroll-pinned irregular grid.
+             The outer .services--scroll provides a 200vh scroll runway.
+             The inner .services__pin is sticky and centres the grid in the viewport.
+             Cards start parked beneath the central anchor image (higher z-index)
+             and emerge outward as the user scrolls. JS: js/services-grid-scroll.js -->
+        <section class="services services--scroll" id="services">
 
-            <div class="section-container">
+            <div class="services__pin">
 
-                <h2 class="section-heading">
-                What we can help you with
-                </h2>
-                <p class="section-subheading">Our specific approach to helping you resolve the crisis and establish a strategic advantage for your future decisions
-                </p>
+                <h2 class="section-heading">What we can help you with</h2>
 
-                <div class="services__grid">
+                <div class="services__grid services__grid--scroll">
 
-                    <div class="services__grid--firstL">
-                        <h3 class="services__grid--heading">Private Intelligence & Security
-                            <!-- <a href="pr-security" class="services__grid--heading-link">Intelligence & Security</a> -->
-                        </h3>
-                        <p class="services__grid--content">Are you facing a security threat, or do you need actionable intelligence to stay ahead of potential risks? Whether it involves open-source investigations, human source networks, or strategic threat assessments, we provide you with the clarity you need. We combine cutting-edge methodologies with deep analytical expertise to deliver tailored security solutions you can rely on.</p>
-                        <a href="pr-security" class="services__grid--cta-link">Explore service →</a>
-                    </div>
+                    <!-- Whole card is a link - clicking anywhere on the card
+                         routes to the relevant service page. Inner "Explore
+                         service →" affordance is rendered via ::after in CSS. -->
+                    <a href="private-intelligence-and-security" class="services__cell services__cell--firstL services__cell--link">
+                        <h3 class="services__grid--heading">Private Intelligence &amp; Security</h3>
+                        <p class="services__grid--content">Are you facing a security threat, or do you need actionable intelligence to stay ahead of potential risks?</p>
+                    </a>
 
-                    <div class="services__grid--secondL">
-                        <h3 class="services__grid--heading">PR & Media Monitoring</h3>
-                        <p class="services__grid--content">Whether you are searching for complex media monitoring, specific PR strategies, or brand risk management, you need not look any further. CzechAlert can set up alerts, carry out adverse media analyses, create monthly reports from over 180 million+ sources, determine public sentiment, and much more.</p>
-                        <a href="pr-media" class="services__grid--cta-link">Explore service →</a>
-                    </div>
+                    <a href="business-intelligence" class="services__cell services__cell--firstR services__cell--link">
+                        <h3 class="services__grid--heading">Business Intelligence</h3>
+                        <p class="services__grid--content">Do you need to make a critical business decision, but lack the information to back it up?</p>
+                    </a>
 
-                    <!-- <div class="services__grid--thirdL">
-                        <h3 class="services__grid--heading">Judicial & Personal Investigations</h3>
-                        <p class="services__grid--content">Do you want to file a criminal report against someone, but are unsure of how to do it or lack the necessary evidence? Have you recently met someone very charming, but something seems slightly off? We will happily look into such cases for you and help you take the best possible steps.</p>
-                    </div>
+                    <a href="pr-and-media" class="services__cell services__cell--secondL services__cell--link">
+                        <h3 class="services__grid--heading">PR &amp; Media Monitoring</h3>
+                        <p class="services__grid--content">Are you struggling to deliver a coveted message to your audience? Are you wondering what your target group really need and want?</p>
+                    </a>
 
-                    <div class="services__grid--fourthL">
-                        <h3 class="services__grid--heading">Holistic background check</h3>
-                        <p class="services__grid--content">Whether you are an employer, landlord, or anyone else in need of a comprehensive background check on someone, CzechAlert has the solution. From debts, addresses, aliases, and usernames to social media activity or current and former employment, we have got you covered.</p>
-                    </div> -->
-
-                    <div class="services__grid--grid-img">
+                    <!-- Centre anchor - outer cards emerge from beneath this tile -->
+                    <div class="services__cell services__cell--anchor">
                         <img src="media/abstract-fingerprint.jpg" alt="abstract fingerprint representing identity and intelligence work at CzechAlert">
                     </div>
 
-                    <div class="services__grid--firstR">
-                        <h3 class="services__grid--heading">Business Intelligence</h3> 
-                        <p class="services__grid--content">Do you need to make a critical business decision, but lack the information to back it up? Whether you are entering a new market, evaluating a competitor, or seeking to sharpen your sales strategy, we deliver the intelligence that matters. Through in-depth, contextual, and evidence-based analysis, we help you identify opportunities, mitigate risks, and stay one step ahead. Informed decisions are the foundation of a well-managed future.</p>
-                        <a href="business-intelligence" class="services__grid--cta-link">Explore service →</a>
-                    </div>
-
-                    <div class="services__grid--secondR">
-                        <h3 class="services__grid--heading">Risk, Compliance & Due Diligence</h3> 
-                        <p class="services__grid--content">Do you have a prospective business partner, but are unsure about their reputation, or whether you can trust them? Based on your needs and objectives, we will create a structured risk report about the target using open and human sources alike. No-one will slip past your radar ever again.</p>
-                    </div>
-
-                    <!-- <div class="services__grid--thirdR">
-                        <h3 class="services__grid--heading">Investigations & Intel</h3> 
-                        <p class="services__grid--content"></p>
-                    </div>
-
-                    <div class="services__grid--secondR-alt">
-                        <h3 class="services__grid--heading">Privacy Consulting & Counter-Surveillance</h3>
-                        <p class="services__grid--content">Do you feel as if you are under constant surveillance from either state institutions, corporations, or someone you may know? Well, you're probably not wrong. We are here to help you with countering said surveillance with privacy-infused devices, phone spyware checks, or even bug sweeping. No tracker in your device, vehicle, home, or office will survive our watchful eye.</p>
-                    </div>
-
-                    <div class="services__grid--fourthR">
-                        <h3 class="services__grid--heading">Anti-Fraud & Deanonmyziation</h3>
-                        <p class="services__grid--content">Have you or anyone close to you ever been the target of a stalker, fraudster, or scammer? It's likelier than you think. These malicious actors tend to hide behind anonymity and fake identities, but where there is a will, there is a way. We will track them down for you and provide you with a report you can submit to the appropriate authorities.</p>
-                    </div> -->
+                    <a href="strategic-influence" class="services__cell services__cell--secondR services__cell--link">
+                        <h3 class="services__grid--heading">Strategic influence</h3>
+                        <p class="services__grid--content">Do your digital rights need a voice? Do you need a partner on your way to protect your rights?</p>
+                    </a>
 
                 </div>
 
             </div>
-            
-            
+
         </section>
     
         <section class="about" id="about">
@@ -416,8 +394,12 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/ScrollTrigger.min.js"></script>
     <script src="js/swiper.js"></script>
+    <script src="js/services-grid-scroll.js" defer></script>
     <script src="js/script.js"></script>
+    <script src="js/sanity-image.js"></script>
     <script src="js/sanity-content.js"></script>
     <script src="js/lang-v-toggler.js"></script>
 

@@ -23,9 +23,13 @@
     align-items: center;
     justify-items: center;
 
+    // From 1280px down, collapse to a 2-row layout:
+    //   Row 1 → logo + social icons only (spans all three columns).
+    //   Row 2 → Services / Resources / Contact, one per column.
     @include respond-below(xl) {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 3rem 2rem;
+        align-items: start;
     }
 
     @include respond-below(sm) {
@@ -55,6 +59,21 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: left;
+
+    // Give the logo + icons block its own full-width row on tablet/mobile.
+    @include respond-below(xl) {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    // Stack the logo above the icons again on the narrowest screens,
+    // where the grid is a single column.
+    @include respond-below(sm) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 .footer--logo-img {

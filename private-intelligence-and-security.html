@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="CzechAlert Private Investigations & Security - OSINT investigations, counter-surveillance, anti-fraud, threat assessment and privacy consulting for individuals and organisations.">
+    <meta name="author" content="Sylvester Holovský">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="cs_CZ">
+    <meta property="og:title" content="Private Investigations & Security | CzechAlert">
+    <meta property="og:description" content="OSINT investigations, counter-surveillance, anti-fraud and threat assessment from CzechAlert.">
+    <meta property="og:url" content="https://czechalert.com/private-intelligence-and-security">
+    <link rel="alternate" hreflang="en" href="https://czechalert.com/private-intelligence-and-security">
+    <link rel="alternate" hreflang="x-default" href="https://czechalert.com/private-intelligence-and-security">
+    <link rel="canonical" href="https://czechalert.com/private-intelligence-and-security">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
+    <link rel="icon" href="icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
+
+    <title>Private Intelligence & Security | CzechAlert</title>
+
+    <!-- Structured data - Service schema for GEO/SEO discoverability -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Private Intelligence & Security",
+        "provider": {
+            "@type": "Organization",
+            "name": "CzechAlert",
+            "url": "https://czechalert.com"
+        },
+        "areaServed": "Czech Republic",
+        "description": "OSINT investigations, counter-surveillance, anti-fraud and threat assessment for individuals, businesses and institutions.",
+        "serviceType": [
+            "OSINT Investigations",
+            "Counter-Surveillance & TSCM",
+            "Anti-Fraud & Deanonymization",
+            "Threat Assessment & Risk Reporting"
+        ]
+    }
+    </script>
+
+    <script defer src="https://api.pirsch.io/pa.js"
+        id="pianjs"
+        data-code="qhEFIVE6Bc6SdI8sJfmerCpjBlOALtiP"></script>
+
+    <!-- Start cookieyes banner -->
+    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/514d027fcc51f9902ed472cabbf3de35/script.js"></script>
+    <!-- End cookieyes banner -->
+</head>
+
+<body class="pr-security-page">
+    <div class="page-wrapper">
+
+        
+        <header class="article-page__header">
+            <nav class="nav">
+                <div class="nav--container">
+                    <div class="nav--logo">
+                        <a href="/" class="logo--link">
+                            <img class="nav--logo-img" src="media/czech-alert-logo-desktop.png" alt="CzechAlert logo" decoding="async">
+                        </a>
+                    </div>
+                    <div class="nav--hamburger">
+                        <div class="hamburger--bar bar1"></div>
+                        <div class="hamburger--bar bar2"></div>
+                        <div class="hamburger--bar bar3"></div>
+                    </div>
+                </div>
+
+                <ul class="nav--menu">
+                    <li class="nav--item"><a href="/#services" class="nav--link">What We Do</a></li>
+                    <li class="nav--item"><a href="/#about" class="nav--link">Who We Are</a></li>
+                    <li class="nav--item"><a href="publications" class="nav--link">Publications</a></li>
+                    <li class="nav--item"><a href="/#testimonials" class="nav--link">Testimonials</a></li>
+                    <li class="nav--item"><a href="contact" class="nav--link">Contact</a></li>
+                    <li class="nav--item nav--item-cta"><a href="newsletter" class="btn">Get started</a></li>
+                    <li class="nav--item nav--item-switch-bar">
+                        <span class="nav--item-cs-label">cs</span>
+                        <label class="nav--item-switch" for="nav--item-switch-mode">
+                            <input type="checkbox" id="nav--item-switch-mode">
+                            <span class="nav--item-slider nav--item-round"></span>
+                        </label>
+                        <span class="nav--item-eng-label">eng</span>
+                    </li>
+                </ul>
+
+                <div class="nav--menu-widgets">
+                    <div class="nav--menu-switch-bar">
+                        <span class="cs-label">cs</span>
+                        <label class="switch" for="switch-mode">
+                            <input type="checkbox" id="switch-mode" aria-label="Switch language to Czech">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="eng-label">eng</span>
+                    </div>
+                    <div class="nav--cta">
+                        <a href="newsletter" class="btn btn--cta">Get started</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+
+            <!-- ============================================================== -->
+            <!-- CURTAIN STAGE                                                  -->
+            <!-- All panels live inside a sticky `.curtain-track` (100vh tall). -->
+            <!-- Each panel is absolutely-positioned and stacked. A single GSAP -->
+            <!-- timeline scrubbed by scroll position runs two beats per panel: -->
+            <!--   1. Panel slides up from below over the previous one (curtain  -->
+            <!--      rises from the floor).                                    -->
+            <!--   2. Panel's overlay slides up off the top, revealing the      -->
+            <!--      detailed content beneath (overlay lifts away).            -->
+            <!-- ============================================================== -->
+            <div class="curtain-stage">
+              <div class="curtain-track">
+
+                <!-- ========================================================== -->
+                <!-- HERO - first panel, no overlay (it's the starting backdrop) -->
+                <!-- ========================================================== -->
+                <section class="curtain-section pr-security-hero" aria-labelledby="pr-hero-heading">
+                <!-- Looping background video, mirrored from index.html.
+                     The frosted overlay below sits above it and supplies
+                     the dark, blurred treatment that mirrors the mobile
+                     navigation drawer. -->
+                <video class="pr-security-hero__video" poster="media/optimized/hero_video_loop_poster-1280.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" controlslist="nodownload nofullscreen noremoteplayback" aria-hidden="true">
+                    <source src="media/hero_video_loop.mp4" type="video/mp4">
+                    <source src="media/hero_video_loop.webm" type="video/webm">
+                    <source src="media/hero_video_loop.ogv" type="video/ogv">
+                </video>
+                <div class="pr-security-hero__blur" aria-hidden="true"></div>
+                <div class="content">
+                    <div class="curtain-inner">
+                        <p class="pr-security-hero__eyebrow">CzechAlert  Services</p>
+                        <h1 id="pr-hero-heading" class="pr-security-hero__heading">
+                            Private Intelligence &amp; Security
+                        </h1>
+                        <p class="pr-security-hero__subheading">
+                            We provide discreet, evidence-based intelligence and security services to individuals, organisations, and
+                            institutions navigating risk and uncertainty in sensitive matters.
+                        </p>
+                        <p class="pr-security-hero__scroll-cue" aria-hidden="true">Scroll down ↓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================== -->
+            <!-- SERVICE 1 - OSINT Investigations                            -->
+            <!-- `.curtain-section.pin` matches the codepen's pin pattern:   -->
+            <!-- the `.overlay` covers the `.content`, then GSAP scrubs its  -->
+            <!-- `yPercent` to slide it up and reveal the detail beneath.    -->
+            <!-- ========================================================== -->
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-osint-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">01  Intel & Analysis</span>
+                        <h2 id="svc-osint-heading" class="service-panel__title">Intel & Analysis</h2>
+                        <p class="service-panel__lead">
+                        We combine investigative methodologies, open-source intelligence, and
+                        tech prowess to uncover facts, identify patterns, and transform fragmented information into realworld
+                        insights.
+                        <div class="services__grid">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Intelligence gathering</h3>
+                                <p class="services__grid--content">Advanced intelligence gathering from open source and publicly available sources (OSINT), developed confidential informants (HUMINT), and social media sources (SOCMINT) delivering clear and actionable insights.</p>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Digital Forensics</h3>
+                                <p class="services__grid--content">Forensic examination of digital devices and data to uncover, preserve, and present critical
+                                evidence.</p>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="icons/intel-analysis.svg" alt="OSINT analyst connecting evidence on a digital case board">
+                            </div>
+
+                            <div class="services__grid--firstR">
+                                <h3 class="services__grid--heading">Online De-Anonymysation</h3>
+                                <p class="services__grid--content">Identification and attribution of anonymous individuals operating online using lawful investigative techniques.</p>
+                            </div>
+
+                            <div class="services__grid--secondR">
+                                <h3 class="services__grid--heading">Privacy Consulting</h3>
+                                <p class="services__grid--content">Strategic guidance to reduce exposure, protect sensitive information, and strengthen personal or
+                                organisational privacy.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--red service-panel__overlay--img-intel">
+                    <div>
+                        <h2>Intel & Analysis</h2>
+                        <p>When you separate signals from the noise, clarity is your strategic advantage.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================== -->
+            <!-- SERVICE 2 -                -->
+            <!-- ========================================================== -->
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-tscm-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">02 - Investigations & Due Diligence Advisory</span>
+                        <h2 id="svc-tscm-heading" class="service-panel__title">Investigations & Due Diligence Advisory</h2>
+                        <!-- <p class="service-panel__lead">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        </p> -->
+
+                        <div class="services__grid services__grid--six">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Anti-Fraud</h3>
+                                <p class="services__grid--content">Detection and investigation of financial deception, misconduct, and corporate fraud.</p>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Judicial & Corporate</h3>
+                                <p class="services__grid--content">Court-ready investigative support conducted to evidentiary standards required for legal proceedings for corporate investigations as well as legal investigations of all kinds.</p>
+                            </div>
+
+                            <div class="services__grid--thirdL">
+                                <h3 class="services__grid--heading">Personal & Infidelity</h3>
+                                <p class="services__grid--content">Discreet investigative services tailored to sensitive and complex personal matters.</p>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="icons/investigation-due-dilligence.svg" alt="Counter-surveillance equipment scanning a workspace">
+                            </div>
+
+                            <div class="services__grid--firstR">
+                                <h3 class="services__grid--heading">Compliance analysis</h3>
+                                <p class="services__grid--content">Compliance support in dealing with Defense Sector Compliance (such as NDAA), and compliance that deals with Foreign Corrupt Practices and Bribery (FCPA).</p>
+                            </div>
+
+                            <div class="services__grid--secondR">
+                                <h3 class="services__grid--heading">Background Checks</h3>
+                                <p class="services__grid--content">Comprehensive due diligence on individuals or entities to support informed decision-making.</p>
+                            </div>
+
+                            <div class="services__grid--thirdR">
+                                <h3 class="services__grid--heading">Business Due Dilligence</h3>
+                                <p class="services__grid--content">Comprehensive investigation into companies, ownership structures and operational risks.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--blue service-panel__overlay--img-investigations">
+                    <div>
+                        <h2>Investigations & Due Diligence Advisory</h2>
+                        <p>Confidence begins when trust is earned and truth is verified.</p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <!-- ========================================================== -->
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-protective-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">03   Protective services</span>
+                        <h2 id="svc-protective-heading" class="service-panel__title">Protective services</h2>
+                        <p class="service-panel__lead">
+                        From digital privacy to commercial and personal security, we help you identify vulnerabilities,reduce exposure, and strengthen resilience through intelligence-led protective strategies.
+                        </p>
+
+                        <!-- Sub-capability grid - 4-item variant: two cards on each
+                             side of the central image, mirroring Intel & Analysis. -->
+                        <div class="services__grid">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Close Protection</h3>
+                                <p class="services__grid--content">Professional personal security for individuals exposed to elevated risk, delivered with discretion and situational awareness.</p>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Tactical Response</h3>
+                                <p class="services__grid--content">Immediate deployment of protective personnel in response to emerging threats or urgent situations.</p>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="icons/protective-services.svg" alt="Protective detail surveying a venue perimeter before a principal's arrival">
+                            </div>
+
+                            <div class="services__grid--firstR">
+                                <h3 class="services__grid--heading">Anti-Stalking</h3>
+                                <p class="services__grid--content">Risk assessment, evidence gathering and protective strategies to address harassment and persistent unwanted attention.</p>
+                            </div>
+
+                            <div class="services__grid--secondR">
+                                <h3 class="services__grid--heading">Commercial Security</h3>
+                                <p class="services__grid--content">Tailored security services for businesses, residential and commercial properties, addressing operational risks, asset protection and staff safety.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--red service-panel__overlay--img-protective">
+                    <div>
+                        <h2>Protective Services</h2>
+                        <p>True security begins long before threats emerge.</p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-fraud-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">04  Training & Capability development - Outsourced</span>
+                        <h2 id="svc-fraud-heading" class="service-panel__title">Training & Capability development</h2>
+                        <p class="service-panel__lead">
+                        We deliver tailored training programmes that enhance physical security and operational
+                        awareness for individuals and organisations alike.
+                        </p>
+
+                        <!-- Sub-capability grid - mirrors the index `services__grid`. -->
+                        <div class="services__grid">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Soft Target Protection</h3>
+                                <p class="services__grid--content">Practical training to help individuals and organisations recognise threats and respond effectively in
+                                vulnerable environments.</p>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Security Forces Training</h3>
+                                <p class="services__grid--content">Structured programmes for security personnel, focusing on readiness, discipline, and operational effectiveness.</p>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="icons/training-capability-development.svg" alt="Investigator mapping fraud-network connections across digital evidence">
+                            </div>
+
+                            <div class="services__grid--firstR">
+                                <h3 class="services__grid--heading">Combat</h3>
+                                <p class="services__grid--content">Controlled physical training to build confidence, resilience, and defensive capability. Courses are offered to the general public.</p>
+                            </div>
+
+                            <div class="services__grid--secondR">
+                                <h3 class="services__grid--heading">Firearms</h3>
+                                <p class="services__grid--content">Professional instruction in the safe, responsible, and effective use of firearms (where legally permitted).</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--graphite service-panel__overlay--img-training">
+                    <div>
+                        <h2>Training & Capability Development</h2>
+                        <p>Teach the skill. Strengthen the organisation.</p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-threat-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">05  Recovery services </span>
+                        <h2 id="svc-threat-heading" class="service-panel__title">Recovery services</h2>
+                        <p class="service-panel__lead">
+                        From asset recovery to investigative support and enforcement strategies, we help you navigate
+                        complex disputes with intelligence, discretion, and clarity, to return what’s rightfully yours.
+                        </p>
+
+                        <div class="services__grid">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Asset Recovery</h3>
+                                <p class="services__grid--content">Strategic tracing and recovery of stolen or misappropriated assets.</p>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Debt Recovery</h3>
+                                <p class="services__grid--content">Professional recovery of outstanding debts through structured, intelligence-led engagement.</p>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="icons/recovery-enforcement.svg" alt="Risk analyst reviewing a strategic threat dashboard">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--red service-panel__overlay--img-recovery">
+                    <div>
+                        <h2>Recovery services</h2>
+                        <p>Recover what matters. Enforce what counts.</p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="curtain-section pi-faq pi-faq--with-cta" aria-labelledby="pi-faq-heading">
+                <div class="content pi-faq__content">
+                <div class="pi-faq__inner">
+                    <h2 id="pi-faq-heading" class="pi-faq__heading">Frequently asked</h2>
+                    <p class="pi-faq__subheading">A few of the questions we hear most often before a first engagement.</p>
+
+                    <details class="pi-faq__item">
+                        <summary>Is everything you do strictly legal?</summary>
+                        <p class="pi-faq__item__answer">
+                            Yes. We work exclusively with open sources, lawful human intelligence and consent-based technical access. We never hack accounts, intercept communications without authorisation, or break the GDPR. If a request would cross a line, we say so up front and offer a lawful alternative.
+                        </p>
+                    </details>
+
+                    <details class="pi-faq__item">
+                        <summary>How confidential is the engagement?</summary>
+                        <p class="pi-faq__item__answer">
+                            All engagements run under a signed NDA. Files are stored encrypted, communications happen over end-to-end-encrypted channels by default, and only the analysts assigned to your case have access. We do not subcontract abroad without your written approval.
+                        </p>
+                    </details>
+
+                    <details class="pi-faq__item">
+                        <summary>How are you priced?</summary>
+                        <p class="pi-faq__item__answer">
+                            Most cases are scoped as a fixed-fee package after a free 30-minute consultation. Open-ended monitoring or retainers are billed monthly. You always receive a written scope and price before any investigative work begins.
+                        </p>
+                    </details>
+
+                    <details class="pi-faq__item">
+                        <summary>How long does an investigation take?</summary>
+                        <p class="pi-faq__item__answer">
+                            A focused OSINT report typically lands in 5–10 working days. Counter-surveillance sweeps are usually scheduled within a week. Complex multi-jurisdiction work can take several weeks - we give you a realistic timeline at the scoping stage.
+                        </p>
+                    </details>
+
+                    <details class="pi-faq__item">
+                        <summary>Will the report hold up in court?</summary>
+                        <p class="pi-faq__item__answer">
+                            Yes. Reports are written to evidence standards, with full source citations, hashes for digital exhibits and a chain-of-custody log. We can attend as an expert witness and coordinate directly with your legal counsel where needed.
+                        </p>
+                    </details>
+
+                    <!-- Inline CTA - replaces the standalone CTA panel -->
+                    <div class="pi-faq__cta" aria-labelledby="pi-cta-heading">
+                        <h3 id="pi-cta-heading" class="pi-cta__heading">Have a case in mind?</h3>
+                        <p class="pi-cta__lead">
+                            Tell us what you are dealing with. The first 30-minute consultation is free, fully confidential, and comes with no obligation to engage.
+                        </p>
+                        <a href="contact" class="btn btn--cta">Start a conversation</a>
+                    </div>
+                </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--graphite service-panel__overlay--img-faq">
+                    <div>
+                        <h2>Ready when you are</h2>
+                        <p>Swipe or scroll downfor the answers we hear most often - and a direct line to start your case.</p>
+                    </div>
+                </div>
+            </section>
+
+              </div><!-- /.curtain-track -->
+            </div><!-- /.curtain-stage -->
+
+        </main>
+
+       
+        <footer class="footer">
+            <div class="section-container">
+                <div class="footer-grid">
+                    <div class="footer-grid--item1 footer-grid--item">
+                        <div class="logo--font-size-footer">
+                            <a href="/">
+                                <img class="footer--logo-img" src="media/czech-alert-logo-desktop.png" alt="CzechAlert logo" loading="lazy" decoding="async" fetchpriority="low">
+                            </a>
+                        </div>
+                        <div class="footer-icons-container">
+                            <a href="https://www.linkedin.com/company/czechalert/" class="footer-icons-link in-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" height="36" width="36" viewBox="0 0 544 512"><path fill="#ffffff" d="M196.3 512L103.4 512L103.4 212.9L196.3 212.9L196.3 512zM149.8 172.1C120.1 172.1 96 147.5 96 117.8C96 103.5 101.7 89.9 111.8 79.8C121.9 69.7 135.6 64 149.8 64C164 64 177.7 69.7 187.8 79.8C197.9 89.9 203.6 103.6 203.6 117.8C203.6 147.5 179.5 172.1 149.8 172.1zM543.9 512L451.2 512L451.2 366.4C451.2 331.7 450.5 287.2 402.9 287.2C354.6 287.2 347.2 324.9 347.2 363.9L347.2 512L254.4 512L254.4 212.9L343.5 212.9L343.5 253.7L344.8 253.7C357.2 230.2 387.5 205.4 432.7 205.4C526.7 205.4 544 267.3 544 347.7L544 512L543.9 512z"/></svg></a>
+                            <a href="https://www.instagram.com/czech.alert/" class="footer-icons-link ig-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" height="36" width="36" viewBox="0 0 544 400"><path fill="#ffffff" d="M224.3 141a115 115 0 1 0 -.6 230 115 115 0 1 0 .6-230zm-.6 40.4a74.6 74.6 0 1 1 .6 149.2 74.6 74.6 0 1 1 -.6-149.2zm93.4-45.1a26.8 26.8 0 1 1 53.6 0 26.8 26.8 0 1 1 -53.6 0zm129.7 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM399 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+                            <a href="https://www.facebook.com/people/CzechAlert/61586936905724/" class="footer-icons-link fb-icon" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" height="36" width="36" viewBox="0 0 544 512"><path fill="#ffffff" d="M240 363.3L240 576L356 576L356 363.3L442.5 363.3L460.5 265.5L356 265.5L356 230.9C356 179.2 376.3 159.4 428.7 159.4C445 159.4 458.1 159.8 465.7 160.6L465.7 71.9C451.4 68 416.4 64 396.2 64C289.3 64 240 114.5 240 223.4L240 265.5L174 265.5L174 363.3L240 363.3z"/></svg></a>
+                        </div>
+                    </div>
+                    <div class="footer-grid--item2 footer-grid--item">
+                        <h4 class="item2-subgrid1">Services</h4>
+                        <div class="item2-subgrid2"><a href="/#services">Private Investigations</a></div>
+                        <div class="item2-subgrid3"><a href="/#services">Business Intelligence</a></div>
+                        <div class="item2-subgrid4"><a href="/#services">PR &amp; Media Monitoring</a></div>
+                        <div class="item2-subgrid5"><a href="/#services">Risk &amp; Compliance</a></div>
+                        <div class="item2-subgrid6"><a href="/#services">Privacy Consulting</a></div>
+                    </div>
+                    <div class="footer-grid--item3 footer-grid--item">
+                        <h4 class="items3-subgrid1">Resources</h4>
+                        <div class="item3-subgrid2"><a href="publications">Publications</a></div>
+                        <div class="item3-subgrid3"><a href="publications">Case studies</a></div>
+                        <div class="item3-subgrid4"><a href="publications">White papers</a></div>
+                        <div class="item3-subgrid5"><a href="publications">Webinars</a></div>
+                        <div class="item3-subgrid6"><a href="publications">News</a></div>
+                    </div>
+                    <div class="footer-grid--item4 footer-grid--item">
+                        <h4 class="item4-subgrid1">Contact</h4>
+                        <div class="item4-subgrid2"><a href="mailto:info@czechalert.com" class="footer-email-link">info@czechalert.com</a><button class="footer-email-copy" aria-label="Copy email to clipboard"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+                        <div class="item4-subgrid3"><a href="tel:+420602693668">+420 602 693 668</a></div>
+                        <div class="item4-subgrid4"><a href="https://maps.app.goo.gl/yrpn6zwNzMhtzrDDA" target="_blank" rel="noopener noreferrer">Rumunská 4, Praha 2</a></div>
+                        <div class="item4-subgrid5"><a href="contact">Support</a></div>
+                        <div class="item4-subgrid6"><a href="contact">Cooperation</a></div>
+                    </div>
+                </div>
+                <div class="footer-copyright">
+                    <span class="copyright"><small>&#169;2026. CzechAlert</small></span>
+                    <span class="signature"><small>Crafted with passion by Šárka Šimová</small></span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- GSAP + ScrollTrigger via CDN - keeps the bundle out of the          -->
+    <!-- existing /js/vendor folder (which only ships the GSAP core).        -->
+    <!-- ================================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/ScrollTrigger.min.js"></script>
+
+    <script src="js/script.js"></script>
+    <script src="js/lang-v-toggler.js"></script>
+    <!-- Stacked-curtain reveal - must load AFTER GSAP/ScrollTrigger above -->
+    <script src="js/pi-security-curtain.js"></script>
+</body>
+</html>

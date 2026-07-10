@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "compile:sass": "sass sass/main.scss css/style.css -w",
+    "images": "node node/optimize-images.js",
+    "images:force": "node node/optimize-images.js --force",
+    "wrap:pictures": "node node/wrap-pictures.js",
+    "compress:hero": "node node/compress-hero-images.js",
     "dev": "http-server . -p 8080 -c-1 -e html --gzip",
     "dev:firefox": "concurrently -n server,browser \"http-server . -p 8080 -c-1 -e html --gzip\" \"wait-on http://127.0.0.1:8080 && start firefox http://127.0.0.1:8080/\"",
     "serve": "http-server . -p 8080 -c-1 -e html --gzip"

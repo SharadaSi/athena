@@ -9,8 +9,26 @@
     min-height: 100vh; // ensures the section stretches to full viewport height
     background-color: $background-black;
     padding-block: 8rem;
-    background: url("../media/czech-alert15.jpg") no-repeat center center fixed;
+
+    // Bare-url legacy fallback first, then image-set() so modern engines pick
+    // AVIF → WebP → JPG. Original 1.2 MB JPEG would otherwise dominate the
+    // PR-Security memory budget on iOS. See node/optimize-images.js.
+    background: $background-black url("../media/optimized/czech-alert15-1280.webp") no-repeat center center fixed;
+    background-image: image-set(
+        url("../media/optimized/czech-alert15-1280.avif") type("image/avif"),
+        url("../media/optimized/czech-alert15-1280.webp") type("image/webp"),
+        url("../media/optimized/czech-alert15-1280.jpg")  type("image/jpeg")
+    );
     background-size: cover;
+
+    @media (min-resolution: 1.5dppx), (min-width: 100rem) {
+        background-image: url("../media/optimized/czech-alert15-1920.webp");
+        background-image: image-set(
+            url("../media/optimized/czech-alert15-1920.avif") type("image/avif"),
+            url("../media/optimized/czech-alert15-1920.webp") type("image/webp"),
+            url("../media/optimized/czech-alert15-1920.jpg")  type("image/jpeg")
+        );
+    }
 
     &::before {
         content: "";
@@ -39,7 +57,14 @@
             top: -10%;
             width: 100%;
             height: 120%;
-            background: url("../media/czech-alert15.jpg") no-repeat center center;
+            background-image: url("../media/optimized/czech-alert15-1280.webp");
+            background-image: image-set(
+                url("../media/optimized/czech-alert15-1280.avif") type("image/avif"),
+                url("../media/optimized/czech-alert15-1280.webp") type("image/webp"),
+                url("../media/optimized/czech-alert15-1280.jpg")  type("image/jpeg")
+            );
+            background-repeat: no-repeat;
+            background-position: center center;
             background-size: cover;
             z-index: 0;
             transform: translate3d(0, var(--parallax-y, 0), 0);

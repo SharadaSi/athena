@@ -43,6 +43,23 @@
 }
 
 // -----------------------------------------------------------------------------
+// Curtain overlay background images — same optimized treatment as the
+// PI & Security curtains. The shared `::before` carrier (position, cover
+// sizing and the scroll-scrubbed `--bg-zoom` scale) is defined globally on
+// `.service-panel__overlay` in `_pr-security-page.scss`; here we only assign
+// each PR & Media panel its photo via the shared `curtain-bg()` mixin,
+// reusing the same curtain assets so the service pages feel like siblings.
+// Add the matching `--img-*` class to each overlay in `pr-media.html`
+// (alongside its colour modifier).
+// -----------------------------------------------------------------------------
+.service-panel__overlay {
+    &--img-reputation::before    { @include curtain-bg("abstract-network-background"); }
+    &--img-intelligence::before  { @include curtain-bg("zeros-and-ones-bg"); }
+    &--img-crisis::before        { @include curtain-bg("cloth-data-texture-abstract"); }
+    &--img-faq::before           { @include curtain-bg("round-nebula-bg"); }
+}
+
+// -----------------------------------------------------------------------------
 // Hero — first curtain panel. Looping video + frosted-glass overlay, same
 // treatment as the PI & Security and Business Intelligence heroes.
 // -----------------------------------------------------------------------------
@@ -165,6 +182,9 @@
     &__cta {
         margin-top: 4rem;
         padding-top: 3rem;
+        // Breathing room beneath the CTA button so it never sits flush
+        // against the curtain frame's bottom padding.
+        padding-bottom: fn.fluid(2rem, 3.5rem);
         text-align: center;
 
         .pmm-cta__heading {
@@ -268,7 +288,7 @@
         &__heading    { font-size: fn.fluid(2.4rem, 3.4rem); margin-bottom: 0.75rem; }
         &__subheading { margin-bottom: 2rem; }
         &__item       { padding: 1rem 0; }
-        &__cta        { margin-top: 2.5rem; padding-top: 2rem; }
+        &__cta        { margin-top: 2.5rem; padding-top: 2rem; padding-bottom: 1.5rem; }
         &__cta .pmm-cta__heading { font-size: fn.fluid(1.9rem, 2.4rem); margin-bottom: 0.75rem; }
         &__cta .pmm-cta__lead    { margin-bottom: 1.5rem; }
     }

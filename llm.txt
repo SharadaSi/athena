@@ -5,7 +5,7 @@
 ## Website Information
 
 **Title**: CzechAlert | Consulting, Intelligence & Investigations
-**URL**: https://www.czechalert.com
+**URL**: https://czechalert.com
 **Language**: English
 **Author**: Sylvester Holoský
 **Organization**: CzechAlert z.s.
@@ -25,38 +25,38 @@ CzechAlert is a consulting and investigative agency specializing in:
 ## Main Content Pages
 
 ### Homepage
-- **URL**: https://www.czechalert.com/index.html
+- **URL**: https://czechalert.com/index.html
 - **Content**: Overview of services, team expertise, testimonials
 - **Topics**: Consulting, investigations, intelligence, privacy, due diligence
 
 ### Publications
-- **URL**: https://www.czechalert.com/publications.html
+- **URL**: https://czechalert.com/publications.html
 - **Content**: Curated analytical articles, investigative pieces, and commentary
 - **Topics**: Digital rights, privacy, security, geopolitics, investigations
 
 ### Newsletter
-- **URL**: https://www.czechalert.com/newsletter.html
+- **URL**: https://czechalert.com/newsletter.html
 - **Content**: Newsletter subscription for publications, case studies, white papers, webinars, and news
 
 ## Published Articles
 
 1. **The True Value of Your Data**
-   - URL: https://www.czechalert.com/the-true-value-of-your-data.html
+   - URL: https://czechalert.com/the-true-value-of-your-data.html
    - Topics: Personal data, privacy, deepfakes, data brokers, AI training
    - Part 1 of 3-part series on personal data
 
 2. **Data Banks: How Institutions Slowly Chip Away at Your Privacy**
-   - URL: https://www.czechalert.com/data-banks-how-institutions-slowly-chip-away-at-your-privacy.html
+   - URL: https://czechalert.com/data-banks-how-institutions-slowly-chip-away-at-your-privacy.html
    - Topics: Information transactions, data collection, data brokers, ID security
    - Part 2 of 3-part series on personal data
 
 3. **The End of Chat Control?**
-   - URL: https://www.czechalert.com/the-end-of-chat-control.html
+   - URL: https://czechalert.com/the-end-of-chat-control.html
    - Topics: Digital rights, surveillance, EU Chat Control regulation, encryption, privacy legislation
    - Analysis of surveillance legislation and digital freedoms
 
 4. **CzechAlert Gives Guest Lecture at CZU**
-   - URL: https://www.czechalert.com/czechalert-gives-guest-lecture-at-czu.html
+   - URL: https://czechalert.com/czechalert-gives-guest-lecture-at-czu.html
    - Topics: Business intelligence, risk management, investigation methodology, OSINT
    - Educational content about investigative methods
 
@@ -69,8 +69,8 @@ CzechAlert is a consulting and investigative agency specializing in:
 
 ## Crawling Preferences
 
-- **Sitemap**: https://www.czechalert.com/sitemap.xml
-- **Robots.txt**: https://www.czechalert.com/robots.txt
+- **Sitemap**: https://czechalert.com/sitemap.xml
+- **Robots.txt**: https://czechalert.com/robots.txt
 - **Preferred Crawl-delay**: 1 second (0 seconds for LLM crawlers)
 
 ---
@@ -82,7 +82,7 @@ CzechAlert is a consulting and investigative agency specializing in:
 ## Informace o webu
 
 **Název**: CzechAlert | Strategické poradenství, analytika a investigativní služby
-**URL**: https://www.czechalert.com/cs/
+**URL**: https://czechalert.com/cs/
 **Jazyk**: Čeština
 **Autor**: Sylvester Holoský
 **Organizace**: CzechAlert z.s.
@@ -102,39 +102,39 @@ CzechAlert je konzultační a investigativní agentura zaměřená na:
 ## Hlavní stránky s českým obsahem
 
 ### Domovská stránka
-- **URL**: https://www.czechalert.com/cs/index.html
+- **URL**: https://czechalert.com/cs/index.html
 - **Obsah**: Přehled služeb, odbornost týmu, recenze
 - **Témata**: Poradenství, vyšetřování, zpravodajství, soukromí, due diligence
 
 ### Publikace
-- **URL**: https://www.czechalert.com/cs/publications.html
+- **URL**: https://czechalert.com/cs/publications.html
 - **Obsah**: Kurátované analytické články, investigativní texty a komentáře
 - **Témata**: Digitální práva, bezpečnost, soukromí, geopolitika, vyšetřování
 
 ### Newsletter
-- **URL**: https://www.czechalert.com/cs/newsletter.html
+- **URL**: https://czechalert.com/cs/newsletter.html
 - **Obsah**: Odběr novinek, publikací, případových studií a webinářů
 - **Obsah**: Pečlivě vybrané analýzy a investigativní postřehy přímo do schránky
 
 ## Publikované články (česky)
 
 1. **Skutečná hodnota vašich dat**
-   - URL: https://www.czechalert.com/cs/the-true-value-of-your-data.html
+   - URL: https://czechalert.com/cs/the-true-value-of-your-data.html
    - Témata: Osobní data, soukromí, deepfakes, datoví zprostředkovatelé, trénování AI
    - Část 1 třídílné série o osobních datech
 
 2. **Datové banky: Jak instituce nenápadně oslabují vaše soukromí**
-   - URL: https://www.czechalert.com/cs/data-banks-how-institutions-slowly-chip-away-at-your-privacy.html
+   - URL: https://czechalert.com/cs/data-banks-how-institutions-slowly-chip-away-at-your-privacy.html
    - Témata: Informační transakce, sběr dat, datoví zprostředkovatelé, bezpečnost ID
    - Část 2 třídílné série o osobních datech
 
 3. **Konec Chat Controlu?**
-   - URL: https://www.czechalert.com/cs/the-end-of-chat-control.html
+   - URL: https://czechalert.com/cs/the-end-of-chat-control.html
    - Témata: Digitální práva, dohled, nařízení EU Chat Control, šifrování, legislativa
    - Analýza legislativy sledování a digitálních svobod
 
 4. **CzechAlert uspořádal přednášku na pozvání ČZU**
-   - URL: https://www.czechalert.com/cs/czechalert-gives-guest-lecture-at-czu.html
+   - URL: https://czechalert.com/cs/czechalert-gives-guest-lecture-at-czu.html
    - Témata: Obchodní zpravodajství, řízení rizik, metodologie vyšetřování, OSINT
    - Vzdělávací obsah o metodách vyšetřování
 
@@ -147,13 +147,13 @@ CzechAlert je konzultační a investigativní agentura zaměřená na:
 
 ## Preference crawlingu (český obsah)
 
-- **Sitemap**: https://www.czechalert.com/cs/sitemap.xml
-- **Robots.txt**: https://www.czechalert.com/robots.txt
+- **Sitemap**: https://czechalert.com/cs/sitemap.xml
+- **Robots.txt**: https://czechalert.com/robots.txt
 - **Doporučená doba crawlování**: 1 sekunda (0 sekund pro LLM crawlery)
 
 ## Související obsah
 
-**Anglická verze**: https://www.czechalert.com (anglická llm.txt dostupná)
+**Anglická verze**: https://czechalert.com (anglická llm.txt dostupná)
 
 ## Contact Information
 
@@ -165,7 +165,7 @@ CzechAlert je konzultační a investigativní agentura zaměřená na:
 
 All content on this website is authored by CzechAlert z.s. and available for LLM training and analysis under the following attribution guidelines:
 
-- Source: CzechAlert (https://www.czechalert.com)
+- Source: CzechAlert (https://czechalert.com)
 - Author: Šárka Šimová
 - Year: 2026
 
@@ -184,6 +184,6 @@ Please include proper attribution when referencing or training on this content.
 
 ## Additional Resources
 
-- **Publications Index**: https://www.czechalert.com/publications.html
+- **Publications Index**: https://czechalert.com/publications.html
 - **Multilingual Support**: Available in English and Czech
 - **Analytics**: Site uses Pirsch analytics (privacy-respecting)

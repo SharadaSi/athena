@@ -10,15 +10,19 @@
 RewriteEngine On
 RewriteBase /
 
+# Step 0 — Canonical origin: force HTTPS + non-www  (https://czechalert.com)
+# Runs FIRST so every request is normalised to one host/scheme before .html
+# handling. Hardcoded target host => http->https and www->non-www each resolve
+# in a single redirect hop.
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://czechalert.com%{REQUEST_URI} [R=301,L]
+
 # Step 1 — 301 redirect: strip .html from browser-facing URLs
-# Inspects THE_REQUEST (the raw HTTP request line, e.g. "GET /contact.html HTTP/1.1")
-# rather than REQUEST_URI so that query strings and hashes don't affect the match.
 RewriteCond %{THE_REQUEST} \s/+(.*?)\.html[\s?#] [NC]
 RewriteRule ^ /%1 [R=301,L,NE]
 
 # Step 2 — Internal rewrite: serve /page or /cs/page as /page.html or /cs/page.html
-# Only fires when the request has no dot in the path (ruling out real assets like
-# .css, .js, .png, .php) and the path is neither an existing file nor a directory.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([^.]+)$ $1.html [L]

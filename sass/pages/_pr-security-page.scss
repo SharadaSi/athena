@@ -210,23 +210,23 @@
     }
 
     &__heading {
-        // Match the index hero heading scale (6rem desktop → ~4rem on
-        // narrow screens) instead of the full `heading-XXL` ramp which
-        // ran up to 8rem and dwarfed everything else on the page.
+        // Tightened ramp — the hero shares its 100vh frame with the
+        // eyebrow, subheading and scroll-cue, so the headline is dialed
+        // down from the original (4rem → 6rem) scale to keep the whole
+        // composition comfortably above the fold on laptop viewports.
         color: $text-color-primary;
-        font-size: fn.fluid(4rem, 6rem);
+        font-size: fn.fluid(3rem, 4.5rem);
         font-weight: 700;
         line-height: 1.15;
-        max-width: 16ch;
+        max-width: 18ch;
         margin-inline: auto;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
 
     &__subheading {
-        // Match the index hero subheading (2rem) — the previous
-        // `parag-XL` ramp peaked at 2.2rem with secondary colour, so this
-        // is a small tweak that brings the two heroes into visual parity.
-        font-size: fn.fluid(1.6rem, 2rem);
+        // Subheading follows the headline down — sized to read as
+        // supporting copy rather than competing for hierarchy.
+        font-size: fn.fluid(1.4rem, 1.7rem);
         font-weight: 400;
         line-height: 1.5;
         color: rgba(255, 255, 255, 0.75);
@@ -284,6 +284,84 @@
         max-width: 110rem;
         margin-inline: auto;
         gap: 1.25rem;
+    }
+
+    // ---- Eight-card panel ("Investigations & Due Diligence Advisory") ----
+    // This is the only panel that uses the dense `--eight` grid (4 cards on
+    // each side of the central image). Inside the 100vh curtain frame that
+    // makes the whole section read noticeably larger/taller than its
+    // siblings. On LAPTOP viewports (where vertical height is tight) we shrink
+    // the internal scale — card padding, heading/body type and row gaps — so
+    // the section sits more compactly. The grid's `max-width` is deliberately
+    // left untouched, so the panel keeps exactly the same width it has now;
+    // only the height/scale shrinks.
+    // Bounded to the laptop range only: above tablet (50rem) up to 90rem
+    // (1440px). Tablet/mobile re-stack the grid; large desktop monitors have
+    // the vertical room to render the panel at full scale.
+    @media screen and (min-width: 50.0625rem) and (max-width: 90rem) {
+        .services__grid--eight {
+            gap: 1rem;
+
+            // Lighter card chrome — half the default 2rem padding so the four
+            // stacked rows take up less vertical room.
+            .services__grid--firstL,
+            .services__grid--secondL,
+            .services__grid--thirdL,
+            .services__grid--fourthL,
+            .services__grid--firstR,
+            .services__grid--secondR,
+            .services__grid--thirdR,
+            .services__grid--fourthR {
+                padding: 1rem 1.2rem;
+            }
+
+            .services__grid--heading {
+                font-size: fn.fluid(1.7rem, 2.1rem);
+                margin-bottom: 0.6rem;
+            }
+
+            .services__grid--content {
+                font-size: 1.3rem;
+                line-height: 1.4;
+            }
+        }
+    }
+
+    // ---- Eight-card panel — centred vertical column ----------------------
+    // Investigations & Due Diligence Advisory: pull the 4th card on each side
+    // into the central column so it reads as a top-card → image → bottom-card
+    // stack, with the six remaining cards flanking left and right. Desktop /
+    // laptop only — above the tablet breakpoint (50rem); tablet and mobile
+    // keep the base re-stacked single/two-column order from `_services.scss`.
+    @media screen and (min-width: 50.0625rem) {
+        .services__grid--eight {
+            // Override the base flanking-image template: name only the six
+            // side cards and leave the centre column empty (`.`) so the three
+            // centred items can be line-placed explicitly below.
+            grid-template-areas:
+                "firstL  .  firstR"
+                "secondL .  secondR"
+                "thirdL  .  thirdR"
+                ".       .  .";
+
+            // Top card in the centre column
+            .services__grid--fourthL {
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
+            } 
+
+            // Central feature image — spans the two middle rows
+            .services__grid--grid-img {
+                grid-column: 2 / 3;
+                grid-row: 2 / 3;
+            }
+
+            // Bottom card in the centre column
+            .services__grid--fourthR {
+                grid-column: 2 / 3;
+                grid-row: 3 / 4;
+            }
+        }
     }
 
     &__tag {
@@ -359,12 +437,12 @@
             // the bottom bleed stays parked in the viewport as a residual
             // strip that grows with the zoom.
             overflow: hidden;
-            // NOTE: do NOT declare `--bg-zoom` here. The curtain JS scrubs
-            // the variable on `.curtain-stage` and it inherits down to every
-            // overlay. Declaring a local default on the overlay would shadow
-            // the inherited value and lock the zoom at 1. The `::before`
-            // pseudo-element consumes it via `var(--bg-zoom, 1)` — the
-            // fallback there already covers the no-GSAP case.
+            // NOTE: do NOT declare a static `--bg-zoom` here. The curtain JS
+            // writes a LOCAL `--bg-zoom` inline on each overlay (resetting it
+            // to 1 as the panel enters, then scrubbing up to its max) so every
+            // panel zooms within its own window instead of inheriting a single
+            // global value. The `::before` consumes it via `var(--bg-zoom, 1)`
+            // — that fallback already covers the no-GSAP / reduced-motion case.
 
             // Mirror the publications page title-card layout:
             //   - heading sits on the left at `heading-XXL` scale
@@ -397,47 +475,60 @@
                 margin-inline: auto;
             }
 
-            // Shared background-image carrier. We can't transform a CSS
-            // `background-image` directly, so each variant paints its
-            // photo on a pseudo-element that we scale via the
-            // `--bg-zoom` custom property the JS scrubs with scroll.
-            //
-            // The pseudo is `position: absolute; inset: 0` so it stays
-            // out of the overlay's flex flow (the heading + paragraph
-            // wrapper at `> div` keeps its own layout). It sits at
-            // z-index 0 — behind the nebula canvas (z-index 1) and the
-            // text wrapper (z-index 2).
+            // Colour tint kept on the original modifiers so a panel's
+            // background paint stays independent of its photo — any tint can
+            // be mixed with any hero image.
             &--red,
             &--blue,
             &--graphite {
                 background-color: $background-black;
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    inset: 0;
-                    z-index: 0;
-                    background-position: center;
-                    background-size: cover;
-                    background-repeat: no-repeat;
-                    transform: scale(var(--bg-zoom, 1));
-                    transform-origin: center center;
-                    will-change: transform;
-                    pointer-events: none;
-                }
             }
 
-            &--red::before {
-                background-image: url("../media/zeros-and-ones-bg.png");
+            // Shared background-image carrier. Applies to EVERY overlay so any
+            // panel can show a hero photo. We can't transform a CSS
+            // `background-image` directly, so each panel paints its photo on
+            // this pseudo-element that we scale via the `--bg-zoom` custom
+            // property the JS scrubs with scroll.
+            //
+            // The pseudo is `position: absolute; inset: 0` so it stays out of
+            // the overlay's flex flow (the heading + paragraph wrapper at
+            // `> div` keeps its own layout). It sits at z-index 0 — behind the
+            // nebula canvas (z-index 1) and the text wrapper (z-index 2). An
+            // overlay with no `--img-*` modifier simply paints nothing here.
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: 0;
+                background-position: center;
+                // `cover` fills the whole overlay (100% width AND height) at
+                // the image's natural scale — no letterboxing. Because the
+                // per-panel `--bg-zoom` starts at 1, the photo enters at this
+                // default cover size and only scales up as the scroll-driven
+                // zoom kicks in within the panel's own window.
+                background-size: cover;
+                background-repeat: no-repeat;
+                transform: scale(var(--bg-zoom, 1));
+                transform-origin: center center;
+                will-change: transform;
+                pointer-events: none;
             }
 
-            &--blue::before {
-                background-image: url("../media/abstract-triangular-nebula.png");
-            }
-
-            &--graphite::before {
-                background-image: url("../media/abstract-network-background.png");
-            }
+            // ---- Per-service hero images -------------------------------------
+            // One modifier per curtain panel so every overlay shows a distinct
+            // photo. Add the matching class to the overlay in `pr-security.html`
+            // (alongside its colour modifier) and swap the placeholder asset
+            // below for the final art when it's ready.
+            //
+            // The shared `curtain-bg()` mixin (in `abstracts/_mixins.scss`)
+            // emits the AVIF/WebP/JPEG `image-set()` plus the high-DPI swap so
+            // every curtain page reuses one optimization strategy.
+            &--img-intel::before          { @include curtain-bg("zeros-and-ones-bg"); }
+            &--img-investigations::before { @include curtain-bg("abstract-triangular-nebula"); }
+            &--img-protective::before     { @include curtain-bg("abstract-network-background"); }
+            &--img-training::before       { @include curtain-bg("abstract-optic-shots"); }
+            &--img-recovery::before       { @include curtain-bg("cloth-data-texture-abstract"); }
+            &--img-faq::before            { @include curtain-bg("round-nebula-bg"); }
         }
 }
 
@@ -488,8 +579,9 @@
     // their own bottom border so no extra divider is needed here.
     &__cta {
         margin-top: 4rem;
-        padding-top: 3rem;
-        text-align: center;
+        padding-top: 3rem;        // Breathing room beneath the CTA button so it never sits flush
+        // against the curtain frame's bottom padding.
+        padding-bottom: fn.fluid(2rem, 3.5rem);        text-align: center;
 
         // Slightly smaller than the FAQ heading so it reads as a sub-section
         // rather than a competing title, while still matching the page rhythm.
@@ -672,7 +764,7 @@
         &__heading    { font-size: fn.fluid(2.4rem, 3.4rem); margin-bottom: 0.75rem; }
         &__subheading { margin-bottom: 2rem; }
         &__item       { padding: 1rem 0; }
-        &__cta        { margin-top: 2.5rem; padding-top: 2rem; }
+        &__cta        { margin-top: 2.5rem; padding-top: 2rem; padding-bottom: 1.5rem; }
         &__cta .pi-cta__heading { font-size: fn.fluid(1.9rem, 2.4rem); margin-bottom: 0.75rem; }
         &__cta .pi-cta__lead    { margin-bottom: 1.5rem; }
     }
@@ -689,44 +781,125 @@
 }
 
 // -----------------------------------------------------------------------------
-// Reduced-motion / no-JS fallback
-// When the user prefers reduced motion, or GSAP fails to load and the JS
-// adds the `.curtain-fallback` class to <html>, we collapse the absolute
-// stack into a normal flowing list of full-height sections. No transforms
-// remain in the way, so the page is fully usable without the animation.
+// Static (non-curtain) layout — shared by the reduced-motion fallback, the
+// no-JS/`.curtain-fallback` flag AND the small-screen (≤50rem) breakpoint below.
+// Collapses the absolutely-stacked, 100vh-clipped curtain into a normal flowing
+// column so every panel renders in full and scrolls natively. The decorative
+// overlays (whose heading duplicates the panel title) are dropped. Defined as a
+// mixin rather than a %placeholder so it can be @included inside media queries
+// (Sass forbids @extend across media contexts).
 // -----------------------------------------------------------------------------
-@media (prefers-reduced-motion: reduce) {
+@mixin curtain-static {
     .curtain-stage  { min-height: 0; height: auto !important; }
     .curtain-track  { position: static; height: auto; overflow: visible; }
+
     .curtain-section {
         position: relative;
         inset: auto;
         height: auto;
-        min-height: 60vh;
+        min-height: 0;
+        overflow: visible;
         transform: none !important;
 
-        .overlay {
+        // Let each panel body grow to its natural height and stack from the
+        // top instead of being vertically centred inside a fixed 100vh frame.
+        .content {
             position: relative;
-            inset: auto;
+            height: auto;
             transform: none !important;
+            justify-content: flex-start;
+        }
+    }
+
+    // Decorative curtains are redundant without the reveal animation, and
+    // their heading duplicates the panel title in flow.
+    .service-panel__overlay { display: none; }
+
+    // Panel bodies render in full — no internal scroll trap.
+    .service-panel__content,
+    .pi-faq__content {
+        height: auto;
+        overflow: visible;
+    }
+
+    // Hero keeps a genuine full-viewport presence (it has a video backdrop
+    // and no long content to define its own height). Covers every sibling
+    // service-page hero — PI & Security (`.pr-security-hero`, also reused by
+    // Advocacy), PR & Media (`.pmm-hero`) and Business Intelligence
+    // (`.bi-hero`) — so they all own the full viewport once the pinned
+    // curtain collapses into the static column.
+    .pr-security-hero,
+    .pmm-hero,
+    .bi-hero {
+        min-height: 100vh;
+
+        .content {
+            min-height: 100vh;
+            height: auto;
+            // The generic `.curtain-section .content` rule above forces
+            // `flex-start` here, which pins the hero copy to the top edge as
+            // soon as the static layout kicks in (≤64rem). The hero has no
+            // long flowing content — it owns the full viewport — so keep it
+            // vertically centred to match the pinned-curtain treatment above.
+            justify-content: center;
         }
     }
 }
 
-.curtain-fallback {
-    .curtain-stage  { min-height: 0; height: auto !important; }
-    .curtain-track  { position: static; height: auto; overflow: visible; }
-    .curtain-section {
-        position: relative;
-        inset: auto;
-        height: auto;
-        min-height: 60vh;
-        transform: none !important;
+// -----------------------------------------------------------------------------
+// Mobile & tablet (≤64rem) — the pinned curtain is disabled here (see the
+// matching gsap.matchMedia gate in `pi-security-curtain.js`). Panels flow
+// naturally so the full sub-capability grids and FAQ render in full and scroll
+// natively, mirroring the responsive `.services__grid` re-stack on the homepage.
+// -----------------------------------------------------------------------------
+@media screen and (max-width: 64rem) {
+    @include curtain-static;
+}
 
-        .overlay {
-            position: relative;
-            inset: auto;
-            transform: none !important;
+// Tighter spacing once the grids themselves re-stack to their tablet/mobile
+// layouts (≤50rem, per `_services.scss`).
+@media screen and (max-width: 50rem) {
+    .service-panel {
+        &__detail  { padding: 0 $services-grid-padding-tablet; }
+        &__content { padding-block: 2rem; }
+
+        .services__grid {
+            margin-top: 1.5rem;
+            gap: 1.5rem;
         }
     }
+
+    .pi-faq__content { padding-block: 3rem; }
+}
+
+@media screen and (max-width: 40rem) {
+    .service-panel__detail { padding: 0 $services-grid-padding-mobile; }
+
+    // Let mobile grid cards size to their own content instead of stretching to
+    // equal-height rows. The base `services__grid` mobile rule (in
+    // `_services.scss`) uses `grid-template-rows: repeat(5, 1fr)`, which forces
+    // every card to the height of the tallest one — leaving big empty gaps in
+    // the shorter cards. The `--six` variant used by "Investigations & Due
+    // Diligence" already uses `auto` rows and therefore hugs its content;
+    // mirroring that here makes Intel & Analysis, Protective Services, Training
+    // and Recovery behave identically.
+    .service-panel .services__grid {
+        grid-auto-rows: auto;
+        grid-template-rows: repeat(5, auto);
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Reduced-motion / no-JS fallback
+// When the user prefers reduced motion, or GSAP fails to load and the JS
+// adds the `.curtain-fallback` class to <html>, we collapse the absolute
+// stack into a normal flowing column. No transforms remain in the way, so the
+// page is fully usable without the animation.
+// -----------------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+    @include curtain-static;
+}
+
+.curtain-fallback {
+    @include curtain-static;
 }

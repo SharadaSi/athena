@@ -89,6 +89,62 @@
     return figure;
   }
 
+  // Build a <figure> for an inline image embedded in the article body.
+  // Uses Sanity's image CDN query params (`?w=...&auto=format&q=75`) to deliver
+  // an appropriately sized, modern-format (WebP/AVIF) image. The original
+  // intrinsic dimensions come from `asset->metadata.dimensions` (projected in
+  // GROQ) and are set on the <img> to prevent CLS while the image loads.
+  //
+  // Prefers the shared `window.applySanityImg` helper from `js/sanity-image.js`
+  // when available so every Sanity image on the site flows through one
+  // responsive-URL builder. Falls back to a hand-rolled srcset if the helper
+  // script failed to load — inline images stay legible no matter what.
+  function inlineImageToElement(block) {
+    if (!block || !block.imageUrl) return null;
+    const figure = document.createElement('figure');
+    figure.className = 'article-page--inline-image';
+
+    const img = document.createElement('img');
+    img.alt = (block.alt || block.caption || '').trim();
+
+    const sizesClause = '(max-width: 800px) 100vw, 800px';
+
+    if (typeof window.applySanityImg === 'function') {
+      window.applySanityImg(img, {
+        url: block.imageUrl,
+        sizes: sizesClause,
+        widths: [320, 640, 960, 1280, 1600],
+        dimensions: block.dimensions,
+        lqip: block.lqip,
+      });
+    } else {
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      if (block.dimensions && block.dimensions.width && block.dimensions.height) {
+        img.width = block.dimensions.width;
+        img.height = block.dimensions.height;
+      }
+      const base = block.imageUrl;
+      const sep = base.includes('?') ? '&' : '?';
+      const widths = [640, 960, 1280, 1600];
+      img.src = `${base}${sep}w=1280&auto=format&q=75`;
+      img.srcset = widths
+        .map((w) => `${base}${sep}w=${w}&auto=format&q=75 ${w}w`)
+        .join(', ');
+      img.sizes = sizesClause;
+    }
+
+    figure.appendChild(img);
+
+    if (block.caption && block.caption.trim()) {
+      const caption = document.createElement('figcaption');
+      caption.className = 'article-page--inline-image-caption';
+      caption.textContent = block.caption.trim();
+      figure.appendChild(caption);
+    }
+    return figure;
+  }
+
   // Render the inline children (text spans + marks) of a Portable Text block
   // into the provided parent element. Extracted so it can be reused by both
   // regular blocks and list-item blocks.
@@ -228,6 +284,13 @@
         continue;
       }
 
+      if (block._type === 'inlineImage') {
+        resetLists();
+        const imgEl = inlineImageToElement(block);
+        if (imgEl) htmlElements.push(imgEl);
+        continue;
+      }
+
       if (block._type !== 'block') continue;
 
       // List item: render as <li> inside the current list container.
@@ -323,10 +386,23 @@
         subtitleEl.style.display = 'none';
       }
     }
-    // Set article main image and alt text for SEO and accessibility
+    // Set article main image and alt text for SEO and accessibility.
+    // The hero is above the fold — mark it `eager` and let the helper pick
+    // the responsive bundle. Falls back to a single `src` if the helper
+    // script (`js/sanity-image.js`) didn't load.
     if (imgEl && doc.imageUrl) {
-    imgEl.src = doc.imageUrl;
-    if (doc.imageAlt) imgEl.alt = doc.imageAlt;
+      if (doc.imageAlt) imgEl.alt = doc.imageAlt;
+      imgEl.dataset.eager = 'true';
+      if (typeof window.applySanityImg === 'function') {
+        window.applySanityImg(imgEl, {
+          url: doc.imageUrl,
+          sizes: '(min-width: 64rem) 70vw, 100vw',
+          dimensions: doc.imageDims,
+          lqip: doc.imageLqip,
+        });
+      } else {
+        imgEl.src = doc.imageUrl;
+      }
     }
     // Author, published date, and read time under the heading
     if (authorEl) authorEl.textContent = doc.author || 'CzechAlert';
@@ -406,9 +482,17 @@
       publishedAt,
       "imageUrl": image.asset->url,
       "imageAlt": image.alt,
+      "imageDims": image.asset->metadata.dimensions,
+      "imageLqip": image.asset->metadata.lqip,
       body[]{
         ...,
-        _type == "chartEmbed" => { ..., "chartUrl": file.asset->url }
+        _type == "chartEmbed" => { ..., "chartUrl": file.asset->url },
+        _type == "inlineImage" => {
+          ...,
+          "imageUrl": asset->url,
+          "dimensions": asset->metadata.dimensions{width, height},
+          "lqip": asset->metadata.lqip
+        }
       },
       "translationRef": translationOf._ref,
       resources[]{label,url},
@@ -433,10 +517,18 @@
       publishedAt,
       "imageUrl": image.asset->url,
       "imageAlt": image.alt,
+      "imageDims": image.asset->metadata.dimensions,
+      "imageLqip": image.asset->metadata.lqip,
       "translationRef": translationOf._ref,
       body[]{
         ...,
-        _type == "chartEmbed" => { ..., "chartUrl": file.asset->url }
+        _type == "chartEmbed" => { ..., "chartUrl": file.asset->url },
+        _type == "inlineImage" => {
+          ...,
+          "imageUrl": asset->url,
+          "dimensions": asset->metadata.dimensions{width, height},
+          "lqip": asset->metadata.lqip
+        }
       },
       resources[]{label,url},
       meta

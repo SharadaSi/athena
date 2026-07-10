@@ -1,0 +1,34 @@
+// =============================================================================
+// Advocacy service page
+// -----------------------------------------------------------------------------
+// The advocacy page renders with `class="pr-security-page advocacy-page"`, so it
+// inherits the entire curtain-reveal architecture AND the hero treatment from
+// `_pr-security-page.scss` for free — the shared machinery (`.curtain-stage`,
+// `.curtain-track`, `.curtain-section`, `.service-panel`, `.pr-security-hero`,
+// the laptop-height `@media (max-height: 900px)` block, and the reduced-motion
+// fallbacks) all apply globally by class name.
+//
+// This partial therefore only carries what is genuinely page-specific: the
+// curtain overlay background images for the two Advocacy panels. The shared
+// `::before` carrier (position, cover sizing and the scroll-scrubbed
+// `--bg-zoom` scale) lives globally on `.service-panel__overlay` in
+// `_pr-security-page.scss`; here we just assign each panel its photo via the
+// shared `curtain-bg()` mixin, reusing the same curtain assets so the service
+// pages feel like siblings. Add the matching `--img-*` class to each overlay
+// in `advocacy.html` (alongside its colour modifier).
+// =============================================================================
+
+@use "../abstracts/variables" as *;
+@use "../abstracts/functions" as fn;
+@use "../abstracts/mixins" as *;
+@use "../base/typography" as *;
+@use "../base/utilities" as *;
+
+// -----------------------------------------------------------------------------
+// Curtain overlay background images — same optimized treatment as the
+// PI & Security curtains.
+// -----------------------------------------------------------------------------
+.service-panel__overlay {
+    &--img-policy::before    { @include curtain-bg("zeros-and-ones-bg"); }
+    &--img-education::before { @include curtain-bg("abstract-triangular-nebula"); }
+}

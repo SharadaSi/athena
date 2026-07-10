@@ -10,11 +10,16 @@
 
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:locale:alternate" content="en_US">
-    <link rel="alternate" hreflang="cs" href="https://www.czechalert.com/cs/the-end-of-chat-control">    
-    <link rel="alternate" hreflang="en" href="https://www.czechalert.com/the-end-of-chat-control">
-    <link rel="alternate" hreflang="x-default" href="https://www.czechalert.com/the-end-of-chat-control">
-    <link rel="canonical" href="https://www.czechalert.com/cs/the-end-of-chat-control">
+    <link rel="alternate" hreflang="cs" href="https://czechalert.com/cs/the-end-of-chat-control">    
+    <link rel="alternate" hreflang="en" href="https://czechalert.com/the-end-of-chat-control">
+    <link rel="alternate" hreflang="x-default" href="https://czechalert.com/the-end-of-chat-control">
+    <link rel="canonical" href="https://czechalert.com/cs/the-end-of-chat-control">
 
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin>
+    <link rel="preconnect" href="https://8z0tbe2a.api.sanity.io" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.sanity.io">
+
+    <link rel="preload" as="image" type="image/avif" imagesrcset="../media/optimized/czech-alert3-320.avif 320w, ../media/optimized/czech-alert3-640.avif 640w, ../media/optimized/czech-alert3-960.avif 960w, ../media/optimized/czech-alert3-1280.avif 1280w, ../media/optimized/czech-alert3-1600.avif 1600w, ../media/optimized/czech-alert3-1920.avif 1920w" imagesizes="(min-width: 64rem) 70vw, 100vw" fetchpriority="high">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="shortcut icon" href="../icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
     <link rel="icon" href="../icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
@@ -39,7 +44,7 @@
                 <div class="nav--logo">
                     <a href="/cs/" class="logo--link">
                         <img class="nav--logo-img
-                        " src="../media/czech-alert-logo-desktop.png" alt="CzechAlert logo">
+                        " src="../media/czech-alert-logo-desktop.png" alt="CzechAlert logo" decoding="async">
                     </a>
                 </div>
 
@@ -109,7 +114,11 @@
                 </div>
                 
                 <div class="article-page--content-grid">
-                    <img src="../media/czech-alert3.jpg" alt="Konec Chat Controlu?" class="article-page--content-img">
+                    <picture>
+    <source type="image/avif" srcset="../media/optimized/czech-alert3-320.avif 320w, ../media/optimized/czech-alert3-640.avif 640w, ../media/optimized/czech-alert3-960.avif 960w, ../media/optimized/czech-alert3-1280.avif 1280w, ../media/optimized/czech-alert3-1600.avif 1600w, ../media/optimized/czech-alert3-1920.avif 1920w" sizes="(min-width: 64rem) 70vw, 100vw">
+    <source type="image/webp" srcset="../media/optimized/czech-alert3-320.webp 320w, ../media/optimized/czech-alert3-640.webp 640w, ../media/optimized/czech-alert3-960.webp 960w, ../media/optimized/czech-alert3-1280.webp 1280w, ../media/optimized/czech-alert3-1600.webp 1600w, ../media/optimized/czech-alert3-1920.webp 1920w" sizes="(min-width: 64rem) 70vw, 100vw">
+    <img class="article-page--content-img" alt="Konec Chat Controlu?" src="../media/optimized/czech-alert3-1920.jpg" fetchpriority="high" decoding="async" srcset="../media/optimized/czech-alert3-320.jpg 320w, ../media/optimized/czech-alert3-640.jpg 640w, ../media/optimized/czech-alert3-960.jpg 960w, ../media/optimized/czech-alert3-1280.jpg 1280w, ../media/optimized/czech-alert3-1600.jpg 1600w, ../media/optimized/czech-alert3-1920.jpg 1920w" sizes="(min-width: 64rem) 70vw, 100vw" width="4368" height="2448">
+</picture>
                     <p class="article-page--content-p first-paragraph"><em><strong>Souboj o digitální práva zatím nevypadá příliš nadějně</strong></em>. Příklady masového dohledu v Číně, Velké Británii nebo nově i ve Spojených státech ukazují, že snahy omezit anonymitu a soukromí nejsou jen teoretické. Kromě konkrétních legislativních kroků se navíc stále častěji objevuje i <em><strong>subjektivní pocit, že státní kontrola sílí</strong></em>. A pokud vám to tak připadá, rozhodně nejste sami.</p>
                 </div>
 
@@ -172,7 +181,7 @@
                 <div class="footer-grid--item1 footer-grid--item">
                     <div class="logo--font-size-footer">
                         <a href="#">
-                            <img class="footer--logo-img" src="../media/czech-alert-logo-desktop.png" alt="CzechAlert logo">
+                            <img class="footer--logo-img" src="../media/czech-alert-logo-desktop.png" alt="CzechAlert logo" loading="lazy" decoding="async" fetchpriority="low">
                         </a>
                     </div>
                     <div class="footer-icons-container">
@@ -218,6 +227,7 @@
     </footer>
     
     <script src="../js/script.js"></script>
+    <script src="../js/sanity-image.js"></script>
     <script src="../js/article-content.js"></script>
     <script src="../js/lang-v-toggler.js"></script>
     

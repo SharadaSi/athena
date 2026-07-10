@@ -19,9 +19,7 @@ When placing your blue details (#003683) on the cards, use a very thin border or
   width: 90%;
   margin: 6rem auto;
   position: relative;
-  background: rgba(0, 0, 0, 0.9);
   padding: 4rem 4rem;
-  box-shadow: 0 8px 32px 0 rgba(0, 54, 131, 0.18), 0 1.5px 8px 0 rgba(0, 0, 0, 0.1);
 }
 
 .section-heading {
@@ -632,7 +630,7 @@ a {
   position: relative;
   height: 100vh;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(18, 18, 20, 0.5);
   box-shadow: 0 8px 32px 0 rgba(0, 54, 131, 0.18), 0 1.5px 8px 0 rgba(0, 0, 0, 0.1);
 }
 .header__container {
@@ -981,8 +979,9 @@ body.nav-open {
 }
 @media screen and (max-width: 80rem) {
   .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 3rem 2rem;
+    align-items: start;
   }
 }
 @media screen and (max-width: 40rem) {
@@ -1014,6 +1013,20 @@ body.nav-open {
   flex-direction: column;
   justify-content: space-between;
   align-items: left;
+}
+@media screen and (max-width: 80rem) {
+  .footer-grid--item1 {
+    grid-column: 1/-1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+@media screen and (max-width: 40rem) {
+  .footer-grid--item1 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .footer--logo-img {
@@ -1227,6 +1240,15 @@ body.nav-open {
   display: flex;
   border-radius: 10px;
 }
+.services__grid--grid-img--icon {
+  align-items: center;
+  justify-content: center;
+}
+.services__grid--grid-img--icon img {
+  width: 50%;
+  height: auto;
+  object-fit: contain;
+}
 
 @media screen and (max-width: 40rem) {
   .services {
@@ -1252,6 +1274,13 @@ body.nav-open {
     object-fit: cover;
     display: block;
     border-radius: 4px;
+  }
+  .services__grid--grid-img--icon img {
+    width: auto;
+    max-width: 60%;
+    height: auto;
+    max-height: clamp(7rem, 28vw, 11rem);
+    object-fit: contain;
   }
   .services__grid__grid > * {
     height: 100%;
@@ -1281,6 +1310,13 @@ body.nav-open {
     object-fit: cover;
     display: block;
     border-radius: 7px;
+  }
+  .services__grid--grid-img--icon img {
+    width: auto;
+    max-width: 40%;
+    height: auto;
+    max-height: clamp(9rem, 20vw, 14rem);
+    object-fit: contain;
   }
   .services__grid__grid > * {
     height: 100%;
@@ -1318,6 +1354,223 @@ body.nav-open {
   }
 }
 
+.services--scroll {
+  display: block;
+  position: relative;
+  height: 200vh;
+  background-color: #121214;
+  padding: 0;
+}
+
+.services__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 2rem;
+  overflow: hidden;
+}
+
+.services--scroll .section-heading,
+.services--scroll .section-subheading {
+  text-align: center;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.services__grid--scroll {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(1.5rem, 1.2vw, 2.4rem);
+  width: min(95vw, max(130rem, 60vw));
+  height: min(78vh, 68rem);
+  perspective: 1200px;
+  grid-template-areas: none;
+}
+
+.services__cell {
+  background-color: #1E1E22;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  will-change: transform, opacity;
+  transition: box-shadow 0.3s ease;
+}
+
+.services__cell .services__grid--cta-link {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.services__cell--link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  text-transform: none;
+}
+.services__cell--link .services__grid--heading,
+.services__cell--link .services__grid--content {
+  text-transform: none;
+}
+.services__cell--link::after {
+  content: "Explore service →";
+  margin-top: auto;
+  padding-top: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 42, 0, 0.9);
+  transition: color 0.2s ease, transform 0.2s ease;
+  align-self: flex-start;
+}
+.services__cell--link:hover, .services__cell--link:focus-visible {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.services__cell--link:hover::after, .services__cell--link:focus-visible::after {
+  color: rgba(255, 85, 51, 0.9);
+  transform: translateX(3px);
+}
+.services__cell--link:focus-visible {
+  outline: 2px solid rgba(255, 85, 51, 0.9);
+  outline-offset: 4px;
+}
+
+:lang(cs) .services__cell--link::after,
+.cs .services__cell--link::after {
+  content: "Více o službě →";
+}
+
+.services__cell--anchor {
+  z-index: 3;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  display: flex;
+}
+.services__cell--anchor img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.services__cell--firstL {
+  grid-column: 1/5;
+  grid-row: 1;
+}
+
+.services__cell--firstR {
+  grid-column: 5/9;
+  grid-row: 1;
+}
+
+.services__cell--secondL {
+  grid-column: 1/4;
+  grid-row: 2;
+}
+
+.services__cell--anchor {
+  grid-column: 4/6;
+  grid-row: 2;
+}
+
+.services__cell--secondR {
+  grid-column: 6/9;
+  grid-row: 2;
+}
+
+@media screen and (max-width: 50rem) and (min-width: 41rem) {
+  .services__pin {
+    position: static;
+    height: auto;
+  }
+  .services--scroll {
+    height: auto;
+  }
+  .services__grid--scroll {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    width: 100%;
+    height: auto;
+  }
+  .services__cell--firstL {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .services__cell--firstR {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .services__cell--anchor {
+    grid-column: 1/3;
+    grid-row: 2;
+    aspect-ratio: 16/6;
+  }
+  .services__cell--secondL {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .services__cell--secondR {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
+@media screen and (max-width: 40rem) {
+  .services__pin {
+    position: static;
+    height: auto;
+    padding: 2rem 1rem;
+  }
+  .services--scroll {
+    height: auto;
+  }
+  .services__grid--scroll {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, auto);
+    width: 100%;
+    height: auto;
+    gap: 1.5rem;
+  }
+  .services__cell {
+    grid-column: 1 !important;
+  }
+  .services__cell--firstL {
+    grid-row: 1;
+  }
+  .services__cell--secondL {
+    grid-row: 2;
+  }
+  .services__cell--anchor {
+    grid-row: 3;
+    aspect-ratio: 16/9;
+    border-radius: 4px;
+  }
+  .services__cell--firstR {
+    grid-row: 4;
+  }
+  .services__cell--secondR {
+    grid-row: 5;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .services__cell {
+    transform: none !important;
+    will-change: auto;
+  }
+}
 .price {
   height: auto;
   width: 100%;
@@ -1440,7 +1693,7 @@ body.nav-open {
 .img-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(18, 18, 20, 0.5);
   z-index: 1;
   pointer-events: none;
 }
@@ -1516,8 +1769,15 @@ body.nav-open {
   min-height: 100vh;
   background-color: #121214;
   padding-block: 8rem;
-  background: url("../media/czech-alert15.jpg") no-repeat center center fixed;
+  background: #121214 url("../media/optimized/czech-alert15-1280.webp") no-repeat center center fixed;
+  background-image: image-set(url("../media/optimized/czech-alert15-1280.avif") type("image/avif"), url("../media/optimized/czech-alert15-1280.webp") type("image/webp"), url("../media/optimized/czech-alert15-1280.jpg") type("image/jpeg"));
   background-size: cover;
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .testimonials {
+    background-image: url("../media/optimized/czech-alert15-1920.webp");
+    background-image: image-set(url("../media/optimized/czech-alert15-1920.avif") type("image/avif"), url("../media/optimized/czech-alert15-1920.webp") type("image/webp"), url("../media/optimized/czech-alert15-1920.jpg") type("image/jpeg"));
+  }
 }
 .testimonials::before {
   content: "";
@@ -1542,7 +1802,10 @@ body.nav-open {
   top: -10%;
   width: 100%;
   height: 120%;
-  background: url("../media/czech-alert15.jpg") no-repeat center center;
+  background-image: url("../media/optimized/czech-alert15-1280.webp");
+  background-image: image-set(url("../media/optimized/czech-alert15-1280.avif") type("image/avif"), url("../media/optimized/czech-alert15-1280.webp") type("image/webp"), url("../media/optimized/czech-alert15-1280.jpg") type("image/jpeg"));
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
   z-index: 0;
   transform: translate3d(0, var(--parallax-y, 0), 0);
@@ -2396,6 +2659,26 @@ input[type=email].--invalid {
   background: transparent;
 }
 
+.article-page--inline-image {
+  grid-column: 1/-1;
+  margin: 4rem 0;
+  width: 100%;
+}
+.article-page--inline-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.article-page--inline-image-caption {
+  margin-top: 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  font-size: 1.4rem;
+}
+
 /* ===========================================================================
    Skeleton loader  (inspired by https://codepen.io/ash1198/pen/PwzqMrN)
    ---------------------------------------------------------------------------
@@ -2742,15 +3025,15 @@ input[type=text]:focus, input[type=email]:focus {
 }
 .pr-security-hero__heading {
   color: #fff;
-  font-size: clamp(4rem, 2rem + 5vw, 6rem);
+  font-size: clamp(3rem, 1.5rem + 3.75vw, 4.5rem);
   font-weight: 700;
   line-height: 1.15;
-  max-width: 16ch;
+  max-width: 18ch;
   margin-inline: auto;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 .pr-security-hero__subheading {
-  font-size: clamp(1.6rem, 1.2rem + 1vw, 2rem);
+  font-size: clamp(1.4rem, 1.1rem + 0.75vw, 1.7rem);
   font-weight: 400;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.75);
@@ -2793,6 +3076,46 @@ input[type=text]:focus, input[type=email]:focus {
   max-width: 110rem;
   margin-inline: auto;
   gap: 1.25rem;
+}
+@media screen and (min-width: 50.0625rem) and (max-width: 90rem) {
+  .service-panel .services__grid--eight {
+    gap: 1rem;
+  }
+  .service-panel .services__grid--eight .services__grid--firstL,
+  .service-panel .services__grid--eight .services__grid--secondL,
+  .service-panel .services__grid--eight .services__grid--thirdL,
+  .service-panel .services__grid--eight .services__grid--fourthL,
+  .service-panel .services__grid--eight .services__grid--firstR,
+  .service-panel .services__grid--eight .services__grid--secondR,
+  .service-panel .services__grid--eight .services__grid--thirdR,
+  .service-panel .services__grid--eight .services__grid--fourthR {
+    padding: 1rem 1.2rem;
+  }
+  .service-panel .services__grid--eight .services__grid--heading {
+    font-size: clamp(1.7rem, 1.3rem + 1vw, 2.1rem);
+    margin-bottom: 0.6rem;
+  }
+  .service-panel .services__grid--eight .services__grid--content {
+    font-size: 1.3rem;
+    line-height: 1.4;
+  }
+}
+@media screen and (min-width: 50.0625rem) {
+  .service-panel .services__grid--eight {
+    grid-template-areas: "firstL  .  firstR" "secondL .  secondR" "thirdL  .  thirdR" ".       .  .";
+  }
+  .service-panel .services__grid--eight .services__grid--fourthL {
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+  .service-panel .services__grid--eight .services__grid--grid-img {
+    grid-column: 2/3;
+    grid-row: 2/3;
+  }
+  .service-panel .services__grid--eight .services__grid--fourthR {
+    grid-column: 2/3;
+    grid-row: 3/4;
+  }
 }
 .service-panel__tag {
   display: inline-block;
@@ -2871,7 +3194,7 @@ input[type=text]:focus, input[type=email]:focus {
 .service-panel__overlay--red, .service-panel__overlay--blue, .service-panel__overlay--graphite {
   background-color: #121214;
 }
-.service-panel__overlay--red::before, .service-panel__overlay--blue::before, .service-panel__overlay--graphite::before {
+.service-panel__overlay::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -2884,14 +3207,65 @@ input[type=text]:focus, input[type=email]:focus {
   will-change: transform;
   pointer-events: none;
 }
-.service-panel__overlay--red::before {
-  background-image: url("../media/zeros-and-ones-bg.png");
+.service-panel__overlay--img-intel::before {
+  background-image: url("../media/optimized/zeros-and-ones-bg-1280.webp");
+  background-image: image-set(url("../media/optimized/zeros-and-ones-bg-1280.avif") type("image/avif"), url("../media/optimized/zeros-and-ones-bg-1280.webp") type("image/webp"), url("../media/optimized/zeros-and-ones-bg-1280.jpg") type("image/jpeg"));
 }
-.service-panel__overlay--blue::before {
-  background-image: url("../media/abstract-triangular-nebula.png");
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-intel::before {
+    background-image: url("../media/optimized/zeros-and-ones-bg-1920.webp");
+    background-image: image-set(url("../media/optimized/zeros-and-ones-bg-1920.avif") type("image/avif"), url("../media/optimized/zeros-and-ones-bg-1920.webp") type("image/webp"), url("../media/optimized/zeros-and-ones-bg-1920.jpg") type("image/jpeg"));
+  }
 }
-.service-panel__overlay--graphite::before {
-  background-image: url("../media/abstract-network-background.png");
+.service-panel__overlay--img-investigations::before {
+  background-image: url("../media/optimized/abstract-triangular-nebula-1280.webp");
+  background-image: image-set(url("../media/optimized/abstract-triangular-nebula-1280.avif") type("image/avif"), url("../media/optimized/abstract-triangular-nebula-1280.webp") type("image/webp"), url("../media/optimized/abstract-triangular-nebula-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-investigations::before {
+    background-image: url("../media/optimized/abstract-triangular-nebula-1920.webp");
+    background-image: image-set(url("../media/optimized/abstract-triangular-nebula-1920.avif") type("image/avif"), url("../media/optimized/abstract-triangular-nebula-1920.webp") type("image/webp"), url("../media/optimized/abstract-triangular-nebula-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-protective::before {
+  background-image: url("../media/optimized/abstract-network-background-1280.webp");
+  background-image: image-set(url("../media/optimized/abstract-network-background-1280.avif") type("image/avif"), url("../media/optimized/abstract-network-background-1280.webp") type("image/webp"), url("../media/optimized/abstract-network-background-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-protective::before {
+    background-image: url("../media/optimized/abstract-network-background-1920.webp");
+    background-image: image-set(url("../media/optimized/abstract-network-background-1920.avif") type("image/avif"), url("../media/optimized/abstract-network-background-1920.webp") type("image/webp"), url("../media/optimized/abstract-network-background-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-training::before {
+  background-image: url("../media/optimized/abstract-optic-shots-1280.webp");
+  background-image: image-set(url("../media/optimized/abstract-optic-shots-1280.avif") type("image/avif"), url("../media/optimized/abstract-optic-shots-1280.webp") type("image/webp"), url("../media/optimized/abstract-optic-shots-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-training::before {
+    background-image: url("../media/optimized/abstract-optic-shots-1920.webp");
+    background-image: image-set(url("../media/optimized/abstract-optic-shots-1920.avif") type("image/avif"), url("../media/optimized/abstract-optic-shots-1920.webp") type("image/webp"), url("../media/optimized/abstract-optic-shots-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-recovery::before {
+  background-image: url("../media/optimized/cloth-data-texture-abstract-1280.webp");
+  background-image: image-set(url("../media/optimized/cloth-data-texture-abstract-1280.avif") type("image/avif"), url("../media/optimized/cloth-data-texture-abstract-1280.webp") type("image/webp"), url("../media/optimized/cloth-data-texture-abstract-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-recovery::before {
+    background-image: url("../media/optimized/cloth-data-texture-abstract-1920.webp");
+    background-image: image-set(url("../media/optimized/cloth-data-texture-abstract-1920.avif") type("image/avif"), url("../media/optimized/cloth-data-texture-abstract-1920.webp") type("image/webp"), url("../media/optimized/cloth-data-texture-abstract-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-faq::before {
+  background-image: url("../media/optimized/round-nebula-bg-1280.webp");
+  background-image: image-set(url("../media/optimized/round-nebula-bg-1280.avif") type("image/avif"), url("../media/optimized/round-nebula-bg-1280.webp") type("image/webp"), url("../media/optimized/round-nebula-bg-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-faq::before {
+    background-image: url("../media/optimized/round-nebula-bg-1920.webp");
+    background-image: image-set(url("../media/optimized/round-nebula-bg-1920.avif") type("image/avif"), url("../media/optimized/round-nebula-bg-1920.webp") type("image/webp"), url("../media/optimized/round-nebula-bg-1920.jpg") type("image/jpeg"));
+  }
 }
 
 .pi-faq {
@@ -2926,6 +3300,7 @@ input[type=text]:focus, input[type=email]:focus {
 .pi-faq__cta {
   margin-top: 4rem;
   padding-top: 3rem;
+  padding-bottom: clamp(2rem, 0.5rem + 3.75vw, 3.5rem);
   text-align: center;
 }
 .pi-faq__cta .pi-cta__heading {
@@ -3082,6 +3457,7 @@ input[type=text]:focus, input[type=email]:focus {
   .pi-faq__cta {
     margin-top: 2.5rem;
     padding-top: 2rem;
+    padding-bottom: 1.5rem;
   }
   .pi-faq__cta .pi-cta__heading {
     font-size: clamp(1.9rem, 1.4rem + 1.25vw, 2.4rem);
@@ -3102,6 +3478,75 @@ input[type=text]:focus, input[type=email]:focus {
     padding-block: 4rem;
   }
 }
+@media screen and (max-width: 64rem) {
+  .curtain-stage {
+    min-height: 0;
+    height: auto !important;
+  }
+  .curtain-track {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+  .curtain-section {
+    position: relative;
+    inset: auto;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    transform: none !important;
+  }
+  .curtain-section .content {
+    position: relative;
+    height: auto;
+    transform: none !important;
+    justify-content: flex-start;
+  }
+  .service-panel__overlay {
+    display: none;
+  }
+  .service-panel__content,
+  .pi-faq__content {
+    height: auto;
+    overflow: visible;
+  }
+  .pr-security-hero,
+  .pmm-hero,
+  .bi-hero {
+    min-height: 100vh;
+  }
+  .pr-security-hero .content,
+  .pmm-hero .content,
+  .bi-hero .content {
+    min-height: 100vh;
+    height: auto;
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 50rem) {
+  .service-panel__detail {
+    padding: 0 1.5rem;
+  }
+  .service-panel__content {
+    padding-block: 2rem;
+  }
+  .service-panel .services__grid {
+    margin-top: 1.5rem;
+    gap: 1.5rem;
+  }
+  .pi-faq__content {
+    padding-block: 3rem;
+  }
+}
+@media screen and (max-width: 40rem) {
+  .service-panel__detail {
+    padding: 0 1rem;
+  }
+  .service-panel .services__grid {
+    grid-auto-rows: auto;
+    grid-template-rows: repeat(5, auto);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .curtain-stage {
     min-height: 0;
@@ -3116,13 +3561,35 @@ input[type=text]:focus, input[type=email]:focus {
     position: relative;
     inset: auto;
     height: auto;
-    min-height: 60vh;
+    min-height: 0;
+    overflow: visible;
     transform: none !important;
   }
-  .curtain-section .overlay {
+  .curtain-section .content {
     position: relative;
-    inset: auto;
+    height: auto;
     transform: none !important;
+    justify-content: flex-start;
+  }
+  .service-panel__overlay {
+    display: none;
+  }
+  .service-panel__content,
+  .pi-faq__content {
+    height: auto;
+    overflow: visible;
+  }
+  .pr-security-hero,
+  .pmm-hero,
+  .bi-hero {
+    min-height: 100vh;
+  }
+  .pr-security-hero .content,
+  .pmm-hero .content,
+  .bi-hero .content {
+    min-height: 100vh;
+    height: auto;
+    justify-content: center;
   }
 }
 .curtain-fallback .curtain-stage {
@@ -3138,13 +3605,35 @@ input[type=text]:focus, input[type=email]:focus {
   position: relative;
   inset: auto;
   height: auto;
-  min-height: 60vh;
+  min-height: 0;
+  overflow: visible;
   transform: none !important;
 }
-.curtain-fallback .curtain-section .overlay {
+.curtain-fallback .curtain-section .content {
   position: relative;
-  inset: auto;
+  height: auto;
   transform: none !important;
+  justify-content: flex-start;
+}
+.curtain-fallback .service-panel__overlay {
+  display: none;
+}
+.curtain-fallback .service-panel__content,
+.curtain-fallback .pi-faq__content {
+  height: auto;
+  overflow: visible;
+}
+.curtain-fallback .pr-security-hero,
+.curtain-fallback .pmm-hero,
+.curtain-fallback .bi-hero {
+  min-height: 100vh;
+}
+.curtain-fallback .pr-security-hero .content,
+.curtain-fallback .pmm-hero .content,
+.curtain-fallback .bi-hero .content {
+  min-height: 100vh;
+  height: auto;
+  justify-content: center;
 }
 
 .business-intelligence-page {
@@ -3164,6 +3653,43 @@ input[type=text]:focus, input[type=email]:focus {
   z-index: 1;
 }
 
+.service-panel__overlay--img-strategy::before {
+  background-image: url("../media/optimized/zeros-and-ones-bg-1280.webp");
+  background-image: image-set(url("../media/optimized/zeros-and-ones-bg-1280.avif") type("image/avif"), url("../media/optimized/zeros-and-ones-bg-1280.webp") type("image/webp"), url("../media/optimized/zeros-and-ones-bg-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-strategy::before {
+    background-image: url("../media/optimized/zeros-and-ones-bg-1920.webp");
+    background-image: image-set(url("../media/optimized/zeros-and-ones-bg-1920.avif") type("image/avif"), url("../media/optimized/zeros-and-ones-bg-1920.webp") type("image/webp"), url("../media/optimized/zeros-and-ones-bg-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-commercial::before {
+  background-image: url("../media/optimized/abstract-triangular-nebula-1280.webp");
+  background-image: image-set(url("../media/optimized/abstract-triangular-nebula-1280.avif") type("image/avif"), url("../media/optimized/abstract-triangular-nebula-1280.webp") type("image/webp"), url("../media/optimized/abstract-triangular-nebula-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-commercial::before {
+    background-image: url("../media/optimized/abstract-triangular-nebula-1920.webp");
+    background-image: image-set(url("../media/optimized/abstract-triangular-nebula-1920.avif") type("image/avif"), url("../media/optimized/abstract-triangular-nebula-1920.webp") type("image/webp"), url("../media/optimized/abstract-triangular-nebula-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-faq::before {
+  background-image: url("../media/optimized/round-nebula-bg-1280.webp");
+  background-image: image-set(url("../media/optimized/round-nebula-bg-1280.avif") type("image/avif"), url("../media/optimized/round-nebula-bg-1280.webp") type("image/webp"), url("../media/optimized/round-nebula-bg-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-faq::before {
+    background-image: url("../media/optimized/round-nebula-bg-1920.webp");
+    background-image: image-set(url("../media/optimized/round-nebula-bg-1920.avif") type("image/avif"), url("../media/optimized/round-nebula-bg-1920.webp") type("image/webp"), url("../media/optimized/round-nebula-bg-1920.jpg") type("image/jpeg"));
+  }
+}
+
+@media screen and (min-width: 50.0625rem) {
+  .business-intelligence-page .services__grid--stack-left {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "firstL grid-img ." "firstR grid-img .";
+  }
+}
 .bi-hero {
   background-color: #121214;
 }
@@ -3272,6 +3798,7 @@ input[type=text]:focus, input[type=email]:focus {
 .bi-faq__cta {
   margin-top: 4rem;
   padding-top: 3rem;
+  padding-bottom: clamp(2rem, 0.5rem + 3.75vw, 3.5rem);
   text-align: center;
 }
 .bi-faq__cta .bi-cta__heading {
@@ -3367,6 +3894,7 @@ input[type=text]:focus, input[type=email]:focus {
   .bi-faq__cta {
     margin-top: 2.5rem;
     padding-top: 2rem;
+    padding-bottom: 1.5rem;
   }
   .bi-faq__cta .bi-cta__heading {
     font-size: clamp(1.9rem, 1.4rem + 1.25vw, 2.4rem);
@@ -3396,6 +3924,47 @@ input[type=text]:focus, input[type=email]:focus {
 .pr-media-page main {
   position: relative;
   z-index: 1;
+}
+
+.service-panel__overlay--img-reputation::before {
+  background-image: url("../media/optimized/abstract-network-background-1280.webp");
+  background-image: image-set(url("../media/optimized/abstract-network-background-1280.avif") type("image/avif"), url("../media/optimized/abstract-network-background-1280.webp") type("image/webp"), url("../media/optimized/abstract-network-background-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-reputation::before {
+    background-image: url("../media/optimized/abstract-network-background-1920.webp");
+    background-image: image-set(url("../media/optimized/abstract-network-background-1920.avif") type("image/avif"), url("../media/optimized/abstract-network-background-1920.webp") type("image/webp"), url("../media/optimized/abstract-network-background-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-intelligence::before {
+  background-image: url("../media/optimized/zeros-and-ones-bg-1280.webp");
+  background-image: image-set(url("../media/optimized/zeros-and-ones-bg-1280.avif") type("image/avif"), url("../media/optimized/zeros-and-ones-bg-1280.webp") type("image/webp"), url("../media/optimized/zeros-and-ones-bg-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-intelligence::before {
+    background-image: url("../media/optimized/zeros-and-ones-bg-1920.webp");
+    background-image: image-set(url("../media/optimized/zeros-and-ones-bg-1920.avif") type("image/avif"), url("../media/optimized/zeros-and-ones-bg-1920.webp") type("image/webp"), url("../media/optimized/zeros-and-ones-bg-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-crisis::before {
+  background-image: url("../media/optimized/cloth-data-texture-abstract-1280.webp");
+  background-image: image-set(url("../media/optimized/cloth-data-texture-abstract-1280.avif") type("image/avif"), url("../media/optimized/cloth-data-texture-abstract-1280.webp") type("image/webp"), url("../media/optimized/cloth-data-texture-abstract-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-crisis::before {
+    background-image: url("../media/optimized/cloth-data-texture-abstract-1920.webp");
+    background-image: image-set(url("../media/optimized/cloth-data-texture-abstract-1920.avif") type("image/avif"), url("../media/optimized/cloth-data-texture-abstract-1920.webp") type("image/webp"), url("../media/optimized/cloth-data-texture-abstract-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-faq::before {
+  background-image: url("../media/optimized/round-nebula-bg-1280.webp");
+  background-image: image-set(url("../media/optimized/round-nebula-bg-1280.avif") type("image/avif"), url("../media/optimized/round-nebula-bg-1280.webp") type("image/webp"), url("../media/optimized/round-nebula-bg-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-faq::before {
+    background-image: url("../media/optimized/round-nebula-bg-1920.webp");
+    background-image: image-set(url("../media/optimized/round-nebula-bg-1920.avif") type("image/avif"), url("../media/optimized/round-nebula-bg-1920.webp") type("image/webp"), url("../media/optimized/round-nebula-bg-1920.jpg") type("image/jpeg"));
+  }
 }
 
 .pmm-hero {
@@ -3506,6 +4075,7 @@ input[type=text]:focus, input[type=email]:focus {
 .pmm-faq__cta {
   margin-top: 4rem;
   padding-top: 3rem;
+  padding-bottom: clamp(2rem, 0.5rem + 3.75vw, 3.5rem);
   text-align: center;
 }
 .pmm-faq__cta .pmm-cta__heading {
@@ -3601,6 +4171,7 @@ input[type=text]:focus, input[type=email]:focus {
   .pmm-faq__cta {
     margin-top: 2.5rem;
     padding-top: 2rem;
+    padding-bottom: 1.5rem;
   }
   .pmm-faq__cta .pmm-cta__heading {
     font-size: clamp(1.9rem, 1.4rem + 1.25vw, 2.4rem);
@@ -3613,6 +4184,26 @@ input[type=text]:focus, input[type=email]:focus {
 @media screen and (max-width: 48rem) {
   .pmm-faq__content {
     padding-block: 4rem;
+  }
+}
+.service-panel__overlay--img-policy::before {
+  background-image: url("../media/optimized/zeros-and-ones-bg-1280.webp");
+  background-image: image-set(url("../media/optimized/zeros-and-ones-bg-1280.avif") type("image/avif"), url("../media/optimized/zeros-and-ones-bg-1280.webp") type("image/webp"), url("../media/optimized/zeros-and-ones-bg-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-policy::before {
+    background-image: url("../media/optimized/zeros-and-ones-bg-1920.webp");
+    background-image: image-set(url("../media/optimized/zeros-and-ones-bg-1920.avif") type("image/avif"), url("../media/optimized/zeros-and-ones-bg-1920.webp") type("image/webp"), url("../media/optimized/zeros-and-ones-bg-1920.jpg") type("image/jpeg"));
+  }
+}
+.service-panel__overlay--img-education::before {
+  background-image: url("../media/optimized/abstract-triangular-nebula-1280.webp");
+  background-image: image-set(url("../media/optimized/abstract-triangular-nebula-1280.avif") type("image/avif"), url("../media/optimized/abstract-triangular-nebula-1280.webp") type("image/webp"), url("../media/optimized/abstract-triangular-nebula-1280.jpg") type("image/jpeg"));
+}
+@media (min-resolution: 1.5dppx), (min-width: 100rem) {
+  .service-panel__overlay--img-education::before {
+    background-image: url("../media/optimized/abstract-triangular-nebula-1920.webp");
+    background-image: image-set(url("../media/optimized/abstract-triangular-nebula-1920.avif") type("image/avif"), url("../media/optimized/abstract-triangular-nebula-1920.webp") type("image/webp"), url("../media/optimized/abstract-triangular-nebula-1920.jpg") type("image/jpeg"));
   }
 }
 

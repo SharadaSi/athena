@@ -127,6 +127,19 @@
     overflow: hidden;
     display: flex;
     border-radius: $radius-desktop;
+
+    // Icon variant: when the cell holds an SVG icon rather than a photo,
+    // centre it and constrain its size instead of stretching to `cover`.
+    &--icon {
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 50%;        // size the icon within its cell
+            height: auto;
+            object-fit: contain;
+        }
+    }
 }
 
 
@@ -162,6 +175,19 @@
                 object-fit: cover;
                 display: block;
                 border-radius: $radius-mobile;
+            }
+
+            // Icon variant — the flanking cell holds a small SVG glyph rather
+            // than a full-bleed photo. Left at `width: 100%` it balloons to the
+            // full card width and dwarfs the surrounding text cards. Cap it to
+            // roughly the height of a single grid card and let the width follow;
+            // the cell already flex-centres its contents.
+            &--grid-img--icon img {
+                width: auto;
+                max-width: 60%;
+                height: auto;
+                max-height: clamp(7rem, 28vw, 11rem);
+                object-fit: contain;
             }
 
             &__grid > * {
@@ -200,6 +226,18 @@
                 object-fit: cover;
                 display: block;
                 border-radius: $radius-tablet;
+            }
+
+            // Icon variant — constrain the SVG glyph so it reads at about a
+            // single card's height. On tablet the image cell spans both
+            // columns, so we cap width tighter than on mobile to keep the icon
+            // from stretching across the full row.
+            &--grid-img--icon img {
+                width: auto;
+                max-width: 40%;
+                height: auto;
+                max-height: clamp(9rem, 20vw, 14rem);
+                object-fit: contain;
             }
 
             &__grid > * {

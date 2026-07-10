@@ -48,18 +48,26 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Smooth out touch-device scroll quirks (per the GSAP codepen reference)
-    if (ScrollTrigger.isTouch === 1) {
-        ScrollTrigger.normalizeScroll(true);
-    }
-
     const stage = document.querySelector('.curtain-stage');
     const panels = gsap.utils.toArray('.curtain-stage .curtain-section');
     if (!stage || panels.length < 2) return;
 
     const mm = gsap.matchMedia();
 
-    mm.add('(prefers-reduced-motion: no-preference)', () => {
+    // The curtain only runs on viewports wide enough for a panel's content to
+    // fit the 100vh frame (desktop / laptop, >64rem) AND where motion is
+    // welcome. Narrower screens fall through to the static-flow branch below,
+    // where every panel renders in full and scrolls natively — a pinned,
+    // scroll-scrubbed curtain would otherwise clip the taller tablet/mobile
+    // stacks.
+    mm.add('(min-width: 64.0625rem) and (prefers-reduced-motion: no-preference)', () => {
+
+        // Leaving a narrower breakpoint: drop the static-flow flag and
+        // (re)enable touch-scroll normalization for the life of the curtain.
+        document.documentElement.classList.remove('curtain-fallback');
+        if (ScrollTrigger.isTouch === 1) {
+            ScrollTrigger.normalizeScroll(true);
+        }
 
         // Total scroll length is unchanged: 2 beats per non-hero panel.
         // Beat layout (one-off, then a repeating pair per panel):
@@ -166,50 +174,72 @@
             }
         }
 
+        // -----------------------------------------------------------------
+        // Background zoom — one scrub PER overlay, not a single global one.
+        //
+        // Each overlay owns a LOCAL `--bg-zoom` (an inline style GSAP writes
+        // on the `.overlay` element itself), which the overlay's `::before`
+        // reads as `transform: scale(...)`. A local value overrides the
+        // inherited one, so every panel's photo starts fresh at scale 1 the
+        // moment it enters the viewport and zooms to BG_ZOOM_MAX across the
+        // ~2-beat window it is on screen.
+        //
+        // This replaces the previous single global scrub on `.curtain-stage`
+        // (1 → 2.5 across the whole timeline). Because that value progressed
+        // continuously and was inherited by all overlays, each successive
+        // panel entered at the elevated scale the previous panel left off at
+        // (zoom creep: panel 2 ≈ 1.25, panel 3 ≈ 1.5, … panel 6 ≈ 2.4).
+        //
+        // Window math: the timeline runs 1 (panel-1 rise) + N overlay lifts +
+        // (N-1) content lifts = 2N beats. overlay[i] is REVEALED across beat
+        // [2*i-2, 2*i-1] (the previous panel's content lifting away, or the
+        // rise for panel 1) and then LIFTS off across beat [2*i-1, 2*i].
+        //
+        // To honour "scale 1 the first time it scrolls into view, then zoom",
+        // we hold the photo at scale 1 for the entire reveal and only start
+        // the zoom at beat 2*i-1 — the moment the panel is fully on screen —
+        // running the 1 → BG_ZOOM_MAX scrub across its single lift beat. The
+        // `fromTo` seeds `--bg-zoom: 1` immediately, so during the reveal
+        // (before this tween's start position) the value already reads 1.
+        // Adding these tweens to the scrubbed master timeline ties the zoom to
+        // scroll position automatically — fully reversible, no extra triggers.
+        // -----------------------------------------------------------------
+        const BG_ZOOM_MAX = 1.25;
+        for (let i = 1; i < panels.length; i++) {
+            const overlay = panels[i].querySelector('.overlay');
+            if (!overlay) continue;
+            tl.fromTo(overlay,
+                { '--bg-zoom': 1 },
+                { '--bg-zoom': BG_ZOOM_MAX, duration: 1, ease: 'none' },
+                2 * i - 1
+            );
+        }
+
         // Recalculate after fonts / images settle so the stage height
         // and ScrollTrigger snapshot stay in sync.
         window.addEventListener('load', () => ScrollTrigger.refresh());
-
-        // -----------------------------------------------------------------
-        // Background zoom — one continuous scrub tied to the actual page
-        // scroll position. `--bg-zoom` lives on `.curtain-stage` and is
-        // inherited by every `.service-panel__overlay`; each overlay's
-        // `::before` reads it as `transform: scale(...)`. Because the
-        // value progresses continuously with scroll (not per overlay),
-        // the zoom carries over across curtain transitions — scrolling
-        // down keeps zooming the visible photo in, scrolling up reverses
-        // it. The range is generous so the user sees real motion within
-        // each overlay's ~2-beat window (~1/6 of the timeline → ~0.25 of
-        // the 1 → 2.5 range, i.e. a 25% scale change per panel).
-        // -----------------------------------------------------------------
-        gsap.fromTo(stage,
-            { '--bg-zoom': 1 },
-            {
-                '--bg-zoom': 2.5,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: stage,
-                    start: 'top top',
-                    end: 'bottom bottom',
-                    scrub: true,
-                    invalidateOnRefresh: true,
-                },
-            }
-        );
 
         // Cleanup hook — gsap.matchMedia() handles this automatically
         // when the media query stops matching.
         return () => {
             stage.style.height = '';
             stage.style.removeProperty('--bg-zoom');
+            // Release the touch-scroll takeover so native scrolling is restored
+            // once we drop into the static (small-screen / reduced-motion) flow.
+            ScrollTrigger.normalizeScroll(false);
         };
     });
 
-    // Reduced-motion fallback — the CSS in `_pr-security-page.scss` already
-    // lays panels out in flow. We only need to make sure the stage doesn't
-    // have an inflated inline height.
-    mm.add('(prefers-reduced-motion: reduce)', () => {
+    // Static flow — small screens (≤64rem) OR a reduced-motion preference.
+    // The CSS in `_pr-security-page.scss` (`@include curtain-static`) already
+    // collapses the absolute stack into a normal, fully-scrollable column and
+    // hides the decorative overlays. Here we only clear the inflated inline
+    // stage height and flag <html> so the no-JS/GSAP-missing styles apply too.
+    mm.add('(max-width: 64rem), (prefers-reduced-motion: reduce)', () => {
         stage.style.height = '';
         document.documentElement.classList.add('curtain-fallback');
+        return () => {
+            document.documentElement.classList.remove('curtain-fallback');
+        };
     });
 })();

@@ -75,6 +75,43 @@ export const postType = defineType({
       // (like chartEmbed), so editors can drag-and-drop charts between paragraphs.
       of: [
         defineArrayMember({type: 'block'}),
+        // Inline image embedded within the article body. Uses Sanity's built-in
+        // `image` type so editors get hotspot/crop, asset reuse, and EXIF handling
+        // for free. The PT editor automatically renders a drag handle, so images
+        // can be reordered between paragraphs just like chartEmbed blocks.
+        defineArrayMember({
+          type: 'image',
+          name: 'inlineImage',
+          title: 'Inline image',
+          options: {hotspot: true},
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Alternative text',
+              type: 'string',
+              description:
+                'Required for accessibility and SEO. Describe the image in ~125 characters.',
+              validation: (rule) =>
+                rule.required().max(125).warning('Alt text should be ≤125 characters.'),
+            }),
+            defineField({
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+              description: 'Optional caption shown below the image.',
+            }),
+          ],
+          preview: {
+            select: {media: 'asset', title: 'caption', alt: 'alt'},
+            prepare({media, title, alt}) {
+              return {
+                title: title || alt || 'Inline image',
+                subtitle: 'Image',
+                media,
+              }
+            },
+          },
+        }),
         defineArrayMember({
           type: 'object',
           name: 'chartEmbed',

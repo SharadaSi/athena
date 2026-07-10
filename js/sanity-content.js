@@ -20,9 +20,35 @@
   const ui = UI_STRINGS[LOCALE] || UI_STRINGS.en;
 
   function buildApiUrl(locale) {
-    const groq = `*[_type=="post" && language == "${locale}"] | order(publishedAt desc){title,previewHeading,"slug":slug.current,author,readTime,publishedAt,"imageUrl":image.asset->url,body,perex}`;
+    // GROQ projection notes
+    // ----------------------
+    //   • Keep `imageUrl` for back-compat with existing callers.
+    //   • Project `imageDims` so consumers can set explicit width/height
+    //     on the <img> and kill Cumulative Layout Shift.
+    //   • Project `imageLqip` (Sanity's default base64 placeholder) so
+    //     consumers can paint a blur-up while the real bytes load.
+    const groq = `*[_type=="post" && language == "${locale}"] | order(publishedAt desc){title,previewHeading,"slug":slug.current,author,readTime,publishedAt,"imageUrl":image.asset->url,"imageDims":image.asset->metadata.dimensions,"imageLqip":image.asset->metadata.lqip,body,perex}`;
     const q = encodeURIComponent(groq);
     return `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${q}`;
+  }
+
+  // Apply a responsive Sanity image bundle to an <img>. Falls back to the
+  // legacy single-URL behaviour when the helper script (`js/sanity-image.js`)
+  // failed to load — defensive coding so a CDN hiccup doesn't blank cards.
+  function applyResponsiveImage(img, article, sizesClause) {
+    if (!img || !article || !article.imageUrl) return;
+    if (typeof window.applySanityImg === 'function') {
+      window.applySanityImg(img, {
+        url: article.imageUrl,
+        sizes: sizesClause,
+        dimensions: article.imageDims,
+        lqip: article.imageLqip,
+      });
+    } else {
+      img.src = article.imageUrl;
+      if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+      if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+    }
   }
 
   function formatDate(iso) {
@@ -147,7 +173,11 @@
     const titleEl = hero.querySelector('.article-preview-heading');
     const excerptEl = hero.querySelector('.article-preview-text');
     const linkBtn = hero.querySelector('a');
-    if (imgEl && newest.imageUrl) imgEl.src = newest.imageUrl;
+    // Publications hero is above the fold on /publications — mark it eager so
+    // the helper does NOT add `loading="lazy"`. Sanity helper reads this hint.
+    if (imgEl) imgEl.dataset.eager = 'true';
+    // Publications hero spans roughly 60vw on desktop, full-width on mobile.
+    applyResponsiveImage(imgEl, newest, '(min-width: 64rem) 60vw, 100vw');
     if (titleEl) titleEl.textContent = newest.title || '';
     if (authorEl) authorEl.textContent = newest.author || 'CzechAlert';
     if (dateEl) dateEl.textContent = formatDate(newest.publishedAt);
@@ -173,8 +203,9 @@
 
       const img = document.createElement('img');
       img.className = 'article-preview-img';
-      if (a.imageUrl) img.src = a.imageUrl;
       img.alt = a.title || 'Article image';
+      // Publications grid card occupies ~one third of the row on desktop.
+      applyResponsiveImage(img, a, '(min-width: 64rem) 33vw, 90vw');
       card.appendChild(img);
 
       const features = document.createElement('div');
@@ -223,8 +254,14 @@
 
       const img = document.createElement('img');
       img.className = 'article-preview-img';
-      if (previousHero.imageUrl) img.src = previousHero.imageUrl;
       img.alt = previousHero.title || 'Article image';
+      // `previousHero` is a snapshot object, not a Sanity record, so it has
+      // no `imageDims` / `imageLqip`. Fall through the helper's defaults.
+      applyResponsiveImage(
+        img,
+        { imageUrl: previousHero.imageUrl },
+        '(min-width: 64rem) 33vw, 90vw',
+      );
       card.appendChild(img);
 
       const features = document.createElement('div');
@@ -299,8 +336,11 @@
       if (headingEl && article.title) headingEl.textContent = article.title;
       if (buttonLink && article.slug) buttonLink.href = `${articlePath}?slug=${article.slug}`;
       if (imgEl && article.imageUrl) {
-        imgEl.src = article.imageUrl;
+        // Swiper slide image — roughly half the viewport on desktop.
         if (article.title) imgEl.alt = article.title;
+        // First slide is visible immediately; subsequent slides aren't.
+        if (i === 0) imgEl.dataset.eager = 'true';
+        applyResponsiveImage(imgEl, article, '(min-width: 64rem) 50vw, 100vw');
       }
     }
 

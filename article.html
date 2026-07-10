@@ -10,11 +10,14 @@
 
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="cs_CZ">
-    <link rel="alternate" hreflang="en" href="https://www.czechalert.com/article">
-  <link rel="alternate" hreflang="cs" href="https://www.czechalert.com/cs/article">    
-    <link rel="alternate" hreflang="x-default" href="https://www.czechalert.com/article">
-    <link rel="canonical" href="https://www.czechalert.com/article">
+    <link rel="alternate" hreflang="en" href="https://czechalert.com/article">
+  <link rel="alternate" hreflang="cs" href="https://czechalert.com/cs/article">    
+    <link rel="alternate" hreflang="x-default" href="https://czechalert.com/article">
+    <link rel="canonical" href="https://czechalert.com/article">
 
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin>
+    <link rel="preconnect" href="https://8z0tbe2a.api.sanity.io" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.sanity.io">
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
@@ -32,7 +35,7 @@
             <div class="nav--container">
                 <div class="nav--logo">
                     <a href="/" class="logo--link">
-                        <img class="nav--logo-img" src="media/czech-alert-logo-desktop.png" alt="CzechAlert logo">
+                        <img class="nav--logo-img" src="media/czech-alert-logo-desktop.png" alt="CzechAlert logo" decoding="async">
                     </a>
                 </div>
                 <div class="nav--hamburger">
@@ -121,7 +124,7 @@
         <div class="footer-grid--item1 footer-grid--item">
           <div class="logo--font-size-footer">
             <a href="#">
-              <img class="footer--logo-img" src="media/czech-alert-logo-desktop.png" alt="CzechAlert logo">
+              <img class="footer--logo-img" src="media/czech-alert-logo-desktop.png" alt="CzechAlert logo" loading="lazy" decoding="async" fetchpriority="low">
             </a>
           </div>
           <div class="footer-icons-container">
@@ -164,6 +167,7 @@
   </footer>
 
   <script src="js/script.js"></script>
+  <script src="js/sanity-image.js"></script>
   <script src="js/article-content.js"></script>
   <script src="js/lang-v-toggler.js"></script>
   

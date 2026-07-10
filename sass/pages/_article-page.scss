@@ -240,6 +240,32 @@
     }
 }
 
+// Inline images embedded inside the Portable Text body. Layout mirrors the
+// chart figure so charts and images live in the same visual column.
+.article-page--inline-image {
+    grid-column: 1 / -1;
+    margin: 4rem 0;
+    width: 100%;
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: $radius-desktop;
+        // `aspect-ratio` is set implicitly by the `width`/`height` attributes
+        // emitted by the renderer (from asset metadata), so layout space is
+        // reserved before the image decodes — no CLS.
+    }
+}
+
+.article-page--inline-image-caption {
+    margin-top: 1rem;
+    text-align: center;
+    color: $text-color-secondary;
+    font-style: italic;
+    font-size: 1.4rem;
+}
+
 
 /* ===========================================================================
    Skeleton loader  (inspired by https://codepen.io/ash1198/pen/PwzqMrN)

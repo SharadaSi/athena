@@ -57,3 +57,42 @@
     color: var.$text-color-primary;
     padding: 1.6rem 0;
 }
+
+// -----------------------------------------------------------------------------
+// Curtain overlay background image — optimized, memory-safe carrier
+// -----------------------------------------------------------------------------
+// Paints a service-panel curtain overlay's `::before` with a responsive,
+// format-negotiated background image. Used by every curtain service page
+// (PI & Security, Business Intelligence, PR & Media Monitoring) so the six
+// curtain panels share one optimization strategy.
+//
+// iOS Safari note: each original JPEG is ~3 MB and decodes to 50+ MB in RAM.
+// Several full-viewport panels on one page can blow Safari's per-tab memory
+// budget, causing it to silently *skip* rendering them. We therefore serve the
+// pre-built AVIF/WebP variants from `media/optimized/`, falling back to the
+// legacy JPEG only when the browser supports neither. `image-set()` with
+// `type()` is supported in iOS Safari 16+ and every current evergreen browser;
+// the bare `url()` declaration above it is the fallback for very old engines.
+//
+// Each panel uses the 1280-wide variant by default and bumps to the 1920-wide
+// variant on high-DPI (≥1.5 dppx) or very wide (≥100rem) screens so retina
+// laptops still get a crisp asset without paying the byte cost on ordinary
+// displays. See `node/optimize-images.js` for the pipeline that emits these
+// widths.
+@mixin curtain-bg($base) {
+    background-image: url("../media/optimized/#{$base}-1280.webp");
+    background-image: image-set(
+        url("../media/optimized/#{$base}-1280.avif") type("image/avif"),
+        url("../media/optimized/#{$base}-1280.webp") type("image/webp"),
+        url("../media/optimized/#{$base}-1280.jpg")  type("image/jpeg")
+    );
+
+    @media (min-resolution: 1.5dppx), (min-width: 100rem) {
+        background-image: url("../media/optimized/#{$base}-1920.webp");
+        background-image: image-set(
+            url("../media/optimized/#{$base}-1920.avif") type("image/avif"),
+            url("../media/optimized/#{$base}-1920.webp") type("image/webp"),
+            url("../media/optimized/#{$base}-1920.jpg")  type("image/jpeg")
+        );
+    }
+}

@@ -10,10 +10,14 @@
 
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:locale:alternate" content="en_US">
-    <link rel="alternate" hreflang="cs" href="https://www.czechalert.com/cs/">    
-    <link rel="alternate" hreflang="en" href="https://www.czechalert.com/">
-    <link rel="alternate" hreflang="x-default" href="https://www.czechalert.com/">
-    <link rel="canonical" href="https://www.czechalert.com/cs/">
+    <link rel="alternate" hreflang="cs" href="https://czechalert.com/cs/">    
+    <link rel="alternate" hreflang="en" href="https://czechalert.com/">
+    <link rel="alternate" hreflang="x-default" href="https://czechalert.com/">
+    <link rel="canonical" href="https://czechalert.com/cs/">
+
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin>
+    <link rel="preconnect" href="https://8z0tbe2a.api.sanity.io" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.sanity.io">
 
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -36,7 +40,7 @@
 </head>
 <body>
     <header class="header">
-        <video class="header--hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto" controlslist="nodownload nofullscreen noremoteplayback" aria-hidden="true">
+        <video class="header--hero-video" poster="../media/optimized/hero_video_loop_poster-1280.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" controlslist="nodownload nofullscreen noremoteplayback" aria-hidden="true">
             <source src="../media/hero_video_loop.mp4" type="video/mp4">
             <source src="../media/hero_video_loop.webm" type="video/webm">
             <source src="../media/hero_video_loop.ogv" type="video/ogv">
@@ -113,72 +117,49 @@
     <main>
         
 
-        <section class="services" id="services">
+        <!-- Sekce služeb - ukotvená iregulární mřížka řízená scrollem.
+             Vnější .services--scroll vytváří 200vh scrollovací dráhy.
+             Vnitřní .services__pin je sticky a centruje mřížku ve viewportu.
+             Karty začínají zaparkované pod centrální kotvou (vyšší z-index)
+             a postupně vyjíždějí navenek během scrollu. JS: js/services-grid-scroll.js -->
+        <section class="services services--scroll" id="services">
 
-            <div class="section-container">
+            <div class="services__pin">
 
-                <h2 class="section-heading">
-                Co děláme
-                </h2>
-                <p class="section-subheading">Jak konkrétně vám pomůžeme zažehnat krizi a získat páku pro strategická rozhodnutí
-                </p>
+                <h2 class="section-heading">Co děláme</h2>
+                <p class="section-subheading">Jak konkrétně vám pomůžeme zažehnat krizi a získat páku pro strategická rozhodnutí</p>
 
-                <div class="services__grid">
+                <div class="services__grid services__grid--scroll">
 
-                    <div class="services__grid--firstL">
+                    <a href="../private-intelligence-and-security" class="services__cell services__cell--firstL services__cell--link">
                         <h3 class="services__grid--heading">Investigace a bezpečnost</h3>
                         <p class="services__grid--content">Čelíte bezpečnostní hrozbě, nebo potřebujete využitelné zpravodajské informace, abyste byli o krok napřed před potenciálními riziky? Ať už se jedná o investigaci z otevřených zdrojů, práci s lidskými zdroji informací nebo strategické hodnocení hrozeb, poskytneme vám potřebnou přehlednost. Spojujeme nejmodernější metodiky s hlubokou analytickou odborností a dodáváme bezpečnostní řešení na míru, na která se můžete spolehnout.</p>
-                    </div>
+                    </a>
 
-                    <div class="services__grid--secondL">
+                    <a href="../business-intelligence" class="services__cell services__cell--firstR services__cell--link">
+                        <h3 class="services__grid--heading">Obchodní a prodejní zpravodajství</h3>
+                        <p class="services__grid--content">Zvažujete spolupráci s novým obchodním partnerem, ale nejste si jisti jeho reputací nebo důvěryhodností? Na základě vašich potřeb a cílů připravíme strukturovanou analýzu rizik zaměřenou na prověřovaný subjekt, a to s využitím otevřených i lidských zdrojů informací. Díky nám vám už nikdo neproklouzne pod radarem.</p>
+                    </a>
+
+                    <a href="../pr-and-media" class="services__cell services__cell--secondL services__cell--link">
                         <h3 class="services__grid--heading">PR a mediální monitoring</h3>
                         <p class="services__grid--content">Ať už hledáte komplexní mediální monitoring, specifické PR strategie nebo řízení reputačních rizik, nemusíte hledat dál. CzechAlert vám nastaví upozornění, provede analýzu negativních mediálních výstupů, vytvoří měsíční reporty z více než 180 milionů zdrojů, vyhodnotí veřejné nálady a mnoho dalšího.</p>
-                    </div>
+                    </a>
 
-                    <!-- <div class="services__grid--thirdL">
-                        <h3 class="services__grid--heading">Vyšetřování pro soudní a osobní účely</h3>
-                        <p class="services__grid--content">Zamýšlíte podat trestní oznámení, ale nejste si jisti postupem nebo nemáte k dispozici dostatek relevantních podkladů? Setkali jste se s osobou, která působí velmi přesvědčivě, ale některé okolnosti ve vás vzbuzují pochybnosti? V takových případech provádíme odborné prověření situace, shromažďujeme dostupné informace a pomáháme vám zvolit nejvhodnější další kroky.</p>
-                    </div>
-
-                    <div class="services__grid--fourthL">
-                        <h3 class="services__grid--heading">Komplexní prověřování osob</h3>
-                        <p class="services__grid--content">Ať už jste zaměstnavatel, pronajímatel nebo kdokoli, kdo potřebuje komplexní prověření určité osoby, CzechAlert nabízí profesionální řešení. Zaměřujeme se na analýzu dluhů, adres, identit, přezdívek a uživatelských účtů, aktivity na sociálních sítích i současné a předchozí pracovní působení. Poskytujeme ucelený přehled relevantních informací.</p>
-                    </div> -->
-
-                    <div class="services__grid--grid-img">
+                    <!-- Centrální kotva - vnější karty vyjíždějí zpod této dlaždice -->
+                    <div class="services__cell services__cell--anchor">
                         <img src="../media/abstract-fingerprint.jpg" alt="Abstraktní otisk prstu symbolizující identitu a zpravodajskou činnost CzechAlert">
                     </div>
 
-                    <div class="services__grid--firstR">
-                        <h3 class="services__grid--heading">Obchodní a prodejní zpravodajství</h3> 
-                        <p class="services__grid--content">Zvažujete spolupráci s novým obchodním partnerem, ale nejste si jisti jeho reputací nebo důvěryhodností? Na základě vašich potřeb a cílů připravíme strukturovanou analýzu rizik zaměřenou na prověřovaný subjekt, a to s využitím otevřených i lidských zdrojů informací. Díky nám vám už nikdo neproklouzne pod radarem.</p>
-                    </div>
-
-                    <div class="services__grid--secondR">
-                        <h3 class="services__grid--heading">Řízení rizik a due diligence</h3> 
+                    <div class="services__cell services__cell--secondR">
+                        <h3 class="services__grid--heading">Řízení rizik a due diligence</h3>
                         <p class="services__grid--content">Potřebujete učinit důležité manažerské rozhodnutí, ale nemáte k dispozici všechny potřebné informace? Právě v takových situacích vstupujeme do hry. Na základě hloubkové, kontextuální a důkazně podložené analýzy navrhneme optimální strategii pro vaši konkrétní situaci. Informovaná rozhodnutí jsou základem odpovědného řízení budoucnosti.</p>
                     </div>
-
-                    <!-- <div class="services__grid--thirdR">
-                        <h3 class="services__grid--heading">Investigace a zpravodajství</h3> 
-                        <p class="services__grid--content"></p>
-                    </div>
-
-                    <div class="services__grid--secondR-alt">
-                        <h3 class="services__grid--heading">Poradenství v oblasti soukromí a protiopatření vůči sledování</h3>
-                        <p class="services__grid--content">Máte pocit, že je vaše soukromí narušováno ze strany institucí, firem nebo konkrétních osob? V mnoha případech se tyto obavy zakládají na reálných faktech. Poskytujeme odborné poradenství v oblasti ochrany soukromí, digitální bezpečnosti, a identifikace nežádoucího monitorování. Pomáháme s kontrolou zařízení na přítomnost škodlivého softwaru, posouzením bezpečnosti komunikačních prostředků a vyhodnocením rizik v pracovním i osobním prostředí. Naše postupy jsou založeny na legálních metodách, odborné analýze a důrazu na prevenci.</p>
-                    </div>
-
-                    <div class="services__grid--fourthR">
-                        <h3 class="services__grid--heading">Vyšetřování podvodů a deanonymizace</h3>
-                        <p class="services__grid--content">Byli jste Vy nebo někdo z Vašich blízkých někdy terčem stalkera, podvodníka nebo scammera? Je to pravděpodobnější, než si myslíte. Tito škodliví aktéři se obvykle skrývají za anonymitou a falešnými identitami, ale kde je vůle, tam je cesta. Vystopujeme je pro Vás a poskytneme zprávu, kterou můžete předložit příslušným úřadům.</p>
-                    </div> -->
 
                 </div>
 
             </div>
-            
-            
+
         </section>
     
         <section class="about" id="about">
@@ -490,8 +471,12 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/ScrollTrigger.min.js"></script>
     <script src="../js/swiper.js"></script>
+    <script src="../js/services-grid-scroll.js" defer></script>
     <script src="../js/script.js"></script>
+    <script src="../js/sanity-image.js"></script>
     <script src="../js/sanity-content.js"></script>
     <script src="../js/lang-v-toggler.js"></script>
     

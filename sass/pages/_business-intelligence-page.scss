@@ -39,6 +39,42 @@
 }
 
 // -----------------------------------------------------------------------------
+// Curtain overlay background images — same optimized treatment as the
+// PI & Security curtains. The shared `::before` carrier (position, cover
+// sizing and the scroll-scrubbed `--bg-zoom` scale) is defined globally on
+// `.service-panel__overlay` in `_pr-security-page.scss`; here we only assign
+// each Business Intelligence panel its photo via the shared `curtain-bg()`
+// mixin, reusing the same curtain assets so the service pages feel like
+// siblings. Add the matching `--img-*` class to each overlay in
+// `business-intelligence.html` (alongside its colour modifier).
+// -----------------------------------------------------------------------------
+.service-panel__overlay {
+    &--img-strategy::before   { @include curtain-bg("zeros-and-ones-bg"); }
+    &--img-commercial::before { @include curtain-bg("abstract-triangular-nebula"); }
+    &--img-faq::before        { @include curtain-bg("round-nebula-bg"); }
+}
+
+// -----------------------------------------------------------------------------
+// Business Development panel — sub-capability grid override.
+// The base `.services__grid` template splits the two capability cards to
+// opposite sides (firstL left, firstR right) with the icon in the middle.
+// Here we stack both cards in the LEFT column while keeping the standard
+// 3-column structure used across the other service panels (icon in the
+// middle column, third column left empty). Desktop / laptop only (above the
+// tablet breakpoint at 50rem); tablet and mobile keep the base re-stacked
+// order defined in `_services.scss`.
+// -----------------------------------------------------------------------------
+@media screen and (min-width: 50.0625rem) {
+    .business-intelligence-page .services__grid--stack-left {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas:
+            "firstL grid-img ."
+            "firstR grid-img .";
+    }
+}
+
+
+// -----------------------------------------------------------------------------
 // Hero — first curtain panel. Looping video + frosted-glass overlay, same
 // treatment as the PI & Security hero. Class prefix `bi-` to avoid clashes
 // with the pr-security hero block.
@@ -162,6 +198,9 @@
     &__cta {
         margin-top: 4rem;
         padding-top: 3rem;
+        // Breathing room beneath the CTA button so it never sits flush
+        // against the curtain frame's bottom padding.
+        padding-bottom: fn.fluid(2rem, 3.5rem);
         text-align: center;
 
         .bi-cta__heading {
@@ -265,7 +304,7 @@
         &__heading    { font-size: fn.fluid(2.4rem, 3.4rem); margin-bottom: 0.75rem; }
         &__subheading { margin-bottom: 2rem; }
         &__item       { padding: 1rem 0; }
-        &__cta        { margin-top: 2.5rem; padding-top: 2rem; }
+        &__cta        { margin-top: 2.5rem; padding-top: 2rem; padding-bottom: 1.5rem; }
         &__cta .bi-cta__heading { font-size: fn.fluid(1.9rem, 2.4rem); margin-bottom: 0.75rem; }
         &__cta .bi-cta__lead    { margin-bottom: 1.5rem; }
     }

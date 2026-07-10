@@ -117,5 +117,5 @@ User-agent: AdsBot-Google
 Allow: /
 
 # Sitemap location
-Sitemap: https://www.czechalert.com/sitemap.xml
-Sitemap: https://www.czechalert.com/cs/sitemap.xml
+Sitemap: https://czechalert.com/sitemap.xml
+Sitemap: https://czechalert.com/cs/sitemap.xml
