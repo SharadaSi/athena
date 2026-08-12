@@ -258,7 +258,9 @@
     .services__pin {
         position: static;
         height: auto;
-        padding: 2rem 1rem;
+        // Extra top padding opens up breathing room between the bottom edge of
+        // the hero section and the services heading on mobile.
+        padding: 5rem 1rem 2rem;
     }
     .services--scroll {
         height: auto;

@@ -30,6 +30,24 @@
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: auto;
     gap: 4rem;
+
+    // Article images are wrapped in <picture> by the build step (node/wrap-pictures.js).
+    // The grid-placement and sizing rules below target the inner <img> (.main-article-preview-img,
+    // .article-preview-img), so the <picture> wrapper must not create its own box — otherwise it
+    // becomes the grid child, collapses into a single column and the image stretches vertically.
+    // `display: contents` lets the inner <img> participate directly in the grid as intended.
+    picture {
+        display: contents;
+
+        // With `display: contents` the empty <source> elements would be promoted to
+        // grid items themselves — each blockified into a real grid cell, pushing the
+        // <img> into a later row and opening a large empty band at the top of the card.
+        // Hiding them is safe: the browser's <picture> resource-selection algorithm
+        // reads <source> from the DOM and is unaffected by CSS display.
+        > source {
+            display: none;
+        }
+    }
 }
 
 .grid-item-1 {
@@ -43,9 +61,14 @@
 
 .main-article-preview-img {
     grid-column: 1 / 4 ;
-    height: 100%;
     width: 100%;
-    object-fit: cover;
+    // Keep the image's own aspect ratio instead of stretching to the grid
+    // row height. Sanity injects intrinsic width/height attributes, so
+    // `height: auto` lets the browser scale by ratio; `align-self: center`
+    // vertically centres the shorter image against the centred content column,
+    // which is force-stretched to full row height by the parent grid.
+    height: auto;
+    align-self: center;
     display: block;
     border-radius: $radius-desktop;
 }
@@ -62,6 +85,11 @@
 
 .article-preview-img {
     width: 100%;
+    // Sanity-rendered cards inject explicit width/height HTML attributes on the <img>
+    // (intrinsic dimensions for CLS prevention). Since only `width` is overridden by CSS,
+    // the browser would otherwise honor the raw height attribute literally (e.g. 4912px).
+    // `height: auto` restores natural aspect-ratio scaling.
+    height: auto;
     object-fit: cover;
     display: block;
     border-radius: $radius-desktop;
@@ -181,8 +209,6 @@
     .main-article-preview-img {
         height: auto; // avoid forcing full row height
         width: 100%;
-        aspect-ratio: 16 / 9; // maintain consistent shape
-        object-fit: cover; // crop to the box
-        align-self: start; // prevent vertical stretching within grid
+        align-self: center; // vertically centre against the centred content
     }
 }

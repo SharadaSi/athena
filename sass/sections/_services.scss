@@ -18,7 +18,10 @@
 
     &__grid {  
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        // `minmax(0, 1fr)` (rather than a bare `1fr`, which is `minmax(auto, 1fr)`)
+        // forces all three tracks to stay exactly equal, so a card with longer
+        // content can't bloat its column wider than its siblings.
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
         gap: 2rem;
         grid-auto-flow: row;
         grid-template-areas:
@@ -324,5 +327,31 @@
             "secondR"
             "thirdR"
             "fourthR";
+    }
+}
+
+// =============================================================================
+// `--img-last` behavioural modifier
+// The default grids (4-card), plus the `--six` and `--eight` variants, keep the
+// central image in the MIDDLE of the mobile stack (it splits the left/right
+// halves). Grids that are NOT one of those flanking layouts — typically 2- or
+// 3-card panels — should instead drop the image to the very BOTTOM of the
+// single-column stack on mobile.
+//
+// Implemented as a flex column rather than a grid template: flex leaves no
+// phantom gaps for absent card slots, and `order` pushes the image last no
+// matter where it sits in the source markup (some panels author it mid-list).
+// =============================================================================
+@media screen and (max-width: 40rem) {
+    .services__grid--img-last {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        // Image cell jumps to the end of the column; cards keep the default
+        // `order: 0` and therefore render above it in source order.
+        .services__grid--grid-img {
+            order: 1;
+        }
     }
 }

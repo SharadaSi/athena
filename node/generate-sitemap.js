@@ -155,17 +155,131 @@ function buildSitemap(urls) {
   return header + body + footer;
 }
 
-const rootUrls = buildUrls(rootFiles);
-const csUrls = buildUrls(csFiles);
+// ---------------------------------------------------------------------------
+// Dynamic Sanity articles
+// ---------------------------------------------------------------------------
+// Articles live in Sanity's public `production` dataset and are served
+// client-side at `/article?slug=<slug>` (EN) and `/cs/article?slug=<slug>` (CS).
+// Because they are query-string routes rendered by JS, the static file walk
+// above never sees them — so we fetch the slugs directly from Sanity's public
+// query API (no token required for a public dataset) and emit them here.
+const SANITY_PROJECT_ID = process.env.SANITY_PROJECT_ID || '8z0tbe2a';
+const SANITY_DATASET = process.env.SANITY_DATASET || 'production';
+const SANITY_API_VERSION = '2023-10-01';
 
-const rootSitemap = buildSitemap(rootUrls);
-const csSitemap = buildSitemap(csUrls);
+// XML-escape a URL for safe inclusion in <loc>/href (handles & in query strings).
+function xmlEscape(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
 
-const rootOutPath = path.join(ROOT, 'sitemap.xml');
-const csOutPath = path.join(ROOT, 'cs', 'sitemap.xml');
+// Build the public GROQ query URL for all published posts + their translation link.
+function buildSanityQueryUrl() {
+  const groq = `*[_type=="post" && defined(slug.current)]{"slug":slug.current,language,publishedAt,_id,_updatedAt,"translationRef":translationOf._ref}`;
+  const q = encodeURIComponent(groq);
+  return `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${q}`;
+}
 
-fs.writeFileSync(rootOutPath, rootSitemap, 'utf8');
-fs.writeFileSync(csOutPath, csSitemap, 'utf8');
+// Compose the absolute, locale-aware article URL for a given post.
+function articleUrlFor(post) {
+  const base = post.language === 'cs' ? '/cs/article' : '/article';
+  return `${baseUrl}${base}?slug=${encodeURIComponent(post.slug)}`;
+}
 
-console.log(`Generated ${rootOutPath} with ${rootUrls.length} URLs`);
-console.log(`Generated ${csOutPath} with ${csUrls.length} URLs`);
+// Turn ISO timestamp into YYYY-MM-DD (falls back to today).
+function isoDateFromString(iso) {
+  const d = iso ? new Date(iso) : new Date();
+  return (Number.isNaN(d.getTime()) ? new Date() : d).toISOString().split('T')[0];
+}
+
+async function fetchSanityArticles() {
+  if (typeof fetch !== 'function') {
+    console.warn('Global fetch unavailable (Node < 18) — skipping Sanity articles.');
+    return { rootUrls: [], csUrls: [] };
+  }
+
+  let posts;
+  try {
+    const res = await fetch(buildSanityQueryUrl());
+    if (!res.ok) throw new Error(`Sanity API returned HTTP ${res.status}`);
+    const json = await res.json();
+    posts = Array.isArray(json.result) ? json.result : [];
+  } catch (err) {
+    console.warn('Failed to fetch Sanity articles — sitemap will exclude them:', err.message);
+    return { rootUrls: [], csUrls: [] };
+  }
+
+  // Index posts by _id so we can resolve translation pairs for hreflang.
+  const byId = new Map(posts.map(p => [p._id, p]));
+
+  // Resolve the translated counterpart of a post, checking both directions
+  // (the manual `translationOf` reference is not guaranteed to be reciprocal).
+  function translationOf(post) {
+    if (post.translationRef && byId.has(post.translationRef)) {
+      return byId.get(post.translationRef);
+    }
+    return posts.find(p => p.translationRef === post._id) || null;
+  }
+
+  const rootUrls = [];
+  const csUrls = [];
+
+  for (const post of posts) {
+    if (!post.slug) continue;
+    const loc = xmlEscape(articleUrlFor(post));
+    const twin = translationOf(post);
+
+    // Build reciprocal hreflang alternates so Google understands the EN/CS pair.
+    const alternates = [];
+    const enPost = post.language === 'en' ? post : (twin && twin.language === 'en' ? twin : null);
+    const csPost = post.language === 'cs' ? post : (twin && twin.language === 'cs' ? twin : null);
+    if (enPost) alternates.push({ hreflang: 'en', href: xmlEscape(articleUrlFor(enPost)) });
+    if (csPost) alternates.push({ hreflang: 'cs', href: xmlEscape(articleUrlFor(csPost)) });
+    // x-default points at the English article when available, else the post itself.
+    alternates.push({ hreflang: 'x-default', href: xmlEscape(articleUrlFor(enPost || post)) });
+
+    const entry = {
+      loc,
+      lastmod: isoDateFromString(post._updatedAt || post.publishedAt),
+      changefreq: 'weekly',
+      priority: '0.8',
+      alternates,
+    };
+
+    if (post.language === 'cs') {
+      csUrls.push(entry);
+    } else {
+      rootUrls.push(entry);
+    }
+  }
+
+  console.log(`Fetched ${posts.length} Sanity posts (${rootUrls.length} EN, ${csUrls.length} CS)`);
+  return { rootUrls, csUrls };
+}
+
+(async () => {
+  const staticRootUrls = buildUrls(rootFiles);
+  const staticCsUrls = buildUrls(csFiles);
+
+  const { rootUrls: articleRootUrls, csUrls: articleCsUrls } = await fetchSanityArticles();
+
+  const rootUrls = staticRootUrls.concat(articleRootUrls);
+  const csUrls = staticCsUrls.concat(articleCsUrls);
+
+  const rootSitemap = buildSitemap(rootUrls);
+  const csSitemap = buildSitemap(csUrls);
+
+  const rootOutPath = path.join(ROOT, 'sitemap.xml');
+  const csOutPath = path.join(ROOT, 'cs', 'sitemap.xml');
+
+  fs.writeFileSync(rootOutPath, rootSitemap, 'utf8');
+  fs.writeFileSync(csOutPath, csSitemap, 'utf8');
+
+  console.log(`Generated ${rootOutPath} with ${rootUrls.length} URLs`);
+  console.log(`Generated ${csOutPath} with ${csUrls.length} URLs`);
+})();
+

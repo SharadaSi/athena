@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Když jde o pověst, majetek nebo bezpečí, nestačí tušit. OSINT investigace, prověrky, odhalování podvodů a diskrétní ochrana. Fakta, o která se opřete.">
+    <meta name="author" content="Sylvester Holovský">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:locale" content="cs_CZ">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:title" content="Soukromé zpravodajství a bezpečnost | CzechAlert">
+    <meta property="og:description" content="Když jde o pověst, majetek nebo bezpečí, nestačí tušit. OSINT investigace, prověrky a diskrétní ochrana od CzechAlert.">
+    <meta property="og:url" content="https://czechalert.com/cs/private-intelligence-and-security">
+    <link rel="alternate" hreflang="en" href="https://czechalert.com/private-intelligence-and-security">
+    <link rel="alternate" hreflang="cs" href="https://czechalert.com/cs/private-intelligence-and-security">
+    <link rel="alternate" hreflang="x-default" href="https://czechalert.com/private-intelligence-and-security">
+    <link rel="canonical" href="https://czechalert.com/cs/private-intelligence-and-security">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
+    <link rel="icon" href="../icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
+
+    <title>Soukromé zpravodajství a bezpečnost | CzechAlert</title>
+
+    <!-- Structured data - Service schema for GEO/SEO discoverability -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Soukromé zpravodajství a bezpečnost",
+        "provider": {
+            "@id": "https://czechalert.com/#organization",
+            "@type": "Organization",
+            "name": "CzechAlert",
+            "url": "https://czechalert.com/"
+        },
+        "areaServed": "Czech Republic",
+        "description": "Diskrétní zpravodajské a bezpečnostní služby pro manažery, majitele firem, politiky i soukromé osoby: OSINT investigace, digitální forenzika, prověrky osob a firem, odhalování podvodů, osobní ochrana, výcvik na míru a vymáhání majetku. Ověřitelná fakta a důkazy, které obstojí u soudu — dřív, než se riziko promění ve škodu.",
+        "serviceType": [
+            "Zpravodajství a analýza",
+            "Investigace a due diligence",
+            "Ochranné služby",
+            "Výcvik a rozvoj dovedností",
+            "Vymáhání a navrácení majetku"
+        ]
+    }
+    </script>
+
+    <script defer src="https://api.pirsch.io/pa.js"
+        id="pianjs"
+        data-code="qhEFIVE6Bc6SdI8sJfmerCpjBlOALtiP"></script>
+
+    <!-- Start cookieyes banner -->
+    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/514d027fcc51f9902ed472cabbf3de35/script.js"></script>
+    <!-- End cookieyes banner -->
+</head>
+
+<body class="pr-security-page">
+    <div class="page-wrapper">
+
+        
+        <header class="article-page__header">
+            <nav class="nav">
+                <div class="nav--container">
+                    <div class="nav--logo">
+                        <a href="/cs/" class="logo--link">
+                            <img class="nav--logo-img" src="../media/czech-alert-logo-desktop.png" alt="CzechAlert logo" decoding="async">
+                        </a>
+                    </div>
+                    <div class="nav--hamburger">
+                        <div class="hamburger--bar bar1"></div>
+                        <div class="hamburger--bar bar2"></div>
+                        <div class="hamburger--bar bar3"></div>
+                    </div>
+                </div>
+
+                <ul class="nav--menu">
+                    <li class="nav--item"><a href="/cs/#services" class="nav--link">Co děláme</a></li>
+                    <li class="nav--item"><a href="/cs/#about" class="nav--link">Kdo jsme</a></li>
+                    <li class="nav--item"><a href="publications" class="nav--link">Publikace</a></li>
+                    <li class="nav--item"><a href="/cs/#testimonials" class="nav--link">Recenze</a></li>
+                    <li class="nav--item"><a href="contact" class="nav--link">Kontakt</a></li>
+                    <li class="nav--item nav--item-cta"><a href="newsletter" class="btn">Newsletter</a></li>
+                    <li class="nav--item nav--item-switch-bar">
+                        <span class="nav--item-cs-label">česky</span>
+                        <label class="nav--item-switch" for="nav--item-switch-mode">
+                            <input type="checkbox" id="nav--item-switch-mode">
+                            <span class="nav--item-slider nav--item-round"></span>
+                        </label>
+                        <span class="nav--item-eng-label">anglicky</span>
+                    </li>
+                </ul>
+
+                <div class="nav--menu-widgets">
+                    <div class="nav--menu-switch-bar">
+                        <span class="cs-label">česky</span>
+                        <label class="switch" for="switch-mode">
+                            <input type="checkbox" id="switch-mode" aria-label="Přepnout jazyk na angličtinu">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="eng-label">anglicky</span>
+                    </div>
+                    <div class="nav--cta">
+                        <a href="newsletter" class="btn btn--cta">Newsletter</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+
+            <!-- ============================================================== -->
+            <!-- CURTAIN STAGE                                                  -->
+            <!-- All panels live inside a sticky `.curtain-track` (100vh tall). -->
+            <!-- Each panel is absolutely-positioned and stacked. A single GSAP -->
+            <!-- timeline scrubbed by scroll position runs two beats per panel: -->
+            <!--   1. Panel slides up from below over the previous one (curtain  -->
+            <!--      rises from the floor).                                    -->
+            <!--   2. Panel's overlay slides up off the top, revealing the      -->
+            <!--      detailed content beneath (overlay lifts away).            -->
+            <!-- ============================================================== -->
+            <div class="curtain-stage">
+              <div class="curtain-track">
+
+                <!-- ========================================================== -->
+                <!-- HERO - first panel, no overlay (it's the starting backdrop) -->
+                <!-- ========================================================== -->
+                <section class="curtain-section pr-security-hero" aria-labelledby="pr-hero-heading">
+                <!-- Looping background video, mirrored from index.html.
+                     The frosted overlay below sits above it and supplies
+                     the dark, blurred treatment that mirrors the mobile
+                     navigation drawer. -->
+                <video class="pr-security-hero__video" poster="../media/optimized/hero_video_loop_poster-1280.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" controlslist="nodownload nofullscreen noremoteplayback" aria-hidden="true">
+                    <source src="../media/hero_video_loop.mp4" type="video/mp4">
+                    <source src="../media/hero_video_loop.webm" type="video/webm">
+                    <source src="../media/hero_video_loop.ogv" type="video/ogv">
+                </video>
+                <div class="pr-security-hero__blur" aria-hidden="true"></div>
+                <div class="content">
+                    <div class="curtain-inner">
+                        <p class="pr-security-hero__eyebrow">CzechAlert  Služby</p>
+                        <h1 id="pr-hero-heading" class="pr-security-hero__heading">
+                            Soukromé zpravodajství a bezpečnost
+                        </h1>
+                        <p class="pr-security-hero__subheading">
+                            Diskrétní zpravodajské a bezpečnostní služby postavené na ověřitelných faktech, pro jednotlivce, firmy
+                            i instituce, které řeší delikátní situace, rizika nebo nejistotu.
+                        </p>
+                        <p class="pr-security-hero__scroll-cue" aria-hidden="true">Pokračujte dolů ↓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================== -->
+            <!-- `.curtain-section.pin` matches the codepen's pin pattern:   -->
+            <!-- the `.overlay` covers the `.content`, then GSAP scrubs its  -->
+            <!-- `yPercent` to slide it up and reveal the detail beneath.    -->
+            <!-- ========================================================== -->
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-osint-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">01  Zpravodajství a analýza</span>
+                        <h2 id="svc-osint-heading" class="service-panel__title">Zpravodajství a analýza</h2>
+                        <p class="service-panel__lead">
+                        Kombinujeme investigativní metody, zpravodajství z otevřených zdrojů a technické zázemí,
+                        abychom odkryli fakta, rozpoznali souvislosti a proměnili útržkovité informace v poznatky,
+                        o které se lze opřít.
+                        </p>
+                        <div class="services__grid">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Sběr informací</h3>
+                                <p class="services__grid--content">Pokročilý sběr informací z otevřených zdrojů OSINT, od prověřených lidských zdrojů HUMINT a ze sociálních sítí SOCMINT. Výstupem jsou jasné a použitelné poznatky.</p>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Digitální forenzika</h3>
+                                <p class="services__grid--content">Forenzní zkoumání digitálních zařízení a dat s cílem odhalit, zajistit a předložit klíčové
+                                důkazy.</p>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="../icons/intel-analysis.svg" alt="Analytik OSINT propojující důkazy na digitální nástěnce případu">
+                            </div>
+
+                            <div class="services__grid--firstR">
+                                <h3 class="services__grid--heading">Deanonymizace online</h3>
+                                <p class="services__grid--content">Identifikace anonymních osob působících na internetu, výhradně zákonnými vyšetřovacími postupy.</p>
+                            </div>
+
+                            <div class="services__grid--secondR">
+                                <h3 class="services__grid--heading">Poradenství v oblasti soukromí</h3>
+                                <p class="services__grid--content">Strategická doporučení, jak omezit digitální stopu, ochránit citlivé informace a posílit soukromí
+                                jednotlivce i organizace.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--red service-panel__overlay--img-intel">
+                    <div>
+                        <h2>Zpravodajství a analýza</h2>
+                        <p>Kdo umí oddělit signál od šumu, získává strategickou výhodu.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================== -->
+            <!-- SERVICE 2 -                -->
+            <!-- ========================================================== -->
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-tscm-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">02 Investigace a due diligence</span>
+                        <h2 id="svc-tscm-heading" class="service-panel__title">Investigace a due diligence</h2>
+                        <!-- <p class="service-panel__lead">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        </p> -->
+
+                        <div class="services__grid services__grid--six">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Odhalování podvodů</h3>
+                                <p class="services__grid--content">Detekce a vyšetřování finančních podvodů, nekalého jednání a hospodářské kriminality.</p>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Podpora soudních řízení a firemních auditů</h3>
+                                <p class="services__grid--content">Investigativní podpora vedená podle důkazních standardů vyžadovaných v soudních řízeních, pro firemní i právní vyšetřování všeho druhu.</p>
+                            </div>
+
+                            <div class="services__grid--thirdL">
+                                <h3 class="services__grid--heading">Osobní záležitosti a nevěra</h3>
+                                <p class="services__grid--content">Diskrétní investigativní služby pro citlivé a složité osobní situace.</p>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="../icons/investigation-due-dilligence.svg" alt="Protiodposlechová technika prohledávající pracovní prostor">
+                            </div>
+
+                            <div class="services__grid--firstR">
+                                <h3 class="services__grid--heading">Compliance analýzy</h3>
+                                <p class="services__grid--content">Podpora při plnění regulatorních požadavků v obranném sektoru (např. NDAA) i předpisů proti korupci a uplácení (FCPA).</p>
+                            </div>
+
+                            <div class="services__grid--secondR">
+                                <h3 class="services__grid--heading">Prověrky osob</h3>
+                                <p class="services__grid--content">Důkladné prověření osob i subjektů jako spolehlivý podklad pro informované rozhodování.</p>
+                            </div>
+
+                            <div class="services__grid--thirdR">
+                                <h3 class="services__grid--heading">Firemní due diligence</h3>
+                                <p class="services__grid--content">Komplexní prověření společností, vlastnických struktur a provozních rizik.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--blue service-panel__overlay--img-investigations">
+                    <div>
+                        <h2>Investigace a due diligence (Prověrka)</h2>
+                        <p>Důvěřuj, ale prověřuj. Jistota začíná ověřenými fakty.</p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <!-- ========================================================== -->
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-protective-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">03   Ochranné služby</span>
+                        <h2 id="svc-protective-heading" class="service-panel__title">Ochranné služby</h2>
+                        <p class="service-panel__lead">
+                        Od digitálního soukromí po komerční a osobní bezpečnost, pomáháme odhalit slabá místa, snížit míru rizika a posílit odolnost pomocí ochranných strategií řízených zpravodajskými poznatky.
+                        </p>
+
+                        <!-- Sub-capability grid - 4-item variant: two cards on each
+                             side of the central image, mirroring Intel & Analysis. -->
+                        <div class="services__grid">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Osobní ochrana</h3>
+                                <p class="services__grid--content">Profesionální ochrana osob vystavených zvýšenému riziku, diskrétně a s citem pro situaci.</p>
+                                <!-- Partner badge - corner variant; tooltip slides out to the left on hover / focus. -->
+                                <span class="service-panel__partner service-panel__partner--corner" tabindex="0" aria-label="Poskytováno ve spolupráci s našimi partnery">
+                                    <img class="service-panel__partner-logo" src="../icons/rwacademy-logo.jpg" alt="RW Academy - partnerské logo" loading="lazy" decoding="async">
+                                    <span class="service-panel__partner-tip" role="tooltip">Tuto službu poskytujeme ve spojení s našimi partnery</span>
+                                </span>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Taktická reakce</h3>
+                                <p class="services__grid--content">Okamžité nasazení ochranného personálu při vznikající hrozbě nebo naléhavé situaci.</p>
+                                <span class="service-panel__partner service-panel__partner--corner" tabindex="0" aria-label="Poskytováno ve spolupráci s našimi partnery">
+                                    <img class="service-panel__partner-logo" src="../icons/rwacademy-logo.jpg" alt="RW Academy - partnerské logo" loading="lazy" decoding="async">
+                                    <span class="service-panel__partner-tip" role="tooltip">Tuto službu poskytujeme ve spojení s našimi partnery</span>
+                                </span>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="../icons/protective-services.svg" alt="Ochranný tým kontrolující perimetr před příjezdem klienta">
+                            </div>
+
+                            <div class="services__grid--firstR">
+                                <h3 class="services__grid--heading">Ochrana před stalkingem</h3>
+                                <p class="services__grid--content">Vyhodnocení rizik, zajištění důkazů a ochranné strategie proti obtěžování a vytrvalé nevyžádané pozornosti.</p>
+                            </div>
+
+                            <div class="services__grid--secondR">
+                                <h3 class="services__grid--heading">Komerční bezpečnost</h3>
+                                <p class="services__grid--content">Bezpečnostní služby na míru pro firmy, rezidenční i komerční objekty, od provozních rizik přes ochranu majetku po bezpečí zaměstnanců.</p>
+                                <span class="service-panel__partner service-panel__partner--corner" tabindex="0" aria-label="Poskytováno ve spolupráci s našimi partnery">
+                                    <img class="service-panel__partner-logo" src="../icons/rwacademy-logo.jpg" alt="RW Academy - partnerské logo" loading="lazy" decoding="async">
+                                    <span class="service-panel__partner-tip" role="tooltip">Tuto službu poskytujeme ve spojení s našimi partnery</span>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--red service-panel__overlay--img-protective">
+                    <div>
+                        <h2>Ochranné služby</h2>
+                        <p>Bezpečí a jistota začíná dávno předtím, než se hrozba objeví.</p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-fraud-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">04  Výcvik a rozvoj dovedností</span>
+                        <h2 id="svc-fraud-heading" class="service-panel__title">Výcvik a rozvoj dovedností</h2>
+                        <p class="service-panel__lead">
+                        Připravujeme výcvikové programy na míru, které posilují fyzickou bezpečnost a situační
+                        připravenost jednotlivců i organizací.
+                        </p>
+
+                        <!-- Sub-capability grid - mirrors the index `services__grid`. -->
+                        <div class="services__grid">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Ochrana měkkých cílů</h3>
+                                <p class="services__grid--content">Praktický výcvik, díky němuž jednotlivci i organizace rozpoznají hrozby a dokážou účinně reagovat
+                                ve zranitelném prostředí.</p>
+                                <span class="service-panel__partner service-panel__partner--corner" tabindex="0" aria-label="Poskytováno ve spolupráci s našimi partnery">
+                                    <img class="service-panel__partner-logo" src="../icons/rwacademy-logo.jpg" alt="RW Academy - partnerské logo" loading="lazy" decoding="async">
+                                    <span class="service-panel__partner-tip" role="tooltip">Tuto službu poskytujeme ve spojení s našimi partnery</span>
+                                </span>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Výcvik bezpečnostních složek</h3>
+                                <p class="services__grid--content">Strukturované programy pro bezpečnostní personál zaměřené na připravenost, disciplinu a operační efektivitu.</p>
+                                <span class="service-panel__partner service-panel__partner--corner" tabindex="0" aria-label="Poskytováno ve spolupráci s našimi partnery">
+                                    <img class="service-panel__partner-logo" src="../icons/rwacademy-logo.jpg" alt="RW Academy - partnerské logo" loading="lazy" decoding="async">
+                                    <span class="service-panel__partner-tip" role="tooltip">Tuto službu poskytujeme ve spojení s našimi partnery</span>
+                                </span>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="../icons/training-capability-development.svg" alt="Vyšetřovatel mapující vazby podvodné sítě v digitálních důkazech">
+                            </div>
+
+                            <div class="services__grid--firstR">
+                                <h3 class="services__grid--heading">Sebeobrana a boj</h3>
+                                <p class="services__grid--content">Fyzický výcvik pod odborným vedením, který buduje sebejistotu, odolnost a obranné schopnosti. Kurzy jsou otevřené i veřejnosti.</p>
+                                <span class="service-panel__partner service-panel__partner--corner" tabindex="0" aria-label="Poskytováno ve spolupráci s našimi partnery">
+                                    <img class="service-panel__partner-logo" src="../icons/rwacademy-logo.jpg" alt="RW Academy - partnerské logo" loading="lazy" decoding="async">
+                                    <span class="service-panel__partner-tip" role="tooltip">Tuto službu poskytujeme ve spojení s našimi partnery</span>
+                                </span>
+                            </div>
+
+                            <div class="services__grid--secondR">
+                                <h3 class="services__grid--heading">Střelecká příprava</h3>
+                                <p class="services__grid--content">Profesionální výuka bezpečného, odpovědného a účinného zacházení se střelnými zbraněmi (v mezích zákona).</p>
+                                <span class="service-panel__partner service-panel__partner--corner" tabindex="0" aria-label="Poskytováno ve spolupráci s našimi partnery">
+                                    <img class="service-panel__partner-logo" src="../icons/rwacademy-logo.jpg" alt="RW Academy - partnerské logo" loading="lazy" decoding="async">
+                                    <span class="service-panel__partner-tip" role="tooltip">Tuto službu poskytujeme ve spojení s našimi partnery</span>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--graphite service-panel__overlay--img-training">
+                    <div>
+                        <h2>Výcvik a rozvoj dovedností</h2>
+                        <p>Naučte dovednost. Posílíte celou organizaci.</p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="curtain-section pin service-panel" aria-labelledby="svc-threat-heading">
+                <div class="content service-panel__content">
+                    <div class="service-panel__detail">
+                        <span class="service-panel__tag">05  Vymáhání a navrácení majetku</span>
+                        <h2 id="svc-threat-heading" class="service-panel__title">Vymáhání a navrácení majetku</h2>
+                        <p class="service-panel__lead">
+                        Od dohledání majetku přes investigativní podporu až po strategii vymáhání, pomůžeme vám
+                        zorientovat se ve složitých sporech a získat zpět, co vám právem náleží. S rozvahou, diskrétně a s jasným plánem.
+                        </p>
+
+                        <div class="services__grid services__grid--img-last">
+
+                            <div class="services__grid--firstL">
+                                <h3 class="services__grid--heading">Dohledání majetku</h3>
+                                <p class="services__grid--content">Strategické vyhledání a navrácení odcizeného nebo zpronevěřeného majetku.</p>
+                            </div>
+
+                            <div class="services__grid--secondL">
+                                <h3 class="services__grid--heading">Vymáhání pohledávek</h3>
+                                <p class="services__grid--content">Profesionální vymáhání dlužných částek postavené na strukturovaném postupu a zpravodajských poznatcích.</p>
+                            </div>
+
+                            <div class="services__grid--grid-img services__grid--grid-img--icon">
+                                <img src="../icons/recovery-enforcement.svg" alt="Analytik rizik nad strategickým přehledem hrozeb">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--red service-panel__overlay--img-recovery">
+                    <div>
+                        <h2>Vymáhání a návrat majetku</h2>
+                        <p>Získejte zpět, co je vaše. Prosaďte, na čem záleží.</p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="curtain-section pi-faq pi-faq--with-cta" aria-labelledby="pi-faq-heading">
+                <div class="content pi-faq__content">
+                <div class="pi-faq__inner">
+                    <h2 id="pi-faq-heading" class="pi-faq__heading">Časté dotazy</h2>
+                    <p class="pi-faq__subheading">Otázky, které slýcháme nejčastěji, než spolupráce vůbec začne.</p>
+
+                    <details class="pi-faq__item">
+                        <summary>Je všechno, co děláte, legální?</summary>
+                        <p class="pi-faq__item__answer">
+                            Ano. Pracujeme výhradně s otevřenými zdroji, zákonným lidským zpravodajstvím a technickým přístupem založeným na souhlasu. Nenabouráváme se do účtů, neodposloucháváme bez oprávnění a neporušujeme GDPR. Pokud by požadavek překročil zákonnou hranici, řekneme vám to na rovinu a nabídneme legální alternativu.
+                        </p>
+                    </details>
+
+                    <details class="pi-faq__item">
+                        <summary>Jak důvěrná je spolupráce?</summary>
+                        <p class="pi-faq__item__answer">
+                            Každá zakázka běží pod podepsanou dohodou o mlčenlivosti (NDA). Spisy ukládáme šifrovaně, komunikace standardně probíhá přes end-to-end šifrované kanály a přístup k případu mají pouze analytici, kteří na něm pracují. Bez vašeho písemného souhlasu nezadáváme práci subdodavatelům v zahraničí.
+                        </p>
+                    </details>
+
+                    <details class="pi-faq__item">
+                        <summary>Jak se tvoří cena?</summary>
+                        <p class="pi-faq__item__answer">
+                            Většinu případů oceníme fixní částkou po bezplatné třicetiminutové konzultaci. Průběžný monitoring a paušální spolupráci účtujeme měsíčně. Písemný rozsah prací i cenu znáte vždy dřív, než začneme cokoli šetřit.
+                        </p>
+                    </details>
+
+                    <details class="pi-faq__item">
+                        <summary>Jak dlouho vyšetřování trvá?</summary>
+                        <p class="pi-faq__item__answer">
+                            Cílená OSINT zpráva je obvykle hotová za 5 až 10 pracovních dnů. Protiodposlechové prohlídky zpravidla naplánujeme do týdne. Složité případy napříč více jurisdikcemi mohou trvat i několik týdnů, realistický harmonogram znáte už při zadání.
+                        </p>
+                    </details>
+
+                    <details class="pi-faq__item">
+                        <summary>Obstojí zpráva u soudu?</summary>
+                        <p class="pi-faq__item__answer">
+                            Ano. Zprávy píšeme podle důkazních standardů, s úplnými citacemi zdrojů, hashi digitálních příloh a záznamem o nakládání s důkazy. V případě potřeby vystoupíme jako znalec a postup koordinujeme přímo s vaším právním zástupcem.
+                        </p>
+                    </details>
+
+                    <!-- Inline CTA - replaces the standalone CTA panel -->
+                    <div class="pi-faq__cta" aria-labelledby="pi-cta-heading">
+                        <h3 id="pi-cta-heading" class="pi-cta__heading">Máte konkrétní případ?</h3>
+                        <p class="pi-cta__lead">
+                            Popište nám, co řešíte. Prvních 30 minut konzultace je zdarma, zcela důvěrných a k ničemu vás nezavazuje.
+                        </p>
+                        <a href="contact" class="btn btn--cta">Pojďme na to</a>
+                    </div>
+                </div>
+                </div>
+
+                <div class="overlay service-panel__overlay service-panel__overlay--graphite service-panel__overlay--img-faq">
+                    <div>
+                        <h2>Až budete připraveni</h2>
+                        <p>Posuňte se níž, najdete odpovědi na nejčastější otázky i přímou cestu, jak otevřít svůj případ.</p>
+                    </div>
+                </div>
+            </section>
+
+              </div><!-- /.curtain-track -->
+            </div><!-- /.curtain-stage -->
+
+        </main>
+
+       
+        <footer class="footer">
+            <div class="section-container">
+                <div class="footer-grid">
+                    <div class="footer-grid--item1 footer-grid--item">
+                        <div class="logo--font-size-footer">
+                            <a href="/cs/">
+                                <img class="footer--logo-img" src="../media/czech-alert-logo-desktop.png" alt="CzechAlert logo" loading="lazy" decoding="async" fetchpriority="low">
+                            </a>
+                        </div>
+                        <div class="footer-icons-container">
+                            <a href="https://www.linkedin.com/company/czechalert/" class="footer-icons-link in-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" height="36" width="36" viewBox="0 0 544 512"><path fill="#ffffff" d="M196.3 512L103.4 512L103.4 212.9L196.3 212.9L196.3 512zM149.8 172.1C120.1 172.1 96 147.5 96 117.8C96 103.5 101.7 89.9 111.8 79.8C121.9 69.7 135.6 64 149.8 64C164 64 177.7 69.7 187.8 79.8C197.9 89.9 203.6 103.6 203.6 117.8C203.6 147.5 179.5 172.1 149.8 172.1zM543.9 512L451.2 512L451.2 366.4C451.2 331.7 450.5 287.2 402.9 287.2C354.6 287.2 347.2 324.9 347.2 363.9L347.2 512L254.4 512L254.4 212.9L343.5 212.9L343.5 253.7L344.8 253.7C357.2 230.2 387.5 205.4 432.7 205.4C526.7 205.4 544 267.3 544 347.7L544 512L543.9 512z"/></svg></a>
+                            <a href="https://www.instagram.com/czech.alert/" class="footer-icons-link ig-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" height="36" width="36" viewBox="0 0 544 400"><path fill="#ffffff" d="M224.3 141a115 115 0 1 0 -.6 230 115 115 0 1 0 .6-230zm-.6 40.4a74.6 74.6 0 1 1 .6 149.2 74.6 74.6 0 1 1 -.6-149.2zm93.4-45.1a26.8 26.8 0 1 1 53.6 0 26.8 26.8 0 1 1 -53.6 0zm129.7 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM399 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+                            <a href="https://www.facebook.com/people/CzechAlert/61586936905724/" class="footer-icons-link fb-icon" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" height="36" width="36" viewBox="0 0 544 512"><path fill="#ffffff" d="M240 363.3L240 576L356 576L356 363.3L442.5 363.3L460.5 265.5L356 265.5L356 230.9C356 179.2 376.3 159.4 428.7 159.4C445 159.4 458.1 159.8 465.7 160.6L465.7 71.9C451.4 68 416.4 64 396.2 64C289.3 64 240 114.5 240 223.4L240 265.5L174 265.5L174 363.3L240 363.3z"/></svg></a>
+                        </div>
+                    </div>
+                    <div class="footer-grid--item2 footer-grid--item">
+                        <h4 class="item2-subgrid1">Služby</h4>
+                        <div class="item2-subgrid2"><a href="/cs/private-intelligence-and-security">Soukromé zpravodajství a bezpečnost</a></div>
+                        <div class="item2-subgrid3"><a href="/cs/business-intelligence">Tržní a konkurenční zpravodajství</a></div>
+                        <div class="item2-subgrid4"><a href="/cs/pr-and-media">PR a média</a></div>
+                        <div class="item2-subgrid5"><a href="/cs/public-interest-work">Práce ve veřejném zájmu</a></div>
+                    </div>
+                    <div class="footer-grid--item3 footer-grid--item">
+                        <h4 class="items3-subgrid1">Zdroje</h4>
+                        <div class="item3-subgrid2"><a href="publications">Publikace</a></div>
+                        <div class="item3-subgrid3"><a href="publications">Případové studie</a></div>
+                        <div class="item3-subgrid4"><a href="publications">White papers</a></div>
+                        <div class="item3-subgrid5"><a href="publications">Webináře</a></div>
+                        <div class="item3-subgrid6"><a href="publications">Novinky</a></div>
+                    </div>
+                    <div class="footer-grid--item4 footer-grid--item">
+                        <h4 class="item4-subgrid1">Kontakt</h4>
+                        <div class="item4-subgrid2"><a href="mailto:info@czechalert.com" class="footer-email-link">info@czechalert.com</a><button class="footer-email-copy" aria-label="Zkopírovat e-mail do schránky"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+                        <div class="item4-subgrid3"><a href="tel:+420602693668">+420 602 693 668</a></div>
+                        <div class="item4-subgrid4"><a href="https://maps.app.goo.gl/yrpn6zwNzMhtzrDDA" target="_blank" rel="noopener noreferrer">Rumunská 4, Praha 2</a></div>
+                        <div class="item4-subgrid5"><a href="contact">Podpora</a></div>
+                        <div class="item4-subgrid6"><a href="contact">Spolupráce</a></div>
+                    </div>
+                </div>
+                <div class="footer-copyright">
+                    <span class="copyright"><small>&#169;2026. CzechAlert</small></span>
+                    <span class="signature"><small>Vytvořeno na míru, Šárka Šimová</small></span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- GSAP + ScrollTrigger via CDN - keeps the bundle out of the          -->
+    <!-- existing /js/vendor folder (which only ships the GSAP core).        -->
+    <!-- ================================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/ScrollTrigger.min.js"></script>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/lang-v-toggler.js"></script>
+    <!-- Stacked-curtain reveal - must load AFTER GSAP/ScrollTrigger above -->
+    <script src="../js/pi-security-curtain.js"></script>
+</body>
+</html>

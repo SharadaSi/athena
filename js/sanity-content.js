@@ -37,6 +37,16 @@
   // failed to load — defensive coding so a CDN hiccup doesn't blank cards.
   function applyResponsiveImage(img, article, sizesClause) {
     if (!img || !article || !article.imageUrl) return;
+    // The build step (node/wrap-pictures.js) wraps static <img> tags in a
+    // <picture> whose <source> elements point at the local AVIF/WebP files.
+    // Browser resource selection always prefers matching <source> elements
+    // over the <img>'s own src/srcset, so if we only swapped the <img> the
+    // stale static image would keep rendering. Strip the outdated <source>
+    // elements before hydrating — Sanity's CDN (`auto=format`) still serves
+    // AVIF/WebP via the <img> srcset, so no format regression.
+    if (img.parentElement && img.parentElement.tagName === 'PICTURE') {
+      img.parentElement.querySelectorAll('source').forEach((s) => s.remove());
+    }
     if (typeof window.applySanityImg === 'function') {
       window.applySanityImg(img, {
         url: article.imageUrl,

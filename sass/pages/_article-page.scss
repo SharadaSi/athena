@@ -43,8 +43,23 @@
     gap: 2rem;
 }
 
+// Explicit spacer between the hero/perex grid and #article-body.
+.article-page--content-break {
+    height: 6rem;
+}
+
 .article-page--content-img {
     grid-column: 1 / 3;
+    display: block;
+    width: 100%;
+    // The global `img { max-width: 100% }` reset clamps width but not height,
+    // so the raw height attribute from Sanity metadata would stretch the hero
+    // vertically. `height: auto` restores the intrinsic aspect ratio; the
+    // max-height guardrail + `object-fit: cover` contain very large/tall
+    // uploads in a consistent hero box without distortion.
+    height: auto;
+    max-height: 60rem;
+    object-fit: cover;
     border-radius: $radius-desktop;
     // margin-bottom: 4rem;
 }
@@ -206,7 +221,10 @@
     .article-page--content-grid {
         width: 90%;
         grid-template-columns: repeat(1, 1fr);
-        margin-bottom: 3rem;
+    }
+
+    .article-page--content-break {
+        height: 4rem;
     }
 
     .article-page--content {

@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="CzechAlert je váš spolehlivý partner v analytické a konzultační činnosti. Zaměřujeme se na investigace, mediální monitoring, strategické informace, due diligence, a ochranu digitálního soukromí pro firmy i jednotlivce.">
+    <meta name="description" content="Vy přinášíte otázky, my odpovědi. Diskrétní zpravodajství, investigace, konkurenční analýzy, ochrana reputace i osob. Pro ty, kdo důvěřují, ale prověřují.">
     <meta name="author" content="Sylvester Holovský">
     <meta name="robots" content="index, follow">
 
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:title" content="CzechAlert | Experti na soukromé zpravodajství">
+    <meta property="og:description" content="Vy přinášíte otázky, my odpovědi. Diskrétní zpravodajské, investigativní a bezpečnostní služby od CzechAlert.">
+    <meta property="og:url" content="https://czechalert.com/cs/">
     <link rel="alternate" hreflang="cs" href="https://czechalert.com/cs/">    
     <link rel="alternate" hreflang="en" href="https://czechalert.com/">
     <link rel="alternate" hreflang="x-default" href="https://czechalert.com/">
@@ -25,6 +28,33 @@
     <link rel="icon" href="../icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
 
     <title>CzechAlert | Investigace & PR</title>
+
+    <!-- Structured data - Organization schema, kořenová entita značky pro GEO/SEO.
+         Servisní stránky na ni odkazují přes `provider`; @id je propojuje. -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://czechalert.com/#organization",
+        "name": "CzechAlert",
+        "url": "https://czechalert.com/",
+        "logo": "https://czechalert.com/media/czech-alert-logo-desktop.png",
+        "description": "CzechAlert je pražská zpravodajská a konzultační agentura pro manažery, firmy, politiky i soukromé osoby. Čtyři pilíře služeb: soukromé zpravodajství a bezpečnost, tržní a konkurenční zpravodajství, PR a média a práce ve veřejném zájmu. Diskrétně, zákonně a s důkazy, které obstojí u soudu.",
+        "email": "info@czechalert.com",
+        "telephone": "+420602693668",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Rumunská 4",
+            "addressLocality": "Praha 2",
+            "addressCountry": "CZ"
+        },
+        "sameAs": [
+            "https://www.linkedin.com/company/czechalert/",
+            "https://www.instagram.com/czech.alert/",
+            "https://www.facebook.com/people/CzechAlert/61586936905724/"
+        ]
+    }
+    </script>
 
     
 
@@ -108,7 +138,7 @@
             <h1 class="header__container--heading">
                 <span class="header__container--heading-main-left">Vy přinášíte otázky</span>
                 <span class="header__container--heading-main-right">My přinášíme odpovědi</span>
-                <span class="header__container--heading-sub">Rychlé a soukromé investigativní a PR výsledky, o kterých ostatní řekli, že to nejde.</span>
+                <span class="header__container--heading-sub">Diskrétní a pohotové zpravodajské podklady pro ty, kdo důvěřují, ale prověřují</span>
             </h1>
         </div>
 
@@ -126,24 +156,28 @@
 
             <div class="services__pin">
 
-                <h2 class="section-heading">Co děláme</h2>
-                <p class="section-subheading">Jak konkrétně vám pomůžeme zažehnat krizi a získat páku pro strategická rozhodnutí</p>
+                <h2 class="section-heading">S čím vám pomůžeme</h2>
 
                 <div class="services__grid services__grid--scroll">
 
-                    <a href="../private-intelligence-and-security" class="services__cell services__cell--firstL services__cell--link">
-                        <h3 class="services__grid--heading">Investigace a bezpečnost</h3>
-                        <p class="services__grid--content">Čelíte bezpečnostní hrozbě, nebo potřebujete využitelné zpravodajské informace, abyste byli o krok napřed před potenciálními riziky? Ať už se jedná o investigaci z otevřených zdrojů, práci s lidskými zdroji informací nebo strategické hodnocení hrozeb, poskytneme vám potřebnou přehlednost. Spojujeme nejmodernější metodiky s hlubokou analytickou odborností a dodáváme bezpečnostní řešení na míru, na která se můžete spolehnout.</p>
+                    <!-- Celá karta je odkaz - kliknutí kamkoli na kartu
+                         vede na příslušnou stránku služby. Vnitřní afordance
+                         "Prozkoumat službu →" je vykreslena přes ::after v CSS.
+                         id atributy zpřístupňují konkrétní kartu jako
+                         deep-link cíl z patiček jednotlivých stránek služeb. -->
+                    <a id="service-private-intelligence" href="private-intelligence-and-security" class="services__cell services__cell--firstL services__cell--link">
+                        <h3 class="services__grid--heading">Soukromé zpravodajství a bezpečnost</h3>
+                        <p class="services__grid--content">Čelíte hrozbě, nebo jen tušíte, že se kolem vás něco děje? Diskrétně ověříme fakta a dáme vám náskok dřív, než se z rizika stane problém.</p>
                     </a>
 
-                    <a href="../business-intelligence" class="services__cell services__cell--firstR services__cell--link">
-                        <h3 class="services__grid--heading">Obchodní a prodejní zpravodajství</h3>
-                        <p class="services__grid--content">Zvažujete spolupráci s novým obchodním partnerem, ale nejste si jisti jeho reputací nebo důvěryhodností? Na základě vašich potřeb a cílů připravíme strukturovanou analýzu rizik zaměřenou na prověřovaný subjekt, a to s využitím otevřených i lidských zdrojů informací. Díky nám vám už nikdo neproklouzne pod radarem.</p>
+                    <a id="service-business-intelligence" href="business-intelligence" class="services__cell services__cell--firstR services__cell--link">
+                        <h3 class="services__grid--heading">Tržní a konkurenční zpravodajství</h3>
+                        <p class="services__grid--content">Stojíte před zásadním obchodním rozhodnutím, ale chybí vám fakta, o která byste ho mohli opřít? Prověříme, co se pod povrchem skutečně skrývá, dřív, než podepíšete.</p>
                     </a>
 
-                    <a href="../pr-and-media" class="services__cell services__cell--secondL services__cell--link">
+                    <a id="service-pr-media" href="pr-and-media" class="services__cell services__cell--secondL services__cell--link">
                         <h3 class="services__grid--heading">PR a mediální monitoring</h3>
-                        <p class="services__grid--content">Ať už hledáte komplexní mediální monitoring, specifické PR strategie nebo řízení reputačních rizik, nemusíte hledat dál. CzechAlert vám nastaví upozornění, provede analýzu negativních mediálních výstupů, vytvoří měsíční reporty z více než 180 milionů zdrojů, vyhodnotí veřejné nálady a mnoho dalšího.</p>
+                        <p class="services__grid--content">Nedaří se vám doručit sdělení tam, kam patří? A víte vůbec, co si o vás vaše publikum skutečně myslí, a co doopravdy chce slyšet?</p>
                     </a>
 
                     <!-- Centrální kotva - vnější karty vyjíždějí zpod této dlaždice -->
@@ -151,10 +185,10 @@
                         <img src="../media/abstract-fingerprint.jpg" alt="Abstraktní otisk prstu symbolizující identitu a zpravodajskou činnost CzechAlert">
                     </div>
 
-                    <div class="services__cell services__cell--secondR">
-                        <h3 class="services__grid--heading">Řízení rizik a due diligence</h3>
-                        <p class="services__grid--content">Potřebujete učinit důležité manažerské rozhodnutí, ale nemáte k dispozici všechny potřebné informace? Právě v takových situacích vstupujeme do hry. Na základě hloubkové, kontextuální a důkazně podložené analýzy navrhneme optimální strategii pro vaši konkrétní situaci. Informovaná rozhodnutí jsou základem odpovědného řízení budoucnosti.</p>
-                    </div>
+                    <a id="service-advocacy" href="public-interest-work" class="services__cell services__cell--secondR services__cell--link">
+                        <h3 class="services__grid--heading">Práce ve veřejném zájmu</h3>
+                        <p class="services__grid--content">O vašem digitálním soukromí se rozhoduje v místnostech, kam běžně nevstoupíte. Hledáte partnera, který tam vašim právům dá hlas?</p>
+                    </a>
 
                 </div>
 
@@ -186,7 +220,7 @@
                             CzechAlert původně vznikl v roce 2023 jako softwarový projekt, zaměřený na uživatelskou produkci zpravodajských informací. Od té doby však prošel výrazným vývojem. Dnes se primárně věnujeme poradenské činnosti, analytické a investigativní práci, mediálnímu poradenství, akademickému výzkumu, a obhajobě digitálních práv.
                             </p>
                             <p class="about__grid--content-paragraph">
-                            Koneckonců, CzechAlert není pouze projektem, ale především dlouhodobou vizí do budoucna. Naším cílem je vybudovat síť vysoce kvalifikovaných odborníků, specializujících se na strategické informace, bezpečnostní výzkum, business intelligence, technologické inovace, advokační činnost, práci s otevřenými zdroji (OSINT), lidskými zdroji informací (HUMINT), legislativní analýzy a další související oblasti. Cílem této expertízy je poskytovat odborné poradenství tam, kde je to skutečně potřeba.
+                            Koneckonců, CzechAlert není pouze projektem, ale především dlouhodobou vizí do budoucna. Naším cílem je vybudovat síť vysoce kvalifikovaných odborníků, specializujících se na strategické informace, bezpečnostní výzkum, tržní a konkurenční zpravodajství, technologické inovace, advokační činnost, práci s otevřenými zdroji (OSINT), lidskými zdroji informací (HUMINT), legislativní analýzy a další související oblasti. Cílem této expertízy je poskytovat odborné poradenství tam, kde je to skutečně potřeba.
                             </p>
                             <p class="about__grid--content-paragraph">
                             Za klíčové považujeme etické jednání, ochranu důvěrnosti klientů a dodržování našich jasně stanovených principů, od kterých nikdy neustupujeme.
@@ -438,11 +472,10 @@
                 </div>
                 <div class="footer-grid--item2 footer-grid--item">
                     <h4 class="item2-subgrid1">Služby</h4>
-                    <div class="item2-subgrid2"><a href="#services">Poradenství</a></div>
-                    <div class="item2-subgrid3"><a href="#services">Zpravodajství</a></div>
-                    <div class="item2-subgrid4"><a href="#services">Média</a></div>
-                    <div class="item2-subgrid5"><a href="#services">Výcvik</a></div>
-                    <div class="item2-subgrid6"><a href="#services">Výzkum</a></div>
+                    <div class="item2-subgrid2"><a href="private-intelligence-and-security">Soukromé zpravodajství a bezpečnost</a></div>
+                    <div class="item2-subgrid3"><a href="business-intelligence">Tržní a konkurenční zpravodajství</a></div>
+                    <div class="item2-subgrid4"><a href="pr-and-media">PR a média</a></div>
+                    <div class="item2-subgrid5"><a href="public-interest-work">Práce ve veřejném zájmu</a></div>
                 </div>
                 <div class="footer-grid--item3 footer-grid--item">
                     <h4 class="items3-subgrid1">Zdroje</h4>
@@ -464,7 +497,7 @@
 
             <div class="footer-copyright">
                 <span class="copyright"><small>&#169;2026. CzechAlert</small></span>
-                <span class="signature"><small>Vytvořeno na míru - Šárka Šimová</small></span>
+                <span class="signature"><small>Vytvořeno na míru, Šárka Šimová</small></span>
             </div>
         </div>
 

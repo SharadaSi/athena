@@ -12,6 +12,8 @@
   const API_VERSION = '2023-10-01';
   const isCzech = (typeof window !== 'undefined') && (window.location.pathname || '').includes('/cs/');
   const LOCALE = isCzech ? 'cs' : 'en';
+  // Locale-aware base path for building canonical/og article URLs.
+  const articleBasePath = isCzech ? '/cs/article' : '/article';
 
   // Read the `slug` query parameter from current URL
   function getSlug() {
@@ -355,6 +357,37 @@
     }
   }
 
+  // --- Per-article canonical + og:url (critical for indexing) ---
+  // The static article template hardcodes a canonical of the bare "/article"
+  // page. Without rewriting it per slug, Google treats every article as a
+  // duplicate of "/article" and drops them from the index. Here we point the
+  // canonical (and og:url) at the *specific* article URL so each post is
+  // indexed as its own page.
+  function setCanonical(slug) {
+    if (!slug) return;
+    const origin = 'https://czechalert.com';
+    // Rebuild the article URL for the current locale + slug.
+    const url = `${origin}${articleBasePath}?slug=${encodeURIComponent(slug)}`;
+
+    // Canonical link — create it if the template somehow lacks one.
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', url);
+
+    // Open Graph URL — keep social/share previews pointing at the real post.
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', url);
+  }
+
   // Render a single article document into page elements
   function renderArticle(doc) {
     const titleEl = document.querySelector('.article-page--heading');
@@ -373,6 +406,10 @@
     if (doc.meta) { //meta is standardized end point for meta description in Sanity
       setMetaDescription(doc.meta); //Meta description function called in html document and pass Sanity filled meta into this function
     }
+
+    // Point the canonical/og:url at this specific article so Google indexes it
+    // as its own page instead of collapsing it into the bare "/article" URL.
+    setCanonical(doc.slug || getSlug());
 
     // Title, subtitle and main image
     if (titleEl) titleEl.textContent = doc.title || '';

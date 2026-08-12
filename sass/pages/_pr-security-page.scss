@@ -373,6 +373,149 @@
         margin-bottom: 1rem;
     }
 
+    // Row that carries the eyebrow tag next to an optional partner badge.
+    // The tag keeps its own margin-bottom so single-tag panels are unaffected;
+    // when the row is present the margin still governs spacing to the title.
+    &__meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        column-gap: 1.2rem;
+        row-gap: 0.6rem;
+    }
+
+    // Partner badge: logo on the left, tooltip hidden behind it, revealed on
+    // hover / keyboard focus by expanding its max-width and easing in from the
+    // left so it visually "slides out from under" the logo along the x axis.
+    &__partner {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 1rem; // align vertical rhythm with `&__tag`
+        cursor: help;
+        outline: none;
+
+        // Keyboard users get a visible focus ring around the logo.
+        &:focus-visible {
+            .service-panel__partner-logo {
+                box-shadow: 0 0 0 2px $btn-color-tertiary-blue;
+            }
+        }
+    }
+
+    &__partner-logo {
+        display: block;
+        // Match the tag's rendered line-height (font 1.3rem * ~1.5 line-height)
+        // so the logo aligns to the eyebrow's cap-to-baseline band.
+        // Bumped +10% (2rem -> 2.2rem) for slightly stronger presence.
+        height: 2.2rem;
+        width: auto;
+        border-radius: 0.25rem;
+        // Sits above the tip so the tip is clipped behind it when collapsed.
+        position: relative;
+        z-index: 2;
+        background: $background-black;
+        transition: box-shadow 0.2s ease-out;
+    }
+
+    &__partner-tip {
+        // Inline-flex + overflow lets max-width animate smoothly without
+        // reflowing surrounding content.
+        display: inline-flex;
+        align-items: center;
+        overflow: hidden;
+        max-width: 0;
+        white-space: nowrap;
+        color: $text-color-secondary;
+        font-size: 1.2rem;
+        line-height: 2rem;
+        letter-spacing: 0.02em;
+        padding: 0;
+        margin-left: 0;
+        border-radius: 0.25rem;
+        // Solid, opaque "chip" surface: the tooltip rolls out over the card's
+        // own paragraph text, so a translucent fill let that text bleed through
+        // and made the tip unreadable. An opaque panel + hairline border + soft
+        // shadow lifts it clearly above whatever sits behind it. Visibility is
+        // driven by `opacity`, so the border/shadow stay hidden while collapsed.
+        background: #1b1b1f;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        transform: translateX(-0.75rem);
+        pointer-events: none;
+        // Motion is gated by `@media (prefers-reduced-motion: no-preference)`
+        // below so reduced-motion users get an instant fade instead.
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &__partner-tip {
+            transition:
+                max-width 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+                padding 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+                margin-left 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+                transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.25s ease-out 0.05s;
+        }
+    }
+
+    &__partner:hover &__partner-tip,
+    &__partner:focus-visible &__partner-tip,
+    &__partner:focus-within &__partner-tip {
+        max-width: 40rem;
+        opacity: 1;
+        padding: 0 0.9rem;
+        margin-left: 0.6rem;
+        transform: translateX(0);
+    }
+
+    // -------------------------------------------------------------------
+    // Corner variant - the same badge, but pinned to the bottom-right of a
+    // `.services__grid` card. Also flips the tooltip so it slides out to
+    // the LEFT (into the card body) rather than off the card's right edge.
+    // Transition timings inherit from the base `__partner-tip` block, so no
+    // duplication needed inside the reduced-motion block.
+    // -------------------------------------------------------------------
+    &__partner--corner {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        margin: 0;                 // override header-variant vertical rhythm
+        z-index: 3;
+        flex-direction: row-reverse; // visually: [tip][logo] with logo on right
+        // Anchored by `right` with no `left`, an absolute box would otherwise
+        // shrink-to-fit within the card width and clip the tooltip. `max-content`
+        // sizes it to the full sentence so it can overflow the card leftward.
+        width: max-content;
+        max-width: none;
+    }
+
+    // Tooltip starts translated to the RIGHT (into the logo) and slides left
+    // out from underneath as it expands.
+    &__partner--corner &__partner-tip {
+        transform: translateX(0.75rem);
+        margin-left: 0;
+    }
+
+    &__partner--corner:hover &__partner-tip,
+    &__partner--corner:focus-visible &__partner-tip,
+    &__partner--corner:focus-within &__partner-tip {
+        margin-left: 0;
+        margin-right: 0.6rem;      // gap between tip's right edge and logo
+        transform: translateX(0);
+    }
+
+    // Cards that host a corner badge become the badge's positioning context
+    // and reserve extra bottom padding so the paragraph never bumps into it.
+    // The reserve is sized to clear the badge row PLUS the tooltip line, so the
+    // tip always rolls out into an empty row in the bottom-right corner instead
+    // of over the paragraph text. Scoped by `:has()` so untagged cards keep
+    // their original padding.
+    .services__grid > *:has(> &__partner--corner) {
+        position: relative;
+        padding-bottom: calc(#{$services-grid-padding-desktop} + 3.4rem);
+    }
+
     // Curtain panels live inside a 100vh frame, so the full `heading-XXL`
     // ramp (5rem → 8rem) is far too tall — it eats most of the available
     // height before the sub-grid even renders. Use a tighter ramp tuned
@@ -854,6 +997,15 @@
 // -----------------------------------------------------------------------------
 @media screen and (max-width: 64rem) {
     @include curtain-static;
+
+    // Breathing room between the now-flowing panels. The adjacent-sibling
+    // selector targets every `.curtain-section` that follows another one, so
+    // the same gap sits below the hero (hero → first service panel) and
+    // between every subsequent pair of panels — a single source of truth for
+    // the inter-panel rhythm on mobile/tablet.
+    .curtain-section + .curtain-section {
+        margin-top: 6rem;
+    }
 }
 
 // Tighter spacing once the grids themselves re-stack to their tablet/mobile

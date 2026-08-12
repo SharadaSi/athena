@@ -1,71 +1,50 @@
-# ─── Clean URLs ────────────────────────────────────────────────────────────────
-# LiteSpeed Web Server (LSWS) is fully compatible with Apache mod_rewrite.
-# Two-step strategy:
-#   1. 301 redirect: any request that still includes .html in the URL is permanently
-#      redirected to the clean (extensionless) version so search engines consolidate
-#      link equity and bookmarks/indexed URLs are corrected automatically.
-#   2. Internal rewrite: an extensionless request is transparently served from the
-#      matching .html file on disk — the browser never sees the extension.
+# ============================================================================
+# Production Apache/LiteSpeed configuration for https://czechalert.com
+# ============================================================================
 
+# Clean URLs
 RewriteEngine On
 RewriteBase /
 
-# Step 0 — Canonical origin: force HTTPS + non-www  (https://czechalert.com)
-# Runs FIRST so every request is normalised to one host/scheme before .html
-# handling. Hardcoded target host => http->https and www->non-www each resolve
-# in a single redirect hop.
-RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} ^www\. [NC]
-RewriteRule ^ https://czechalert.com%{REQUEST_URI} [R=301,L]
+# Canonical origin: force HTTPS and the non-www production host in one redirect.
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^czechalert\.com$ [NC]
+RewriteRule ^ https://czechalert.com%{REQUEST_URI} [R=301,L,NE]
 
-# Step 1 — 301 redirect: strip .html from browser-facing URLs
+# Redirect browser requests for *.html to their extensionless canonical URL.
 RewriteCond %{THE_REQUEST} \s/+(.*?)\.html[\s?#] [NC]
 RewriteRule ^ /%1 [R=301,L,NE]
 
-# Step 2 — Internal rewrite: serve /page or /cs/page as /page.html or /cs/page.html
+# Internally serve extensionless paths from their matching HTML files.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([^.]+)$ $1.html [L]
-# ───────────────────────────────────────────────────────────────────────────────
 
-# Disable caching for HTML (force revalidation)
-<FilesMatch "\.(html|htm)$">
-  Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
-  Header set Pragma "no-cache"
-  Header set Expires "0"
-</FilesMatch>
-
-# Short TTL for CSS/JS while you deploy (1 hour)
-<FilesMatch "\.(css|js)$">
-  Header set Cache-Control "public, max-age=3600, must-revalidate"
-</FilesMatch>
-
-# Long TTL for images/fonts (safe to cache)
-<FilesMatch "\.(png|jpg|jpeg|gif|svg|webp|ico|woff2?)$">
-  Header set Cache-Control "public, max-age=31536000, immutable"
-</FilesMatch>
-
-# Even longer TTL for videos (safe to cache)
-# Case-insensitive match and includes .ogv
-<FilesMatch "(?i)\.(mp4|webm|ogv)$">
-  Header set Cache-Control "public, max-age=31536000, immutable"
-</FilesMatch>
-
-# HSTS (forces User agent to use HTTPS )
 <IfModule mod_headers.c>
-    Header always set Strict-Transport-Security "max-age=31536000"
+  # HTML must revalidate so deployments are visible without disabling caching.
+  <FilesMatch "\.(html?|xml|txt)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # CSS and JavaScript filenames are not consistently content-hashed yet.
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+
+  # Versioned media and font assets can be cached long-term.
+  <FilesMatch "(?i)\.(avif|gif|ico|jpe?g|png|svg|webp|eot|otf|ttf|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "(?i)\.(mp4|ogv|webm)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Production security headers. HSTS intentionally excludes subdomains so a
+  # non-HTTPS staging subdomain cannot be pinned by the production site.
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), camera=(), display-capture=(), document-domain=(), geolocation=(), gyroscope=(), idle-detection=(), magnetometer=(), microphone=(), midi=(), nfc=(), payment=(), picture-in-picture=(self), screen-wake-lock=(), serial=(), speaker-selection=(), sync-xhr=(), usb=(), web-share=(self), xr-spatial-tracking=()"
 </IfModule>
-
-# X Frame options (protects against framing attacks like clickjacking)
-Header always set X-Frame-Options "SAMEORIGIN"
-
-# X Content type options (protection against MIME sniff the content type)
-Header always set X-Content-Type-Options "nosniff"
-
-# Referrer policy (Disables browser from sending sensitive informations inside URL to 3rd parties)
-Header always set Referrer-Policy "strict-origin-when-cross-origin"
-
-# Permissions policy (Disables 3rd parties from accesing extensive sensitive features)
-Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), display-capture=(), document-domain=(), idle-detection=(), midi=(), nfc=(), picture-in-picture=(self), screen-wake-lock=(), serial=(), speaker-selection=(), sync-xhr=(), web-share=(self), xr-spatial-tracking=()"
-
-
