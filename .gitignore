@@ -18,6 +18,7 @@ php/cache/
 # Build artifacts
 *.css.map
 sass/sections/main.css
+css/style.css
 
 # IDE & OS files
 .vscode/
