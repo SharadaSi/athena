@@ -56,8 +56,6 @@
     }
     </script>
 
-    
-
     <script defer src="https://api.pirsch.io/pa.js"
     id="pianjs"
     data-code="qhEFIVE6Bc6SdI8sJfmerCpjBlOALtiP"
@@ -362,9 +360,18 @@
                 </h2>
                 <p class="section-subheading">Meet those, who have already found solutions to their cases with us.
                     </p>
-                <!-- Elfsight Google Reviews | Untitled Google Reviews -->
-                <script src="https://elfsightcdn.com/platform.js" async></script>
-                <div class="elfsight-app-bbbfac9c-9703-475d-9b54-494522fe7f76" data-elfsight-app-lazy></div>
+                <!-- Native Google Reviews widget — data comes from php/google-reviews.php
+                     (keeps the API key server-side); rendered by js/google-reviews.js. -->
+                <div class="reviews" id="reviews-widget"
+                     data-endpoint="php/google-reviews.php"
+                     data-lang="en"
+                     data-profile-url="https://maps.app.goo.gl/yrpn6zwNzMhtzrDDA"
+                     data-label-count="Based on {n} Google reviews"
+                     data-label-empty="Reviews are on their way."
+                     data-label-more="Read more"
+                     data-label-less="Show less"
+                     data-label-verified="Posted on Google"
+                     data-label-profile="See all reviews on Google"></div>
 
             </div>
         </section>
@@ -432,6 +439,7 @@
     <script src="js/sanity-image.js"></script>
     <script src="js/sanity-content.js"></script>
     <script src="js/lang-v-toggler.js"></script>
+    <script src="js/google-reviews.js" defer></script>
 
     
 </body>
