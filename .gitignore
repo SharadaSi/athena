@@ -18,6 +18,7 @@ sass/sections/main.css
 # IDE & OS files
 .vscode/
 .DS_Store
+css/style.css
 Thumbs.db
 
 # Git metadata files (managed locally, not pushed)
