@@ -78,3 +78,264 @@
         background-attachment: scroll;
     }
 }
+
+// -----------------------------------------------------------------------------
+// Native Google Reviews widget (replaces the former Elfsight embed).
+// Lives inside `.testimonials`; markup is built by js/google-reviews.js.
+// -----------------------------------------------------------------------------
+.reviews {
+    width: 90%;
+    max-width: 120rem;
+    margin-inline: auto;
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+    }
+
+    // ---- Summary bar: score, stars, count, link to Google profile ----------
+    &__summary {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 1.6rem;
+        text-align: center;
+    }
+
+    &__summary-score {
+        font-family: "Exo 2", sans-serif;
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: $text-color-primary;
+        line-height: 1;
+    }
+
+    &__summary-count {
+        font-size: 1.5rem;
+        color: $text-color-secondary;
+    }
+
+    &__summary-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.4rem;
+        text-transform: none;
+        color: $text-color-primary;
+        padding: 0.8rem 1.6rem;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: $radius-desktop;
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+
+        &:hover,
+        &:focus-visible {
+            border-color: $btn-color-secondary-blue;
+            background-color: rgba(255, 42, 0, 0.08);
+        }
+    }
+
+    &__google-glyph {
+        width: 1.8rem;
+        height: 1.8rem;
+        flex-shrink: 0;
+    }
+
+    // ---- Stars -------------------------------------------------------------
+    &__stars {
+        display: inline-flex;
+        gap: 0.2rem;
+    }
+
+    &__star {
+        width: 1.8rem;
+        height: 1.8rem;
+        fill: rgba(255, 255, 255, 0.22);
+
+        &--on {
+            fill: #fbbc05; // Google review gold
+        }
+    }
+
+    // ---- Cards grid --------------------------------------------------------
+    &__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+
+        @include respond-below(lg) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include respond-below(md) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__card {
+        @include gridCard;
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    &__card-head {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &__avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 4.4rem;
+        height: 4.4rem;
+        flex-shrink: 0;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: $btn-color-secondary-blue;
+        color: $text-color-primary;
+        font-family: "Exo 2", sans-serif;
+        font-weight: 700;
+        font-size: 1.8rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__card-meta {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    &__author {
+        font-weight: 600;
+        font-size: 1.6rem;
+        color: $text-color-primary;
+        text-transform: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__time {
+        font-size: 1.3rem;
+        color: $text-color-tertiary;
+    }
+
+    &__card-google {
+        width: 2rem;
+        height: 2rem;
+        margin-inline-start: auto;
+        flex-shrink: 0;
+    }
+
+    &__text {
+        font-size: 1.5rem;
+        line-height: 1.6;
+        color: $text-color-secondary;
+
+        // Clamp to 5 lines until the reader expands the card.
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 5;
+        line-clamp: 5;
+        overflow: hidden;
+
+        &--open {
+            -webkit-line-clamp: unset;
+            line-clamp: unset;
+            overflow: visible;
+        }
+    }
+
+    &__more {
+        align-self: flex-start;
+        appearance: none;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-size: 1.4rem;
+        color: $btn-color-tertiary-blue;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+
+        &:hover,
+        &:focus-visible {
+            color: $btn-color-secondary-blue;
+            text-decoration: underline;
+        }
+    }
+
+    // ---- Fallback (proxy unreachable / no reviews yet) ---------------------
+    &__fallback {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        color: $text-color-secondary;
+        font-size: 1.6rem;
+    }
+
+    // ---- Loading skeleton --------------------------------------------------
+    &__card--skeleton {
+        min-height: 22rem;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background-color: rgba(255, 255, 255, 0.04);
+        position: relative;
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.08) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: translateX(-100%);
+
+            @media (prefers-reduced-motion: no-preference) {
+                animation: reviews-shimmer 1.3s linear infinite;
+            }
+        }
+    }
+
+    // ---- Entry animation ---------------------------------------------------
+    &__card--enter {
+        @media (prefers-reduced-motion: no-preference) {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: reviews-fade-in 0.5s ease forwards;
+            animation-delay: var(--reviews-delay, 0ms);
+        }
+    }
+}
+
+@keyframes reviews-shimmer {
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes reviews-fade-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

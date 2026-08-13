@@ -27,7 +27,34 @@
     <link rel="shortcut icon" href="../icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
     <link rel="icon" href="../icons/CzechAlert_favicon_64x64px.ico" type="image/x-icon">
 
-    <title>CzechAlert | Investigace & PR</title>
+    <title>CzechAlert | Experti na soukromé zpravodajství</title>
+
+    <!-- Structured data - Organization schema, kořenová entita značky pro GEO/SEO.
+         Servisní stránky na ni odkazují přes `provider`; @id je propojuje. -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://czechalert.com/#organization",
+        "name": "CzechAlert",
+        "url": "https://czechalert.com/",
+        "logo": "https://czechalert.com/media/czech-alert-logo-desktop.png",
+        "description": "CzechAlert je pražská zpravodajská a konzultační agentura pro manažery, firmy, politiky i soukromé osoby. Čtyři pilíře služeb: soukromé zpravodajství a bezpečnost, tržní a konkurenční zpravodajství, PR a média a práce ve veřejném zájmu. Diskrétně, zákonně a s důkazy, které obstojí u soudu.",
+        "email": "info@czechalert.com",
+        "telephone": "+420602693668",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Rumunská 4",
+            "addressLocality": "Praha 2",
+            "addressCountry": "CZ"
+        },
+        "sameAs": [
+            "https://www.linkedin.com/company/czechalert/",
+            "https://www.instagram.com/czech.alert/",
+            "https://www.facebook.com/people/CzechAlert/61586936905724/"
+        ]
+    }
+    </script>
 
     <!-- Structured data - Organization schema, kořenová entita značky pro GEO/SEO.
          Servisní stránky na ni odkazují přes `provider`; @id je propojuje. -->
@@ -180,7 +207,7 @@
                         <p class="services__grid--content">Nedaří se vám doručit sdělení tam, kam patří? A víte vůbec, co si o vás vaše publikum skutečně myslí, a co doopravdy chce slyšet?</p>
                     </a>
 
-                    <!-- Centrální kotva - vnější karty vyjíždějí zpod této dlaždice -->
+                    <!-- Centrální kotva - vnější karty vyjdějí zpod této dlaždice -->
                     <div class="services__cell services__cell--anchor">
                         <img src="../media/abstract-fingerprint.jpg" alt="Abstraktní otisk prstu symbolizující identitu a zpravodajskou činnost CzechAlert">
                     </div>
@@ -443,9 +470,18 @@
                 </h2>
                 <p class="section-subheading">Seznamte se s těmi, kteří již našli řešení svých výzev spoluprací s námi.
                     </p>
-                <!-- Elfsight Google Reviews | Untitled Google Reviews -->
-                <script src="https://elfsightcdn.com/platform.js" async></script>
-                <div class="elfsight-app-bbbfac9c-9703-475d-9b54-494522fe7f76" data-elfsight-app-lazy></div>
+                <!-- Nativní widget Google recenzí — data z ../php/google-reviews.php
+                     (API klíč zůstává na serveru); vykresluje ../js/google-reviews.js. -->
+                <div class="reviews" id="reviews-widget"
+                     data-endpoint="../php/google-reviews.php"
+                     data-lang="cs"
+                     data-profile-url="https://maps.app.goo.gl/yrpn6zwNzMhtzrDDA"
+                     data-label-count="Na základě {n} recenzí Google"
+                     data-label-empty="Recenze se brzy objeví."
+                     data-label-more="Číst dál"
+                     data-label-less="Zabalit"
+                     data-label-verified="Zveřejněno na Google"
+                     data-label-profile="Zobrazit všechny recenze na Google"></div>
 
             </div>
         </section>
@@ -512,6 +548,7 @@
     <script src="../js/sanity-image.js"></script>
     <script src="../js/sanity-content.js"></script>
     <script src="../js/lang-v-toggler.js"></script>
+    <script src="../js/google-reviews.js" defer></script>
     
 </body>
 </html>
