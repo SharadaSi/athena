@@ -59,8 +59,9 @@ $interestOptions = [
     'media monitoring'      => 'Media monitoring',
     'privacy consulting'    => 'Digital privacy consulting',
     'strategic intelligence' => 'Strategic intelligence',
-    'risk management'       => 'Risk management',
-    'lecture'               => 'Lecture',
+    'business development'  => 'Business development',
+    'cooperation'           => 'Cooperation',
+    'careers'               => 'Careers',
     'other'                 => 'Other',
 ];
 

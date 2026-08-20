@@ -16,7 +16,10 @@
 // Response: application/json, shape documented near the bottom.
 // ──────────────────────────────────────────────────────────────────
 
-require __DIR__ . '/reviews-config.php';
+// Prefer the config stored OUTSIDE the webroot (unreachable by URL);
+// fall back to the local copy for local development.
+$secureConfigPath = dirname(__DIR__, 2) . '/reviews-config.php';
+require file_exists($secureConfigPath) ? $secureConfigPath : __DIR__ . '/reviews-config.php';
 
 // ─── 1. RESPONSE HEADERS ────────────────────────────────────────────
 header('Content-Type: application/json; charset=UTF-8');
